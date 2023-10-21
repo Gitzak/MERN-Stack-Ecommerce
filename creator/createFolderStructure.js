@@ -41,6 +41,12 @@ function createFolderStructure() {
     const middlewarePath = path.join(projectRoot, 'middleware');
     createDirectory(middlewarePath);
 
+    const constantsPath = path.join(projectRoot, 'constants');
+    createDirectory(constantsPath);
+
+    const utilsPath = path.join(projectRoot, 'utils');
+    createDirectory(utilsPath);
+
     // Create the additional files
     createFile(path.join(projectRoot, 'app.js'));
     createFile(path.join(projectRoot, 'server.js'));
