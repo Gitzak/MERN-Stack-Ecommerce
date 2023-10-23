@@ -16,6 +16,16 @@ class UserRepository {
     const user = await this.userModel.findByIdAndDelete(userId);
     return user;
   }
+
+  // GET USER BY ID
+  async FindById(userId) {
+    try {
+      const user = await this.userModel.findById(userId);
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 module.exports = { UserRepository };
