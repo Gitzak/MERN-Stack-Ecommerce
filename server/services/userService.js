@@ -3,6 +3,8 @@ const config = require('./../config/keys');
 const { HashPassword, VerifyPassword } = require('../utils/Hashing.js')
 const jwt = require('jsonwebtoken')
 
+
+
 class UserService {
     constructor(userRepo) {
         this.userRepo = userRepo;
@@ -34,7 +36,14 @@ class UserService {
         user.lastLogin = currentTimestamp;
         await user.save();
 
-        const token = jwt.sign({ userid: user._id, username: user.name }, config.jwt.secret)
+
+        const token = jwt.sign({
+            userId: user._id,
+            userName: user.userName,
+            userRole: user.role, 
+            active: user.active
+        }, config.jwt.secret);
+        
         response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
         response.message = "Login success";
         response.user = {
@@ -49,10 +58,77 @@ class UserService {
             lastUpdate: user.lastUpdate ? new Date(user.lastUpdate).toLocaleString() : null, // Format the timestamp
             active: user.active
         };
-        response.access_token = token;
+        response.token = token;
         response.token_type = "Bearer"
         return response
     }
+
+
+
+    async AddUser(req) {
+        const response = {}
+
+        const {role, userName, firstName, lastName, email, password} = req.body
+        
+        if(!role || !userName || !firstName || !lastName || !email || !password){
+
+            response.message = CONSTANTS.FIELD_EMPTY
+            response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE
+            return response;
+        }
+
+        const newUser = {
+            role,
+            userName,
+            firstName,
+            lastName,
+            email,
+            password: await HashPassword(password)
+        }
+
+        const user = await this.userRepo.AddUser(newUser)
+
+        if(!user){
+            response.message = CONSTANTS.SERVER_ERROR_MESSAGE
+            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE
+            return response;
+        }
+
+        response.message  = CONSTANTS.USER_CREATED
+        response.status = CONSTANTS.SERVER_CREATED_HTTP_CODE
+        response.data = user
+        return response
+    }
+
+
+    async UpdateUser(req) {
+
+        const id = req.params.id
+
+        const response = {}
+
+        const {role, userName, firstName, lastName, email, password} = req.body
+
+        const updatedUser = {
+            role,
+            userName,
+            firstName,
+            lastName,
+            email,
+            password: await HashPassword(password)
+        }
+
+        const updateduser = await this.userRepo.UpdateUser(id, updatedUser)
+
+        response.message = updateduser
+
+        return response
+
+
+    }
+
+
+
 }
 
 module.exports = { UserService }

@@ -12,4 +12,18 @@ const loginUser = async (req, res) => {
     res.json(user)
 }
 
-module.exports = { loginUser }
+const addNewUser = async (req, res) => {
+    const newUser = await userServ.AddUser(req)
+    // console.log('new user', newUser)
+    res.json(newUser)
+}
+
+const updateUserData = async(req, res) => {
+    const updatedUser = await userServ.UpdateUser(req)
+    console.log(updatedUser)
+    res.json(updatedUser)
+
+}
+ 
+
+module.exports = { loginUser, addNewUser, updateUserData }

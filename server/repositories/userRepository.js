@@ -1,3 +1,6 @@
+const CONSTANTS = require('../constants/index')
+
+
 class UserRepository {
     constructor(userModel) {
         this.userModel = userModel;
@@ -6,6 +9,47 @@ class UserRepository {
     async Login(email) {
         const user = await this.userModel.findOne({ email: email })
         return user
+    }
+
+    async AddUser(user){
+
+        const {role, userName, firstName, lastName, email, password} = user
+
+        const createUser = await this.userModel.create({
+            role,
+            userName,
+            firstName,
+            lastName,
+            email,
+            password
+        })
+
+
+        const userWithoutPassword = createUser.toObject()
+        delete userWithoutPassword.password
+        console.log(userWithoutPassword)
+        return userWithoutPassword
+    }
+
+
+    async UpdateUser(id, user) {
+
+        const filter = { _id: id };
+
+        const updateData = {
+            $set: user, 
+        };
+
+
+        const result = await this.userModel.updateOne(filter, updateData);
+
+        if (result.matchedCount === 1) {
+            return { message: CONSTANTS.USER_UPDATED, status: CONSTANTS.SERVER_UPDATED_HTTP_CODE };
+        } else {
+            return { message: CONSTANTS.USER_NOT_FOUND, status: CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE };
+        }
+
+
     }
 }
 
