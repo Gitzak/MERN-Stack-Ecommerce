@@ -30,6 +30,7 @@ class UserService {
         }
         // Update the lastLogin field with the current timestamp
         const currentTimestamp = Date.now();
+        console.log(currentTimestamp);
         user.lastLogin = currentTimestamp;
         await user.save();
 
@@ -44,8 +45,8 @@ class UserService {
             userName: user.userName,
             role: user.role,
             creationDate: user.creationDate,
-            lastLogin: new Date(user.lastLogin).toLocaleString(), // Format the timestamp
-            lastUpdate: new Date(user.lastUpdate).toLocaleString(), // Format the timestamp
+            lastLogin: user.lastLogin ? new Date(user.lastLogin).toLocaleString() : null, // Format the timestamp
+            lastUpdate: user.lastUpdate ? new Date(user.lastUpdate).toLocaleString() : null, // Format the timestamp
             active: user.active
         };
         response.access_token = token;
