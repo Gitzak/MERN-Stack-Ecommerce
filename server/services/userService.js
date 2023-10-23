@@ -30,6 +30,16 @@ class UserService {
         response.token = token
         return response
     }
+
+    //async function findUserById
+    async getUserById(userId) {
+        try {
+            const user = await this.userRepo.FindById(userId);
+            return user;
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 module.exports = { UserService }
