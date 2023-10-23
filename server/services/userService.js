@@ -13,21 +13,43 @@ class UserService {
         const { email, password } = req.body
         const user = await this.userRepo.Login(email)
         if (!user) {
-            response.message = CONSTANTS.USER_NOT_FOUND
-            response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE
+            response.message = CONSTANTS.SERVER_USER_INVALID_CREDENTIALS
+            response.status = CONSTANTS.SERVER_INVALID_CREDENTIALS
+            return response
+        }
+        if (!user.active) {
+            response.message = CONSTANTS.USER_NOT_ACTIVE
+            response.status = CONSTANTS.SERVER_IFORBIDDEN_HTTP_CODE
             return response
         }
         const passwordMatch = await VerifyPassword(password, user.password)
         if (!passwordMatch) {
-            response.message = CONSTANTS.PASSWORD_NOT_FOUND
-            response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE
+            response.message = CONSTANTS.SERVER_USER_INVALID_CREDENTIALS
+            response.status = CONSTANTS.SERVER_INVALID_CREDENTIALS
             return response
         }
+        // Update the lastLogin field with the current timestamp
+        const currentTimestamp = Date.now();
+        user.lastLogin = currentTimestamp;
+        await user.save();
+
         const token = jwt.sign({ userid: user._id, username: user.name }, config.jwt.secret)
-        response.message = CONSTANTS.USER_LOGIN_OK
-        response.status = CONSTANTS.SERVER_OK_HTTP_CODE
-        response.data = { id: user._id, username: user.name }
-        response.token = token
+        response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+        response.message = "Login success";
+        response.user = {
+            _id: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            userName: user.userName,
+            role: user.role,
+            creationDate: user.creationDate,
+            lastLogin: new Date(user.lastLogin).toLocaleString(), // Format the timestamp
+            lastUpdate: new Date(user.lastUpdate).toLocaleString(), // Format the timestamp
+            active: user.active
+        };
+        response.access_token = token;
+        response.token_type = "Bearer"
         return response
     }
 }

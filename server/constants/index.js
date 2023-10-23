@@ -11,6 +11,10 @@ module.exports.SERVER_CREATED_HTTP_CODE = 201;
 module.exports.SERVER_UPDATED_HTTP_CODE = 204;
 module.exports.SERVER_NOT_FOUND_HTTP_CODE = 404;
 module.exports.SERVER_INTERNAL_ERROR_HTTP_CODE = 500;
+module.exports.SERVER_IFORBIDDEN_HTTP_CODE = 403;
+module.exports.SERVER_INVALID_CREDENTIALS = 401;
+module.exports.SERVER_USER_INVALID_CREDENTIALS = "Invalid credentials";
+
 
 /* Route related constants starts */
 module.exports.USER_REGISTRATION_OK = 'User registration successful.';
@@ -22,6 +26,7 @@ module.exports.USER_CREATED = 'User Created Succefuly.';
 module.exports.USER_UPDATED = 'User Updated Succefuly.';
 module.exports.USER_DELETED = 'User Deleted Succefuly.';
 module.exports.ALREADY_USER_DELETED = 'No User Deleted';
+module.exports.USER_NOT_ACTIVE = 'Your account is not active';
 
 
 /* Validation related  constants starts */
