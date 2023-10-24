@@ -1,46 +1,48 @@
-const nodemailer = require("nodemailer"); 
-const config = require('./../config/keys');
+const nodemailer = require("nodemailer");
+const config = require("./../config/keys");
+const CONSTANTS = require("../constants/index");
 
-const SendMailToUSer = () => {
-
+const SendMailToUser = async ({ userEmail, userPassword }) => {
+  return new Promise((resolve, reject) => {
     const transporter = nodemailer.createTransport({
-        service: config.mail.service,
-        auth: {
-          user: config.mail.user,
-          pass: config.mail.pass
-        },
+      service: config.mail.service,
+      auth: {
+        user: config.mail.user,
+        pass: config.mail.pass,
+      },
     });
-    
-    
+
     const mailOptions = {
-        from: config.mail.user,
-        to: "malloukab77@gmail.com",
-        subject: "Your Account Information",
-        html: `
+      from: config.mail.user,
+      to: "zakaria.belrhali@gmail.com", //todo: changing to user mail 
+      subject: "Your Account Information",
+      html: `
         <html>
           <body>
-            <p>Hello,</p>
-            <p>Your email: jhuhhui</p>
-            <p>Your hashed password: jhvhvhj</p>
-            <p>Thank you.</p>
-            <a href="http://localhost:6500/userLogin" id="myProfile"> Go to my  Profile</a>
+            <p>Hello Dear; </p>
+            <p>Your email: ${userEmail}</p>
+            <p>Your password: ${userPassword}</p>
+            <p>Have a good day.</p>
+            <p>Thank you .</p>
           </body>
         </html>
       `,
     };
-    
-    
-    
-    transporter.sendMail(mailOptions, (err, info) => {
-        if (err) {
-          console.error("Error sending email:", err);
-          res.status(500).send("Internal Server Error");
-        } else {
-          console.log("Email sent successfully:", info.response);
-          res.status(200).send("Email sent successfully");
-        }
-      });
-    
-}
 
+    transporter.sendMail(mailOptions, (err) => {
+      if (err) {
+        reject({
+          message: CONSTANTS.EMAIL_SEND_ERROR,
+          status: CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE,
+        });
+      } else {
+        resolve({
+          message: CONSTANTS.EMAIL_SEND_SUCCESS,
+          status: CONSTANTS.SERVER_OK_HTTP_CODE,
+        });
+      }
+    });
+  });
+};
 
+module.exports = SendMailToUser;

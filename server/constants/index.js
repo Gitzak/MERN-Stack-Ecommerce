@@ -45,3 +45,11 @@ module.exports.FIELD_EMPTY = 'All fields are required.';
 module.exports.ROUTE_NOT_FOUND = 'You are at wrong place. Shhoooo...';
 module.exports.SERVER_ERROR_MESSAGE = 'Something bad happend. It\'s not you, it\'s me.';
 module.exports.INSUFFICIENT_PRIVILEGE_MESSAGE = "You don't have enough privilege";
+
+
+
+// Mail related messages  
+module.exports.EMAIL_SEND_ERROR = "Error sending email";
+module.exports.EMAIL_SEND_SUCCESS = "Email sent successfully";
+
+

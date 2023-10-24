@@ -2,6 +2,7 @@ const CONSTANTS = require("../constants");
 const config = require("./../config/keys");
 const { HashPassword, VerifyPassword } = require("../utils/Hashing.js");
 const jwt = require("jsonwebtoken");
+const SendMailToUser = require("../utils/sendMail");
 
 class UserService {
   constructor(userRepo) {
@@ -67,40 +68,19 @@ class UserService {
     return response;
   }
 
-  async Delete(userId) {
-    const response = {};
-
-    try {
-      const user = await this.userRepo.Findbyuser(userId);
-
-      if (!user) {
-        response.message = CONSTANTS.USER_NOT_FOUND;
-        response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
-        return response;
-      }
-
-      await this.userRepo.Delete(userId);
-
-      response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
-      response.message = CONSTANTS.USER_DELETED;
-    } catch (error) {
-      response.message = "An error occurred while deleting the user.";
-      response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
-      console.error(error);
-    }
-    return response;
-  }
-
   async AddUser(req) {
     const response = {};
 
     const { role, userName, firstName, lastName, email, password } = req.body;
 
+    //todo: we must add validation
     if (!role || !userName || !firstName || !lastName || !email || !password) {
       response.message = CONSTANTS.FIELD_EMPTY;
       response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
       return response;
     }
+
+    const hashedPass = await HashPassword(password);
 
     const newUser = {
       role,
@@ -108,7 +88,8 @@ class UserService {
       firstName,
       lastName,
       email,
-      password: await HashPassword(password),
+      hashedPass,
+      password,
     };
 
     const user = await this.userRepo.AddUser(newUser);
@@ -119,9 +100,15 @@ class UserService {
       return response;
     }
 
+    const sendedMail = await SendMailToUser({
+      userEmail: newUser.email,
+      userPassword: newUser.password,
+    });
+
     response.message = CONSTANTS.USER_CREATED;
     response.status = CONSTANTS.SERVER_CREATED_HTTP_CODE;
     response.data = user;
+    response.mail = sendedMail;
     return response;
   }
 
@@ -145,6 +132,69 @@ class UserService {
 
     response.message = updateduser;
 
+    return response;
+  }
+
+  async getUserById(userId) {
+    try {
+      const user = await this.userRepo.FindById(userId);
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getUsers(req) {
+    const page = parseInt(req.query.page) || 1;
+    const sort = req.query.sort || "ASC";
+    console.log("page", page);
+    console.log("sort", sort);
+    const pageSize = 10; // Number of items per page
+    const skip = (page - 1) * pageSize;
+    const limit = pageSize;
+    const response = {};
+    response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+    const users = await this.userRepo.getUsers(skip, limit, sort);
+    response.users = users;
+
+    return response;
+  }
+
+  async searchUsers(req) {
+    console.log(req)
+    const query = req.query; // Assuming you're passing query parameters
+
+    try {
+      const searchedUsers = await this.userRepo.searchUsers(query);
+
+      return searchedUsers
+    } catch (error) {
+       return error 
+    }
+ 
+  }
+
+  async Delete(userId) {
+    const response = {};
+
+    try {
+      const user = await this.userRepo.Findbyuser(userId);
+
+      if (!user) {
+        response.message = CONSTANTS.USER_NOT_FOUND;
+        response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+        return response;
+      }
+
+      await this.userRepo.Delete(userId);
+
+      response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+      response.message = CONSTANTS.USER_DELETED;
+    } catch (error) {
+      response.message = "An error occurred while deleting the user.";
+      response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+      console.error(error);
+    }
     return response;
   }
 }
