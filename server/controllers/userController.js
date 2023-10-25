@@ -33,7 +33,6 @@ const getUserById = async (req, res) => {
 
 //Get all users
 const getUsers = async (req, res) => {
-  // console.log(req);
   const users = await userServ.getUsers(req);
   res.json(users)
 }
@@ -45,7 +44,6 @@ const searchUsers = async (req, res) => {
 // delete user 
 const deleteUser = async (req, res) => {
   const userId = req.params.id;
-  // console.log(userId);
   const result = await userServ.Delete(userId);
   res.json(result);
 };

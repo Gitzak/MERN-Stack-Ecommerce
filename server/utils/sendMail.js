@@ -5,7 +5,8 @@ const CONSTANTS = require("../constants/index");
 const SendMailToUser = async ({ userEmail, userPassword }) => {
   return new Promise((resolve, reject) => {
     const transporter = nodemailer.createTransport({
-      service: config.mail.service,
+      host: config.mail.host,
+      port: config.mail.port,
       auth: {
         user: config.mail.user,
         pass: config.mail.pass,
@@ -14,7 +15,7 @@ const SendMailToUser = async ({ userEmail, userPassword }) => {
 
     const mailOptions = {
       from: config.mail.user,
-      to: "zakaria.belrhali@gmail.com", //todo: changing to user mail 
+      to: userEmail,
       subject: "Your Account Information",
       html: `
         <html>
