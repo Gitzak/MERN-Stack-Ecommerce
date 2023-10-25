@@ -27,8 +27,7 @@ const updateCustomerData = async (req, res) => {
 // Get Customer by ID (only for admin and manager)
 const getCustomerById = async (req, res) => {
   try {
-    const CustomerId = req.params.id;
-    const Customer = await CustomerServ.getCustomerById(CustomerId);
+    const Customer = await CustomerServ.getCustomerById(req);
     if (!Customer) {
       return res.status(404).json({ message: "Customer not found" });
     }
@@ -41,15 +40,14 @@ const getCustomerById = async (req, res) => {
 //Get all Customers (only for admin and manager)
 const getCustomers = async (req, res) => {
 //   const Customers = await CustomerServ.getCustomers(req);
-  const results = await CustomerServ.searchCustomers(req);
+  const results = await CustomerServ.getCustomers(req);
 
   res.json(results)
 }
 
 // delete Customer  (is customer)
 const deleteCustomer = async (req, res) => {
-  const CustomerId = req.params.id;
-  const result = await CustomerServ.Delete(CustomerId);
+  const result = await CustomerServ.Delete(req);
   res.json(result);
 };
 
@@ -61,8 +59,7 @@ const getProfileCustomer = async (req, res) => {
 
 //validate customer account (is customer)
 const validateAccCustomer = async (req, res) => {
-    const CustomerId = req.params.id;
-    const validation = await CustomerServ.validateAccCustomer(CustomerId);
+    const validation = await CustomerServ.validateAccCustomer(req);
     res.json(validation);
   };
 
