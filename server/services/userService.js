@@ -161,9 +161,7 @@ class UserService {
   }
 
   async searchUsers(req) {
-    console.log(req)
-    const query = req.query; // Assuming you're passing query parameters
-
+    const query = req.query.query;
     try {
       const searchedUsers = await this.userRepo.searchUsers(query);
 

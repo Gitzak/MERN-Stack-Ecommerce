@@ -32,17 +32,15 @@ const getUserById = async (req, res) => {
 };
 
 //Get all users
-const getUsers = async (req, res) =>{
-    // console.log(req);
-    const users = await userServ.getUsers(req);
-    res.json(users)
+const getUsers = async (req, res) => {
+  // console.log(req);
+  const users = await userServ.getUsers(req);
+  res.json(users)
 }
 
-const searchUsers = async (req, res) =>{
-    console.log(req)
-      const results = await userServ.searchUsers(req);
-      res.json(results);
-    
+const searchUsers = async (req, res) => {
+  const results = await userServ.searchUsers(req);
+  res.json(results);
 }
 // delete user 
 const deleteUser = async (req, res) => {
@@ -52,4 +50,4 @@ const deleteUser = async (req, res) => {
   res.json(result);
 };
 
-module.exports = { getUserById, addNewUser, updateUserData, getUsers,searchUsers, deleteUser };
+module.exports = { getUserById, addNewUser, updateUserData, getUsers, searchUsers, deleteUser };
