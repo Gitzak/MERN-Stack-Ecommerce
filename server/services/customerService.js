@@ -24,9 +24,9 @@ class CustomerService {
       return response;
     }
     if (!customer.validatAccount) {
-        response.message = CONSTANTS.USER_NOT_ACTIVE;
-        response.status = CONSTANTS.SERVER_IFORBIDDEN_HTTP_CODE;
-        return response;
+      response.message = CONSTANTS.USER_NOT_ACTIVE;
+      response.status = CONSTANTS.SERVER_IFORBIDDEN_HTTP_CODE;
+      return response;
     }
     const passwordMatch = await VerifyPassword(password, customer.password);
     if (!passwordMatch) {
@@ -116,16 +116,18 @@ class CustomerService {
 
     const response = {};
 
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email } = req.body;
 
     const updatedCustomer = {
       firstName,
       lastName,
       email,
-      password: await HashPassword(password),
     };
 
-    const updatedcustomer = await this.customerRepo.UpdateCustomer(id, updatedCustomer);
+    const updatedcustomer = await this.customerRepo.UpdateCustomer(
+      id,
+      updatedCustomer
+    );
 
     response.message = updatedcustomer;
 
@@ -134,7 +136,7 @@ class CustomerService {
 
   async getCustomerById(req) {
     try {
-        const customerId = req.params.id;
+      const customerId = req.params.id;
       const customer = await this.customerRepo.findCustomerById(customerId);
       return customer;
     } catch (error) {
@@ -144,26 +146,26 @@ class CustomerService {
 
   async getCustomers(req) {
     if (req.query.query) {
-        try {
-            const searchedUsers = await this.userRepo.searchUsers(query);
-      
-            return searchedUsers
-          } catch (error) {
-             return error 
-          }
+      try {
+        const searchCustomers = await this.userRepo.searchCustomers(query);
+
+        return searchCustomers;
+      } catch (error) {
+        return error;
+      }
     } else {
-    const page = parseInt(req.query.page) || 1;
-    const sort = req.query.sort || "ASC";
-    console.log("page", page);
-    console.log("sort", sort);
-    const pageSize = 10; // Number of items per page
-    const skip = (page - 1) * pageSize;
-    const limit = pageSize;
-    const response = {};
-    response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
-    const customers = await this.customerRepo.getCustomers(skip, limit, sort);
-    response.customers = customers;
-    return response;
+      const page = parseInt(req.query.page) || 1;
+      const sort = req.query.sort || "ASC";
+      console.log("page", page);
+      console.log("sort", sort);
+      const pageSize = 10; // Number of items per page
+      const skip = (page - 1) * pageSize;
+      const limit = pageSize;
+      const response = {};
+      response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+      const customers = await this.customerRepo.getCustomers(skip, limit, sort);
+      response.customers = customers;
+      return response;
     }
   }
 
@@ -171,8 +173,8 @@ class CustomerService {
     const response = {};
 
     try {
-        const customerId = req.params.id;
-        const deletedCustomer = await this.customerRepo.Delete(customerId);
+      const customerId = req.params.id;
+      const deletedCustomer = await this.customerRepo.Delete(customerId);
 
       if (!deletedCustomer) {
         response.message = CONSTANTS.USER_NOT_FOUND;
@@ -183,7 +185,6 @@ class CustomerService {
       response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
       response.message = CONSTANTS.USER_DELETED;
       return response;
-
     } catch (error) {
       response.message = "An error occurred while deleting the customer.";
       response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
@@ -193,7 +194,7 @@ class CustomerService {
 
   async getProfileCustomer(req) {
     try {
-        const customerId = req.customerId;
+      const customerId = req.customerId;
       const customer = await this.customerRepo.findCustomerById(customerId);
       return customer;
     } catch (error) {
@@ -203,11 +204,8 @@ class CustomerService {
 
   async validateAccCustomer(req) {
     try {
-        const customerId = req.params.id;
-        const customer = await this.customerRepo.validateAccCustomer(customerId);
-        const validated = true;
-        customer.validatAccount = validated;
-        await customer.save();
+      const customerId = req.params.id;
+      const customer = await this.customerRepo.validateAccCustomer(customerId);
       return customer;
     } catch (error) {
       throw error;
