@@ -2,27 +2,35 @@ const express = require('express')
 const router = express.Router()
 
 // controller functions
-const { getCustomerById, RegisterCustomer, updateCustomerData, getCustomers, deleteCustomer, loginCustomer, validateAccCustomer, getProfileCustomer } = require('../../controllers/customerController')
+const {
+    loginCustomer,
+    registerCustomer,
+    validateAccCustomer,
+    getCustomerById,
+    getCustomers,
+    updateCustomerDataByAdmins,
+    updateCustomerData,
+    getProfileCustomer,
+    deleteCustomer,
+} = require('../../controllers/customerController')
 
 // login route
-router.post('/login', )
-//create new customers
-router.post('/', )
-//get all customers list
-router.get('/', )
-//search
-router.get('/', )
-//get customer by id
-router.post('/:id', )
+router.post('/login', loginCustomer)
+//create new customers (Register)
+router.post('/', registerCustomer)
 //customer account or email validation
-router.put('/validate/:id', )
+router.put('/validate/:id', validateAccCustomer)
+//get customer by id
+router.get('/:id', getCustomerById)
+//get all customers list
+router.get('/', getCustomers)
 //update customer data (for admin and manager only)
-router.put('/:id', )
-//delete account
-router.delete('/delete', )
-// enter customer profil
-router.get('/profile', )
+router.put('/:id', updateCustomerDataByAdmins)
 // customer update himself
-router.patch('/profile/update', )
+router.patch('/profile/update', updateCustomerData)
+// enter customer profil
+router.get('/profile', getProfileCustomer)
+//delete account for customer
+router.delete('/delete', deleteCustomer)
 
 module.exports = router

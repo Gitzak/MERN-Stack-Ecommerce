@@ -2,7 +2,7 @@ const CONSTANTS = require("../constants");
 const config = require("./../config/keys");
 const { HashPassword, VerifyPassword } = require("../utils/Hashing.js");
 const jwt = require("jsonwebtoken");
-const SendMailToCustomer = require("../utils/sendMail");
+const SendMailToCustomer = require("../utils/sendMailToCustomer");
 
 class CustomerService {
   constructor(customerRepo) {
@@ -62,6 +62,7 @@ class CustomerService {
       lastUpdate: customer.lastUpdate
         ? new Date(customer.lastUpdate).toLocaleString()
         : null, // Format the timestamp
+      validatAccount: customer.validatAccount,
       active: customer.active,
     };
     response.token = token;
@@ -93,13 +94,16 @@ class CustomerService {
 
     const customer = await this.customerRepo.RegisterCustomer(newCustomer);
 
+    console.log(customer._id);
+
     if (!customer) {
       response.message = CONSTANTS.SERVER_ERROR_MESSAGE;
       response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
       return response;
     }
 
-    const sendedMail = await SendMailToCustomer({
+    const sendedCustomerMail = await SendMailToCustomer({
+      customerId: customer._id,
       customerEmail: newCustomer.email,
       customerPassword: newCustomer.password,
     });
@@ -107,7 +111,31 @@ class CustomerService {
     response.message = CONSTANTS.USER_CREATED;
     response.status = CONSTANTS.SERVER_CREATED_HTTP_CODE;
     response.data = customer;
-    response.mail = sendedMail;
+    response.mail = sendedCustomerMail;
+    return response;
+  }
+
+  async UpdateCustomerByAdmins(req) {
+    const id = req.params.id;
+
+    const response = {};
+
+    const { firstName, lastName, email, active } = req.body;
+
+    const updatedCustomer = {
+      firstName,
+      lastName,
+      email,
+      active,
+    };
+
+    const updatedcustomer = await this.customerRepo.UpdateCustomer(
+      id,
+      req.body
+    );
+
+    response.message = updatedcustomer;
+
     return response;
   }
 
@@ -116,12 +144,15 @@ class CustomerService {
 
     const response = {};
 
-    const { firstName, lastName, email } = req.body;
+    const { firstName, lastName, email, password } = req.body;
+
+    const hashedPass = await HashPassword(password);
 
     const updatedCustomer = {
       firstName,
       lastName,
       email,
+      password: hashedPass
     };
 
     const updatedcustomer = await this.customerRepo.UpdateCustomer(
@@ -138,6 +169,10 @@ class CustomerService {
     try {
       const customerId = req.params.id;
       const customer = await this.customerRepo.findCustomerById(customerId);
+      if (customer === null || customer === undefined) {
+        // If customer is not found, return a meaningful response
+        return { message: 'Customer not found', status: 404 };
+      }
       return customer;
     } catch (error) {
       throw error;
@@ -145,10 +180,10 @@ class CustomerService {
   }
 
   async getCustomers(req) {
-    if (req.query.query) {
+    const query = req.query.query
+    if (query) {
       try {
-        const searchCustomers = await this.userRepo.searchCustomers(query);
-
+        const searchCustomers = await this.customerRepo.searchCustomers(query);
         return searchCustomers;
       } catch (error) {
         return error;

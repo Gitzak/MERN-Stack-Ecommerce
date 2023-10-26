@@ -25,7 +25,7 @@ async function runSeedusers() {
     }
 }
 // runSeeduser();
-runSeedusers();
+// runSeedusers();
 
 
 async function runSeedCustom() {
@@ -41,11 +41,11 @@ async function runSeedCustom() {
 async function runSeedsCustoms() {
     try {
         // Run the specified seed function (in this case, seedUser)
-        await seedCustomers(10);
+        await seedCustomers(22);
         console.log('Seed completed successfully.');
     } catch (error) {
         console.error('Error during seeding:', error);
     }
 }
 // runSeedCustom()
-// runSeedsCustoms()
+runSeedsCustoms()
