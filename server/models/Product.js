@@ -6,35 +6,41 @@ const productSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  product_image: {
+  productImage: {
     type: String,
     required: true,
   },
-  product_name: {
+  productName: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  subcategoryId: {
     type: String,
     required: true,
   },
-  subcategory_id: {
+  shortDescription: {
     type: String,
     required: true,
   },
-  short_description: {
-    type: String, 
-    required: true,
-  },
-  long_description: {
-    type: String, 
+  longDescription: {
+    type: String,
     required: true,
   },
   price: {
     type: Number,
     required: true,
   },
-  discount_price: {
+  discountPrice: {
     type: Number,
   },
+  quantity: {
+    type: Number,
+    required: true,
+    default: 0
+  },
   options: {
-    type: Buffer, 
+    type: [String],
   },
   active: {
     type: Boolean,

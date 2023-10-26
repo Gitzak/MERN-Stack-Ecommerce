@@ -8,75 +8,86 @@ class ProductService {
 
   async createProduct(req) {
     try {
-        const response = {};
-        const { sku, product_image, product_name, subcategory_id, short_description, 
-            long_description, price, discount_price, options, active } = req.body;
-    
-        const newProduct = {
-          sku,
-          product_image,
-          product_name,
-          subcategory_id,
-          short_description,
-          long_description,
-          price,
-          discount_price,
-          options,
-          active,
-        };
-    
-        const product = await this.productRepo.createProduct(newProduct);
-    
-        if (!product) {
-          response.message = CONSTANTS.SERVER_ERROR_MESSAGE;
-          response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
-          return response;
-        }
-    
-        response.message = CONSTANTS.PRODUCT_CREATED;
-        response.status = CONSTANTS.SERVER_CREATED_HTTP_CODE;
-        response.data = product;
+      const response = {};
+      const { sku, productImage, productName, subcategoryId, shortDescription,
+        longDescription, price, discountPrice, quantity, options, active } = req.body;
+
+      const newProduct = {
+        sku,
+        productImage,
+        productName,
+        subcategoryId,
+        shortDescription,
+        longDescription,
+        price,
+        discountPrice,
+        quantity,
+        options,
+        active,
+      };
+
+      const product = await this.productRepo.createProduct(newProduct);
+
+      if (!product) {
+        response.message = CONSTANTS.SERVER_ERROR_MESSAGE;
+        response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
         return response;
+      }
+
+      response.message = CONSTANTS.PRODUCT_CREATED;
+      response.status = CONSTANTS.SERVER_CREATED_HTTP_CODE;
+      response.data = product;
+      return response;
     } catch (error) {
-        throw error
+      throw error
     }
   }
 
-  async updateProductData(req) {
-      try {
-        const productId = req.params.productId;
-      
-        const response = {};
-      
-        const { sku, product_image, product_name, subcategory_id, short_description,
-             long_description, price, discount_price, options, active } = req.body;
-      
-        const updatedProduct = {
-          sku,
-          product_image,
-          product_name,
-          subcategory_id,
-          short_description,
-          long_description,
-          price,
-          discount_price,
-          options,
-          active,
-        };
-      
-        const updatedProductData = await this.productRepo.updateProduct(productId, updatedProduct);
-      
-        response.message = updatedProductData;
-      
-        return response;
+  async updateProduct(req) {
+    try {
+      const productId = req.params.id;
+      const response = {};
+
+      const { sku, productImage, productName, subcategoryId, shortDescription, longDescription, price, discountPrice, quantity, options, active } = req.body;
+
+      const updatedProduct = {
+        sku,
+        productImage,
+        productName,
+        subcategoryId,
+        shortDescription,
+        longDescription,
+        price,
+        discountPrice,
+        quantity,
+        options,
+        active,
+      };
+
+      // If all checks pass, update the product
+      const updateResult = await this.productRepo.updateProduct(productId, updatedProduct);
+
+      console.log(updateResult);
+
+      if (updateResult.modifiedCount === 1) {
+        return { status: 200, message: "Product updated successfully" };
+      } else if (updateResult.matchedCount === 1) {
+        return { status: 200, message: "No changes were made to the product" };
+      } else {
+        return { status: 404, message: "Product not found for the given ID" };
+      }
     } catch (error) {
-        throw error
+      if (error.code === 11000 && error.keyPattern && error.keyPattern.productName) {
+        return { status: 400, message: "The product name should be unique" };
+      } else {
+        throw error; // Re-throw any other error types
+      }
     }
   }
 
   async getProductById(req) {
     try {
-      const productId = req.params.productId;
+      const productId = req.params.id;
       const product = await this.productRepo.getProductById(productId);
       return product;
     } catch (error) {
@@ -113,12 +124,12 @@ class ProductService {
     const response = {};
 
     try {
-      const productId = req.params.productId;
+      const productId = req.params.id;
       const deletedProduct = await this.productRepo.deleteProduct(productId);
 
       if (!deletedProduct) {
-        response.message = CONSTANTS.PRODUCT_NOT_FOUND;
-        response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+        response.message = "product deleted successfully";
+        response.status = 200;
         return response;
       }
 
@@ -133,4 +144,4 @@ class ProductService {
   }
 }
 
-module.exports = ProductService;
+module.exports = { ProductService };
