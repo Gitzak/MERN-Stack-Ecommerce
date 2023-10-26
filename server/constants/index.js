@@ -3,6 +3,14 @@ exports.ROLES_USER = {
     Manager: 'MANAGER',
 };
 
+exports.ORDERS_STATUS = {
+    Open: 'Open',
+    Shipped: 'Shipped',
+    Paid: 'Paid',
+    Closed: 'Closed',
+    Cancled: 'Cancled',
+};
+
 /* HTTP status code constant starts */
 module.exports.SERVER_ERROR_HTTP_CODE = 412;
 module.exports.SERVER_NOT_ALLOWED_HTTP_CODE = 503;
