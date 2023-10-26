@@ -19,6 +19,7 @@ const CustomerSchema = new mongoose.Schema({
         required: true,
         unique: true,
         match: emailRegex,
+        // immutable: true
     },
     password: {
         type: String,

@@ -4,6 +4,9 @@ const { seedCustomers, seedCustomer } = require('./seedrs/customerSeed');
 // Import the seedUser function from seed.js
 const { seedUser, seedUsers } = require('./seedrs/userSeed');
 
+const { productSeed } = require('./seedrs/productSeed');
+
+
 async function runSeeduser() {
     try {
         // Run the specified seed function (in this case, seedUser)
@@ -25,7 +28,7 @@ async function runSeedusers() {
     }
 }
 // runSeeduser();
-runSeedusers();
+// runSeedusers();
 
 
 async function runSeedCustom() {
@@ -41,7 +44,7 @@ async function runSeedCustom() {
 async function runSeedsCustoms() {
     try {
         // Run the specified seed function (in this case, seedUser)
-        await seedCustomers(10);
+        await seedCustomers(22);
         console.log('Seed completed successfully.');
     } catch (error) {
         console.error('Error during seeding:', error);
@@ -49,3 +52,14 @@ async function runSeedsCustoms() {
 }
 // runSeedCustom()
 // runSeedsCustoms()
+
+async function runSeedsProducts() {
+    try {
+        // Run the specified seed function (in this case, seedUser)
+        await seedProducts(12);
+        console.log('Seed completed successfully.');
+    } catch (error) {
+        console.error('Error during seeding:', error);
+    }
+}
+runSeedsProducts();
