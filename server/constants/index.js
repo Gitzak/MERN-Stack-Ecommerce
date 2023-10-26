@@ -53,3 +53,15 @@ module.exports.EMAIL_SEND_ERROR = "Error sending email";
 module.exports.EMAIL_SEND_SUCCESS = "Email sent successfully";
 
 
+
+
+/* Validation related  categories */
+module.exports.CATEGORY_NOT_FOUND= 'Category does not exits.';
+module.exports.CATEGORY_CREATED = 'Category Created Succefuly.';
+module.exports.CATEGORY_UPDATED = 'Category Updated Succefuly.';
+module.exports.CATEGORY_DELETED = 'Category Deleted Succefuly.';
+module.exports.ERROR_GETTING_CATEGORY = "An error occurred while getting the category";
+module.exports.ERROR_DELETING_CATEGORY =  "An error occurred while deleting category.";
+
+
+
