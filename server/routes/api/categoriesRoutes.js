@@ -3,23 +3,24 @@ const router = express.Router();
 
 // Import your controller functions
 const {
-  getCategoriesById,
   createCategories,
   getCategories,
+  getCategoryById,
   updateCategories,
   deleteCategories,
-} = require("../../controllers/categoriesController");
+} = require('../../controllers/categoriesController')
 
 // Categories routes
+
 // Create a new Categories
-router.post("/categories", createCategories);
+router.post("/", createCategories);
 // List all the categories
-router.get("/categories", getCategories);
+router.get("/", getCategories);
 // Get Categories by ID
-router.get("/categories/:id", getCategoriesById);
+router.get("/:id", getCategoryById);
 // Update the Categories data
-router.put("/categories/:id", updateCategories);
+router.put("/:id", updateCategories);
 // Delete a Categories
-router.delete("/categories/:id", deleteCategories);
+router.delete("/:id", deleteCategories);
 
 module.exports = router;

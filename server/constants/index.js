@@ -3,6 +3,14 @@ exports.ROLES_USER = {
     Manager: 'MANAGER',
 };
 
+exports.ORDERS_STATUS = {
+    Open: 'Open',
+    Shipped: 'Shipped',
+    Paid: 'Paid',
+    Closed: 'Closed',
+    Cancled: 'Cancled',
+};
+
 /* HTTP status code constant starts */
 module.exports.SERVER_ERROR_HTTP_CODE = 412;
 module.exports.SERVER_NOT_ALLOWED_HTTP_CODE = 503;
@@ -51,5 +59,17 @@ module.exports.INSUFFICIENT_PRIVILEGE_MESSAGE = "You don't have enough privilege
 // Mail related messages  
 module.exports.EMAIL_SEND_ERROR = "Error sending email";
 module.exports.EMAIL_SEND_SUCCESS = "Email sent successfully";
+
+
+
+
+/* Validation related  categories */
+module.exports.CATEGORY_NOT_FOUND= 'Category does not exits.';
+module.exports.CATEGORY_CREATED = 'Category Created Succefuly.';
+module.exports.CATEGORY_UPDATED = 'Category Updated Succefuly.';
+module.exports.CATEGORY_DELETED = 'Category Deleted Succefuly.';
+module.exports.ERROR_GETTING_CATEGORY = "An error occurred while getting the category";
+module.exports.ERROR_DELETING_CATEGORY =  "An error occurred while deleting category.";
+
 
 
