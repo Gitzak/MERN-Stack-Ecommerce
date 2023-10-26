@@ -63,10 +63,3 @@ async function runSeedsProducts() {
     }
 }
 runSeedsProducts();
-
-<<<<<<< HEAD
-// comment zak
-=======
-//comment yassir
-//lol
->>>>>>> 9afb701d500d21a724f841cf5311874b212dda6f
