@@ -14,6 +14,6 @@ router.get('/:id', getProductById)
 //update product data
 router.patch('/:id', updateProductData)
 //delete product
-router.delete('/delete', deleteProduct)
+router.delete('/delete/:id', deleteProduct)
 
 module.exports = router

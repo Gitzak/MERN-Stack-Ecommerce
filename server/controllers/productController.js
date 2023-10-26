@@ -8,17 +8,22 @@ const ProductServ = new ProductService(ProductRepo);
 // Create a new product
 exports.createProduct = async (req, res) => {
   try {
-    const newProduct = await ProductServ.createProduct(req.body);
+    const newProduct = await ProductServ.createProduct(req);
     res.json(newProduct);
   } catch (error) {
-    throw error
+    if (error.code === 11000) {
+      res.status(400).json({ error: 'Duplicate product. Please use a different SKU.' });
+    } else {
+      console.error(error);
+      res.status(500).json({ error: 'An error occurred while creating the product.' });
+    }
   }
 };
 
 // List all products
 exports.listProducts = async (req, res) => {
   try {
-    const products = await ProductServ.listProducts();
+    const products = await ProductServ.getProducts(req);
     res.json(products);
   } catch (error) {
     throw error
@@ -28,12 +33,8 @@ exports.listProducts = async (req, res) => {
 // Get a product by ID
 exports.getProductById = async (req, res) => {
   try {
-    const productId = req.params.productId;
-    const product = await ProductServ.getProductById(productId);
-    if (!product) {
-      return res.status(404).json({ message: "Product not found" });
-    }
-    return res.status(200).json({ status: 200, data: [product] });
+    const product = await ProductServ.getProductById(req);
+    res.json(product);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
@@ -42,19 +43,17 @@ exports.getProductById = async (req, res) => {
 // Update product data
 exports.updateProductData = async (req, res) => {
   try {
-    const productId = req.params.productId;
-    const updatedProduct = await ProductServ.updateProduct(productId, req.body);
+    const updatedProduct = await ProductServ.updateProduct(req);
     res.json(updatedProduct);
   } catch (error) {
-    throw error 
+    throw error
   }
 };
 
 // Delete a product
 exports.deleteProduct = async (req, res) => {
   try {
-    const productId = req.params.productId;
-    const result = await ProductServ.deleteProduct(productId);
+    const result = await ProductServ.deleteProduct(req);
     res.json(result);
   } catch (error) {
     throw error

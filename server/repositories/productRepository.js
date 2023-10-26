@@ -6,56 +6,38 @@ class ProductRepository {
   }
 
   async createProduct(product) {
-    try {
-        const newProduct = await this.productModel.create(product);
-        return newProduct;
-    } catch (error) {
-        throw error
-    }
+    const newProduct = await this.productModel.create(product);
+    return newProduct;
   }
 
   async getProductById(productId) {
-    try {
-        const product = await this.productModel.findById(productId);
-        return product;
-    } catch (error) {
-        throw error
-    }
+    const product = await this.productModel.findById(productId);
+    return product;
   }
 
   async updateProduct(productId, productData) {
     try {
       const filter = { _id: productId };
       const updateData = { $set: productData };
-  
-      const result = await this.productModel.findOneAndUpdate(filter, updateData, { upsert: true, new: true });
-  
-      if (result.matchedCount === 1) {
-        return {
-          message: CONSTANTS.PRODUCT_UPDATED,
-          status: CONSTANTS.SERVER_UPDATED_HTTP_CODE,
-        };
-      } else {
-        return {
-          message: CONSTANTS.PRODUCT_NOT_FOUND,
-          status: CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE,
-        };
-      } 
+
+      const result = await this.productModel.updateOne(filter, updateData, { upsert: true, new: true });
+
+      return result;
     } catch (error) {
       throw error
     }
   }
 
   async listProducts(skip, limit, sort) {
-      try {
-        const products = await this.productModel
+    try {
+      const products = await this.productModel
         .aggregate({ $sort: { creationDate: -1 } })
         .skip(skip)
         .limit(limit)
         .exec();
       return products;
     } catch (error) {
-        throw error
+      throw error
     }
   }
 
@@ -63,8 +45,9 @@ class ProductRepository {
     try {
       const searchedProducts = await this.productModel.find({
         $or: [
-          { product_name: { $regex: query, $options: "i" } },
-          { short_description: { $regex: query, $options: "i" } },
+          { productName: { $regex: query, $options: "i" } },
+          { shortDescription: { $regex: query, $options: "i" } },
+          { longDescription: { $regex: query, $options: "i" } },
         ],
       });
       return searchedProducts;
@@ -79,4 +62,4 @@ class ProductRepository {
   }
 }
 
-module.exports = ProductRepository;
+module.exports = { ProductRepository };
