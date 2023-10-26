@@ -33,7 +33,7 @@ class CategoryRepository {
 
   async getCategories(skip, limit, sort) {
     const categorys = await this.categoryModel
-      .aggregate([{ $sort: { creationDate: -1 } }])
+      .aggregate([{ $sort: { category_name: -1 } }])
       .skip(skip)
       .limit(limit)
       .exec();
@@ -43,7 +43,7 @@ class CategoryRepository {
 
 
   async findCategoryById(categoryId) {
-    const category = await this.categoryModel.findById(categoryId).select("-password");
+    const category = await this.categoryModel.findById(categoryId);
     return category;
   }
 
