@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router()
-
-// controller functions
+const { isAdminManager } = require("../../middleware/isAdminManager");
 const {
     loginCustomer,
     registerCustomer,
@@ -21,16 +20,19 @@ router.post('/', registerCustomer)
 //customer account or email validation
 router.put('/validate/:id', validateAccCustomer)
 //get customer by id
-router.get('/:id', getCustomerById)
+router.get('/:id', isAdminManager, getCustomerById)
 //get all customers list
-router.get('/', getCustomers)
+router.get('/', isAdminManager, getCustomers)
 //update customer data (for admin and manager only)
-router.put('/:id', updateCustomerDataByAdmins)
+router.put('/:id', isAdminManager, updateCustomerDataByAdmins)
 // customer update himself
+// todo: Token and isCustomer
 router.patch('/profile/update', updateCustomerData)
 // enter customer profil
+// todo: Token and isCustomer
 router.get('/profile', getProfileCustomer)
 //delete account for customer
+// todo: Token and isCustomer
 router.delete('/delete', deleteCustomer)
 
 module.exports = router

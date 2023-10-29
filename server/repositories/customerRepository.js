@@ -86,13 +86,32 @@ class CustomerRepository {
     const customer = await this.customerModel.findByIdAndDelete(customerId);
     return customer;
   }
+
   async validateAccCustomer(customerId) {
     try {
-      const customer = await this.customerModel.findById(customerId);
-      const validated = true;
-      customer.validatAccount = validated;
+      const customer = await this.customerModel.findById(customerId).select('-password');
+
+      if (!customer) {
+        return {
+          status: 404,
+          message: "invalid customer id"
+        };
+      }
+
+      if (customer.validatAccount) {
+        return {
+          status: 400,
+          message: "Invalid action, this email is already validated"
+        };
+      }
+
+      customer.validatAccount = true;
       await customer.save();
-      return customer;
+
+      return {
+        status: 200,
+        message: "Your account validated successfully"
+      };
     } catch (error) {
       throw error;
     }

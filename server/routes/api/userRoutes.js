@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
-// controller functions
 const { loginUser } = require("../../controllers/authController");
 const { isAdmin } = require("../../middleware/isAdmin");
+const { isAdminManager } = require("../../middleware/isAdminManager");
+const checkUserRole = require("../../middleware/checkUserRole");
 const {
   addNewUser,
   deleteUser,
@@ -12,20 +13,17 @@ const {
   updateUserData,
 } = require("../../controllers/userController");
 
-// middleware functions
-const checkUserRole = require("../../middleware/checkUserRole");
-
 // login route
 router.post("/login", loginUser);
 //Add new user route
-router.post("/",isAdmin, addNewUser);
+router.post("/", isAdmin, addNewUser);
 //Route for getting all users
-router.get('/', getUsers)
+router.get('/', isAdminManager, getUsers)
 // Route to get a user by ID
-router.get("/:id",isAdmin, getUserById);
+router.get("/:id", isAdminManager, getUserById);
 //Update user's data
 router.put("/:id", isAdmin, updateUserData);
 // Route for deleting a user
-router.delete("/:id",isAdmin, deleteUser);
+router.delete("/:id", isAdmin, deleteUser);
 
 module.exports = router;

@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
-
-// Import your controller functions
+const { isAdminManager } = require("../../middleware/isAdminManager");
 const {
   createsubCategories,
   getsubCategories,
@@ -10,17 +9,15 @@ const {
   deletesubCategories,
 } = require('../../controllers/subcategoriesController')
 
-// subCategories routes
-
 // Create a new subCategories
-router.post("/", createsubCategories);
+router.post("/", isAdminManager, createsubCategories);
 // List all the subcategories
 router.get("/", getsubCategories);
 // Get subCategories by ID
 router.get("/:id", getsubCategoryById);
 // Update the subCategories data
-router.put("/:id", updatesubCategories);
+router.put("/:id", isAdminManager, updatesubCategories);
 // Delete a subCategories
-router.delete("/:id", deletesubCategories);
+router.delete("/:id", isAdminManager, deletesubCategories);
 
 module.exports = router;
