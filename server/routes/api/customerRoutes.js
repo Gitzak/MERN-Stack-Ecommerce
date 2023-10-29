@@ -15,7 +15,7 @@ const {
 } = require('../../controllers/customerController')
 
 // login route
-router.post('/login', isCustomer, loginCustomer)
+router.post('/login', loginCustomer)
 //create new customers (Register)
 router.post('/', registerCustomer)
 //customer account or email validation
