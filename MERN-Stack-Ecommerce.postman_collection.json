@@ -1,0 +1,955 @@
+{
+	"info": {
+		"_postman_id": "65b015fb-f6d1-4065-88bb-24167178b982",
+		"name": "MERN-Stack-Ecommerce",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29259119",
+		"_collection_link": "https://bold-escape-807062.postman.co/workspace/New-Team-Workspace~684885e3-0cf7-40d0-b5cc-e364e1263ac0/collection/29259119-65b015fb-f6d1-4065-88bb-24167178b982?action=share&source=collection_link&creator=29259119"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Perform a user authentication",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"admin@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUsersUrl}}/login",
+							"host": [
+								"{{baseUsersUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add a new user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTM2ODhkYzA4ZGRhNmQ1Y2FlYmU0NzEiLCJ1c2VyTmFtZSI6ImFtaW5lIiwidXNlclJvbGUiOiJBRE1JTiIsImFjdGl2ZSI6dHJ1ZSwiaWF0IjoxNjk4MDczMjIzfQ.Y5AVkfDnlmeMFsqzEPyLh4g3Okao92_ry76xOuByLZM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"role\": \"MANAGER\",\n    \"userName\": \"abdo12\",\n    \"firstName\": \"abdo12\",\n    \"lastName\": \"abdo12\",\n    \"email\": \"abdo12@gmail.com\",\n    \"password\":\"abdo12\"\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUsersUrl}}",
+							"host": [
+								"{{baseUsersUrl}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all the users list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUsersUrl}}?page=2&sort=DESC",
+							"host": [
+								"{{baseUsersUrl}}"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								},
+								{
+									"key": "sort",
+									"value": "DESC"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a user by ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTM2ODhkYzA4ZGRhNmQ1Y2FlYmU0NzEiLCJ1c2VyTmFtZSI6ImFtaW5lIiwidXNlclJvbGUiOiJBRE1JTiIsImFjdGl2ZSI6dHJ1ZSwiaWF0IjoxNjk4MDczMjIzfQ.Y5AVkfDnlmeMFsqzEPyLh4g3Okao92_ry76xOuByLZM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{baseUsersUrl}}/6537f8194280407149ba71ba",
+							"host": [
+								"{{baseUsersUrl}}"
+							],
+							"path": [
+								"6537f8194280407149ba71ba"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search for a user",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{baseUsersUrl}}/search?query=zakariya",
+							"host": [
+								"{{baseUsersUrl}}"
+							],
+							"path": [
+								"search"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "zakariya"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update the user's data",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTM2ODhkYzA4ZGRhNmQ1Y2FlYmU0NzEiLCJ1c2VyTmFtZSI6ImFtaW5lIiwidXNlclJvbGUiOiJBRE1JTiIsImFjdGl2ZSI6dHJ1ZSwiaWF0IjoxNjk4MDczMjIzfQ.Y5AVkfDnlmeMFsqzEPyLh4g3Okao92_ry76xOuByLZM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"role\": \"MANAGER\",\n    \"userName\": \"zakariya 2\",\n    \"firstName\": \"zakariya 3 \",\n    \"lastName\": \"llll\",\n    \"email\": \"zakariya1@gmail.com\",\n    \"password\":\"123eerrrr\"\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUsersUrl}}/6537f8194280407149ba71ba",
+							"host": [
+								"{{baseUsersUrl}}"
+							],
+							"path": [
+								"6537f8194280407149ba71ba"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTM2ODhkYzA4ZGRhNmQ1Y2FlYmU0NzEiLCJ1c2VyTmFtZSI6ImFtaW5lIiwidXNlclJvbGUiOiJBRE1JTiIsImFjdGl2ZSI6dHJ1ZSwiaWF0IjoxNjk4MDczMjIzfQ.Y5AVkfDnlmeMFsqzEPyLh4g3Okao92_ry76xOuByLZM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{baseUsersUrl}}/6537b1ee30ab118a0211e9af",
+							"host": [
+								"{{baseUsersUrl}}"
+							],
+							"path": [
+								"6537b1ee30ab118a0211e9af"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Customers",
+			"item": [
+				{
+					"name": "Customer login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"customer1@example.com\",\r\n    \"password\":\"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseCustomersUrl}}/login",
+							"host": [
+								"{{baseCustomersUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Customer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"zak\",\r\n    \"lastName\": \"zak\",\r\n    \"email\": \"zak@gmail.com\",\r\n    \"password\":\"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseCustomersUrl}}",
+							"host": [
+								"{{baseCustomersUrl}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Customers List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseCustomersUrl}}?query=abdo&page=1&sort=DESC",
+							"host": [
+								"{{baseCustomersUrl}}"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "abdo"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "sort",
+									"value": "DESC"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Validate the customer's account or email",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseCustomersUrl}}/validate/653940ce6ac61a5951979e1",
+							"host": [
+								"{{baseCustomersUrl}}"
+							],
+							"path": [
+								"validate",
+								"653940ce6ac61a5951979e1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a customer by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseCustomersUrl}}/65393dc0512c77a919a00f01",
+							"host": [
+								"{{baseCustomersUrl}}"
+							],
+							"path": [
+								"65393dc0512c77a919a00f01"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update the customer's data",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"zak222\",\r\n    \"lastName\": \"zak22222\",\r\n    \"email\": \"zak222222222@gmail.com\",\r\n    \"active\": \"false\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseCustomersUrl}}/6539418b1c894876ee64724b",
+							"host": [
+								"{{baseCustomersUrl}}"
+							],
+							"path": [
+								"6539418b1c894876ee64724b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update the customers data",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"drewrwer\",\r\n    \"lastName\": \"werwerwer\",\r\n    \"email\": \"ewrewrwer@gmail.com\"\r\n}"
+						},
+						"url": {
+							"raw": "{{baseCustomersUrl}}/profile/update",
+							"host": [
+								"{{baseCustomersUrl}}"
+							],
+							"path": [
+								"profile",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get the customer's profile",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseCustomersUrl}}/profile?id=65393fade3ee3146912f869f",
+							"host": [
+								"{{baseCustomersUrl}}"
+							],
+							"path": [
+								"profile"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "65393fade3ee3146912f869f"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete the customer's account",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseCustomersUrl}}/delete",
+							"host": [
+								"{{baseCustomersUrl}}"
+							],
+							"path": [
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Create a new category",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{BaseCategoriesUrl}}",
+							"host": [
+								"{{BaseCategoriesUrl}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List all the categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseCategoriesUrl}}?page=1",
+							"host": [
+								"{{BaseCategoriesUrl}}"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get category by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseCategoriesUrl}}/{id}",
+							"host": [
+								"{{BaseCategoriesUrl}}"
+							],
+							"path": [
+								"{id}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update the category data",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{BaseCategoriesUrl}}/{id}",
+							"host": [
+								"{{BaseCategoriesUrl}}"
+							],
+							"path": [
+								"{id}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a category",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BaseCategoriesUrl}}/{id}",
+							"host": [
+								"{{BaseCategoriesUrl}}"
+							],
+							"path": [
+								"{id}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "SubCategories",
+			"item": [
+				{
+					"name": "Create a new subcategory",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"subCategory_name\": \"shoes\",\r\n    \"active\": \"true\",\r\n    \"category_id\": \"123456781\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseSubCategoriesUrl}}",
+							"host": [
+								"{{baseSubCategoriesUrl}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List all the subcategories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseSubCategoriesUrl}}?page=1&sort=DESC",
+							"host": [
+								"{{baseSubCategoriesUrl}}"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "hmed",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "sort",
+									"value": "DESC"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search for subcategories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseSubCategoriesUrl}}?query=h&page=1",
+							"host": [
+								"{{baseSubCategoriesUrl}}"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "h"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a subcategory by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseSubCategoriesUrl}}/653b9d369cff55320255a975",
+							"host": [
+								"{{baseSubCategoriesUrl}}"
+							],
+							"path": [
+								"653b9d369cff55320255a975"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update the subcategory data",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseSubCategoriesUrl}}/:id",
+							"host": [
+								"{{baseSubCategoriesUrl}}"
+							],
+							"path": [
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a subcategory",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseSubCategoriesUrl}}/:id",
+							"host": [
+								"{{baseSubCategoriesUrl}}"
+							],
+							"path": [
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Create Product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"sku\": \"SKU-2\",\r\n    \"productImage\": \"product123.jpg\",\r\n    \"productName\": \"Pc Portable\",\r\n    \"subcategoryId\": \"Category-1\",\r\n    \"shortDescription\": \"A short description for the product\",\r\n    \"longDescription\": \"A longer description for the product\",\r\n    \"price\": 19.99,\r\n    \"discountPrice\": 15.99,\r\n    \"quantity\" : 10,\r\n    \"options\": [\"Option A\", \"Option B\", \"Option C\"],\r\n    \"active\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseProductsUrl}}",
+							"host": [
+								"{{baseProductsUrl}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a product by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseProductsUrl}}/653a74d6217beb5db7b517bc",
+							"host": [
+								"{{baseProductsUrl}}"
+							],
+							"path": [
+								"653a74d6217beb5db7b517bc"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List all the products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseProductsUrl}}/",
+							"host": [
+								"{{baseProductsUrl}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update the product data",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"productName\":\"Sample Product 3\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseProductsUrl}}/653a76a820a5c1f723143079",
+							"host": [
+								"{{baseProductsUrl}}"
+							],
+							"path": [
+								"653a76a820a5c1f723143079"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deleting a product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseProductsUrl}}/delete/653a76a820a5c1f723143079",
+							"host": [
+								"{{baseProductsUrl}}"
+							],
+							"path": [
+								"delete",
+								"653a76a820a5c1f723143079"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "Create a new order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"customerId\": \"your_customer_id\",\r\n    \"orderItems\": [\r\n        \"item_id_1\",\r\n        \"item_id_2\"\r\n    ],\r\n    \"cartTotalPrice\": 100.00,\r\n    \"status\": \"Open\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseOrdersUrl}}",
+							"host": [
+								"{{baseOrdersUrl}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List all the orders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseOrdersUrl}}?page=1",
+							"host": [
+								"{{baseOrdersUrl}}"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get an order by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseOrdersUrl}}/653a9df35a397b2e687b4c6e",
+							"host": [
+								"{{baseOrdersUrl}}"
+							],
+							"path": [
+								"653a9df35a397b2e687b4c6e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update the order status",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\" : \"Shipped\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseOrdersUrl}}/653a9df35a397b2e687b4c6e",
+							"host": [
+								"{{baseOrdersUrl}}"
+							],
+							"path": [
+								"653a9df35a397b2e687b4c6e"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseCustomersUrl",
+			"value": "http://localhost:6000/customers"
+		},
+		{
+			"key": "baseUsersUrl",
+			"value": "http://localhost:6000/users"
+		},
+		{
+			"key": "BaseCategoriesUrl",
+			"value": "http://localhost:6000/categories"
+		},
+		{
+			"key": "baseOrdersUrl",
+			"value": "http://localhost:6000/orders"
+		},
+		{
+			"key": "baseSubCategoriesUrl",
+			"value": "http://localhost:6000/subcategories",
+			"type": "string"
+		},
+		{
+			"key": "baseProductsUrl",
+			"value": "http://localhost:6000/products"
+		}
+	]
+}
