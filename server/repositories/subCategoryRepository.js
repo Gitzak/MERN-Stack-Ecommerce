@@ -13,29 +13,24 @@ class subCategoryRepository {
       category_id,
       active
     });
-
     return createsubCategory;
   }
 
 
   async searchsubCategories(query) {
-    try {
-      const queryOptions = {
-        $or: [
-          { subCategory_name: { $regex: query, $options: "i" } },
-        ],
-      };
+    const queryOptions = {
+      $or: [
+        { subCategory_name: { $regex: query, $options: "i" } },
+      ],
+    };
 
-      const searchedSubCategories = await this.subcategoryModel
-        .find(queryOptions)
-        .sort({ category_name: sort === "ASC" ? 1 : -1 })
-        .skip(skip)
-        .limit(limit);
+    const searchedSubCategories = await this.subcategoryModel
+      .find(queryOptions)
+      .sort({ category_name: sort === "ASC" ? 1 : -1 })
+      .skip(skip)
+      .limit(limit);
 
-      return searchedSubCategories;
-    } catch (error) {
-      throw error;
-    }
+    return searchedSubCategories;
   }
 
   async getsubCategories(skip, limit, sort) {
@@ -65,7 +60,7 @@ class subCategoryRepository {
 
 
   async DeletesubCategory(subcategoryId) {
-    console.log("repo", subcategoryId)
+    // console.log("repo", subcategoryId)
     const deletedsubCategory = await this.subcategoryModel.findByIdAndDelete(subcategoryId);
     return deletedsubCategory;
   }

@@ -32,7 +32,7 @@ const seedCustomer = async () => {
 
         const customer = new Customer(customerData);
         await customer.save();
-        console.log("Customer seeded successfully.");
+        // console.log("Customer seeded successfully.");
 
         // mongoose.connection.close();
     } catch (error) {
@@ -78,7 +78,7 @@ const seedCustomers = async (count) => {
                 password: hashedPassword,
             });
             await customer.save();
-            console.log(`Customer ${customerData.firstName} seeded successfully.`);
+            // console.log(`Customer ${customerData.firstName} seeded successfully.`);
         }
 
         // mongoose.connection.close();

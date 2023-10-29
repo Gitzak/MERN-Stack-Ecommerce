@@ -11,56 +11,45 @@ class ProductRepository {
   }
 
   async getProductById(productId) {
+    // todo : Get Catagory Name
     const product = await this.productModel.findById(productId);
     return product;
   }
 
   async updateProduct(productId, productData) {
-    try {
-      const filter = { _id: productId };
-      const updateData = { $set: productData };
+    const filter = { _id: productId };
+    const updateData = { $set: productData };
 
-      const result = await this.productModel.updateOne(filter, updateData, { upsert: true, new: true });
+    const result = await this.productModel.updateOne(filter, updateData, { upsert: true, new: true });
 
-      return result;
-    } catch (error) {
-      throw error
-    }
+    return result;
   }
 
   async listProducts(skip, limit, sort) {
-    try {
-      const products = await this.productModel
-        .aggregate({ $sort: { creationDate: -1 } })
-        .skip(skip)
-        .limit(limit)
-        .exec();
-      return products;
-    } catch (error) {
-      throw error
-    }
+    const products = await this.productModel
+      .aggregate({ $sort: { creationDate: -1 } })
+      .skip(skip)
+      .limit(limit)
+      .exec();
+    return products;
   }
 
   async searchProduct(query, skip, limit, sort) {
-    try {
-      const queryOptions = {
-        $or: [
-          { productName: { $regex: query, $options: "i" } },
-          { shortDescription: { $regex: query, $options: "i" } },
-          { longDescription: { $regex: query, $options: "i" } },
-        ],
-      };
+    const queryOptions = {
+      $or: [
+        { productName: { $regex: query, $options: "i" } },
+        { shortDescription: { $regex: query, $options: "i" } },
+        { longDescription: { $regex: query, $options: "i" } },
+      ],
+    };
 
-      const searchedProducts = await this.productModel
-        .find(queryOptions)
-        .sort({ productName: sort === "ASC" ? 1 : -1 })
-        .skip(skip)
-        .limit(limit);
+    const searchedProducts = await this.productModel
+      .find(queryOptions)
+      .sort({ productName: sort === "ASC" ? 1 : -1 })
+      .skip(skip)
+      .limit(limit);
 
-      return searchedProducts;
-    } catch (error) {
-      throw error;
-    }
+    return searchedProducts;
   }
 
   async deleteProduct(productId) {

@@ -7,14 +7,22 @@ const OrdersServ = new OrdersService(OrderRepo);
 
 // create order route
 exports.createOrder = async (req, res) => {
-  const newOrders = await OrdersServ.createOrders(req);
-  res.json(newOrders);
+  try {
+    const newOrders = await OrdersServ.createOrders(req);
+    res.json(newOrders);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
 };
 
 // list all orders
 exports.listOrders = async (req, res) => {
-  const orders = await OrdersServ.getOrders(req);
-  res.json(orders);
+  try {
+    const orders = await OrdersServ.getOrders(req);
+    res.json(orders);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
 };
 
 // get order by id
@@ -32,8 +40,10 @@ exports.getOrderById = async (req, res) => {
 
 // update order status
 exports.updateOrder = async (req, res) => {
-  const updatedOrders = await OrdersServ.updateOrders(req);
-  res.json(updatedOrders);
+  try {
+    const updatedOrders = await OrdersServ.updateOrders(req);
+    res.json(updatedOrders);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
 };
-
-

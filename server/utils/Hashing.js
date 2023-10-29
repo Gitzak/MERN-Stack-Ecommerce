@@ -14,7 +14,7 @@ class BcryptHash {
     async VerifyPassword(password, hashedPassword) {
         try {
             const isMatch = await bcrypt.compare(password, hashedPassword)
-            console.log(isMatch)
+            // console.log(isMatch)
             return isMatch
         } catch (err) {
             throw err;

@@ -7,29 +7,50 @@ const subCategoriesServ = new subCategoriesService(subCategoriesRepo);
 
 // Create a new subCategories
 exports.createsubCategories = async (req, res) => {
-  const newsubCategories = await subCategoriesServ.createsubCategories(req);
-  res.json(newsubCategories);
+  try {
+    const newsubCategories = await subCategoriesServ.createsubCategories(req);
+    res.json(newsubCategories);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
 };
+
 // List all subcategories
 exports.getsubCategories = async (req, res) => {
-  const subcategories = await subCategoriesServ.getsubCategories(req);
-  res.json(subcategories);
+  try {
+    const subcategories = await subCategoriesServ.getsubCategories(req);
+    res.json(subcategories);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
 };
 
 // Get subCategories by ID
 exports.getsubCategoryById = async (req, res) => {
-  const foundedsubCategory = await subCategoriesServ.getsubCategoryById(req);
-  res.json(foundedsubCategory);
+  try {
+    const foundedsubCategory = await subCategoriesServ.getsubCategoryById(req);
+    res.json(foundedsubCategory);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
 };
 
 // Update the subCategories data
 exports.updatesubCategories = async (req, res) => {
-  const updatedsubCategories = await subCategoriesServ.updatesubCategories(req);
-  res.json(updatedsubCategories);
+  try {
+    const updatedsubCategories = await subCategoriesServ.updatesubCategories(req);
+    res.json(updatedsubCategories);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
 };
 
 // Delete a subCategories
 exports.deletesubCategories = async (req, res) => {
-  const result = await subCategoriesServ.deletesubCategories(req);
-  res.json(result);
+  try {
+    const result = await subCategoriesServ.deletesubCategories(req);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
 };

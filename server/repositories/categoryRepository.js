@@ -12,7 +12,6 @@ class CategoryRepository {
       category_name,
       active
     });
-
     return createCategory;
   }
 
@@ -28,23 +27,19 @@ class CategoryRepository {
   }
 
   async searchCategories(query, skip, limit, sort) {
-    try {
-      const queryOptions = {
-        $or: [
-          { category_name: { $regex: query, $options: "i" } },
-        ],
-      };
+    const queryOptions = {
+      $or: [
+        { category_name: { $regex: query, $options: "i" } },
+      ],
+    };
 
-      const searchedCategories = await this.categoryModel
-        .find(queryOptions)
-        .sort({ category_name: sort === "ASC" ? 1 : -1 })
-        .skip(skip)
-        .limit(limit);
+    const searchedCategories = await this.categoryModel
+      .find(queryOptions)
+      .sort({ category_name: sort === "ASC" ? 1 : -1 })
+      .skip(skip)
+      .limit(limit);
 
-      return searchedCategories;
-    } catch (error) {
-      throw error;
-    }
+    return searchedCategories;
   }
 
 
@@ -63,7 +58,7 @@ class CategoryRepository {
 
 
   async DeleteCategory(categoryId) {
-    console.log("repo",categoryId)
+    // console.log("repo",categoryId)
     const deletedCategory = await this.categoryModel.findByIdAndDelete(categoryId);
     return deletedCategory;
   }

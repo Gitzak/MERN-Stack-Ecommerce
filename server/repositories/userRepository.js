@@ -17,12 +17,8 @@ class UserRepository {
 
 
   async FindById(userId) {
-    try {
-      const userWithoutPass = await this.userModel.findById(userId).select("-password");
-      return userWithoutPass;
-    } catch (error) {
-      throw error;
-    }
+    const userWithoutPass = await this.userModel.findById(userId).select("-password");
+    return userWithoutPass;
   }
 
   async AddUser(user) {
@@ -39,7 +35,6 @@ class UserRepository {
 
     const userWithoutPassword = createUser.toObject();
     delete userWithoutPassword.password;
-    console.log(userWithoutPassword);
     return userWithoutPassword;
   }
 
@@ -71,31 +66,26 @@ class UserRepository {
       .skip(skip)
       .limit(limit)
       .exec();
-    console.log(users.length);
     return users;
   }
 
   async searchUsers(query, skip, limit, sort) {
-    try {
-      const queryOptions = {
-        $or: [
-          { email: { $regex: query, $options: "i" } },
-          { firstName: { $regex: query, $options: "i" } },
-          { lastName: { $regex: query, $options: "i" } },
-          { userName: { $regex: query, $options: "i" } },
-        ],
-      };
+    const queryOptions = {
+      $or: [
+        { email: { $regex: query, $options: "i" } },
+        { firstName: { $regex: query, $options: "i" } },
+        { lastName: { $regex: query, $options: "i" } },
+        { userName: { $regex: query, $options: "i" } },
+      ],
+    };
 
-      const searchedUsers = await this.userModel
-        .find(queryOptions)
-        .sort({ creationDate: sort === "ASC" ? 1 : -1 })
-        .skip(skip)
-        .limit(limit);
+    const searchedUsers = await this.userModel
+      .find(queryOptions)
+      .sort({ creationDate: sort === "ASC" ? 1 : -1 })
+      .skip(skip)
+      .limit(limit);
 
-      return searchedUsers;
-    } catch (error) {
-      throw error;
-    }
+    return searchedUsers;
   }
 
   async Delete(userId) {

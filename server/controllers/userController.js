@@ -6,15 +6,22 @@ const userRepo = new UserRepository(User);
 const userServ = new UserService(userRepo);
 
 exports.addNewUser = async (req, res) => {
-  const newUser = await userServ.AddUser(req);
-  res.json(newUser);
+  try {
+    const newUser = await userServ.AddUser(req);
+    res.json(newUser);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
 };
 
 //update user data
 exports.updateUserData = async (req, res) => {
-  const updatedUser = await userServ.UpdateUser(req);
-  console.log(updatedUser);
-  res.json(updatedUser);
+  try {
+    const updatedUser = await userServ.UpdateUser(req);
+    res.json(updatedUser);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
 };
 
 // Get user by ID
@@ -33,14 +40,21 @@ exports.getUserById = async (req, res) => {
 
 //Get all users
 exports.getUsers = async (req, res) => {
-  const users = await userServ.getUsers(req);
-  res.json(users)
+  try {
+    const users = await userServ.getUsers(req);
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
 }
 
 // delete user 
 exports.deleteUser = async (req, res) => {
-  const userId = req.params.id;
-  const result = await userServ.Delete(userId);
-  res.json(result);
+  try {
+    const userId = req.params.id;
+    const result = await userServ.Delete(userId);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
 };
-

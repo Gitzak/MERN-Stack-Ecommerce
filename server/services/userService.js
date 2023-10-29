@@ -10,62 +10,69 @@ class UserService {
   }
 
   async Login(req) {
-    const response = {};
-    const { email, password } = req.body;
-    const user = await this.userRepo.Login(email);
-    if (!user) {
-      response.message = CONSTANTS.SERVER_USER_INVALID_CREDENTIALS;
-      response.status = CONSTANTS.SERVER_INVALID_CREDENTIALS;
-      return response;
-    }
-    if (!user.active) {
-      response.message = CONSTANTS.USER_NOT_ACTIVE;
-      response.status = CONSTANTS.SERVER_IFORBIDDEN_HTTP_CODE;
-      return response;
-    }
-    const passwordMatch = await VerifyPassword(password, user.password);
-    if (!passwordMatch) {
-      response.message = CONSTANTS.SERVER_USER_INVALID_CREDENTIALS;
-      response.status = CONSTANTS.SERVER_INVALID_CREDENTIALS;
-      return response;
-    }
-    // Update the lastLogin field with the current timestamp
-    const currentTimestamp = Date.now();
-    console.log(currentTimestamp);
-    user.lastLogin = currentTimestamp;
-    await user.save();
+    try {
+      const response = {};
+      const { email, password } = req.body;
+      const user = await this.userRepo.Login(email);
+      if (!user) {
+        response.message = CONSTANTS.SERVER_USER_INVALID_CREDENTIALS;
+        response.status = CONSTANTS.SERVER_INVALID_CREDENTIALS;
+        return response;
+      }
+      if (!user.active) {
+        response.message = CONSTANTS.USER_NOT_ACTIVE;
+        response.status = CONSTANTS.SERVER_IFORBIDDEN_HTTP_CODE;
+        return response;
+      }
+      const passwordMatch = await VerifyPassword(password, user.password);
+      if (!passwordMatch) {
+        response.message = CONSTANTS.SERVER_USER_INVALID_CREDENTIALS;
+        response.status = CONSTANTS.SERVER_INVALID_CREDENTIALS;
+        return response;
+      }
+      // Update the lastLogin field with the current timestamp
+      const currentTimestamp = Date.now();
+      // console.log(currentTimestamp);
+      user.lastLogin = currentTimestamp;
+      await user.save();
 
-    const token = jwt.sign(
-      {
-        userId: user._id,
+      const token = jwt.sign(
+        {
+          userId: user._id,
+          userName: user.userName,
+          userRole: user.role,
+          active: user.active,
+        },
+        config.jwt.secret
+      );
+
+      response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+      response.message = "Login success";
+      // todo: optimize the response data
+      response.user = {
+        _id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
         userName: user.userName,
-        userRole: user.role,
+        role: user.role,
+        creationDate: user.creationDate,
+        lastLogin: user.lastLogin
+          ? new Date(user.lastLogin).toLocaleString()
+          : null, // Format the timestamp
+        lastUpdate: user.lastUpdate
+          ? new Date(user.lastUpdate).toLocaleString()
+          : null, // Format the timestamp
         active: user.active,
-      },
-      config.jwt.secret
-    );
-
-    response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
-    response.message = "Login success";
-    response.user = {
-      _id: user._id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      userName: user.userName,
-      role: user.role,
-      creationDate: user.creationDate,
-      lastLogin: user.lastLogin
-        ? new Date(user.lastLogin).toLocaleString()
-        : null, // Format the timestamp
-      lastUpdate: user.lastUpdate
-        ? new Date(user.lastUpdate).toLocaleString()
-        : null, // Format the timestamp
-      active: user.active,
-    };
-    response.token = token;
-    response.token_type = "Bearer";
-    return response;
+      };
+      response.token = token;
+      response.token_type = "Bearer";
+      return response;
+    } catch (error) {
+      // Handle the error, you can log the error or throw a custom error
+      console.error("Error in Login:", error);
+      throw error; // You can re-throw the error or return a custom error message
+    }
   }
 
   async AddUser(req) {
@@ -148,8 +155,8 @@ class UserService {
     const query = req.query.query
     const page = parseInt(req.query.page) || 1;
     const sort = req.query.sort || "ASC";
-    console.log("page ", page);
-    console.log("sort", sort);
+    // console.log("page ", page);
+    // console.log("sort", sort);
     const pageSize = 10;
     const skip = (page - 1) * pageSize;
     const limit = pageSize;

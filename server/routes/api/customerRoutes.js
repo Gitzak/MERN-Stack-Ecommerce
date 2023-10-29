@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const { isAdminManager } = require("../../middleware/isAdminManager");
+const { isCustomer } = require("../../middleware/isCustomer");
 const {
     loginCustomer,
     registerCustomer,
@@ -14,7 +15,7 @@ const {
 } = require('../../controllers/customerController')
 
 // login route
-router.post('/login', loginCustomer)
+router.post('/login', isCustomer, loginCustomer)
 //create new customers (Register)
 router.post('/', registerCustomer)
 //customer account or email validation
@@ -27,12 +28,12 @@ router.get('/', isAdminManager, getCustomers)
 router.put('/:id', isAdminManager, updateCustomerDataByAdmins)
 // customer update himself
 // todo: Token and isCustomer
-router.patch('/profile/update', updateCustomerData)
+router.patch('/profile/update', isCustomer, updateCustomerData)
 // enter customer profil
 // todo: Token and isCustomer
-router.get('/profile', getProfileCustomer)
+router.get('/profile', isCustomer, getProfileCustomer)
 //delete account for customer
 // todo: Token and isCustomer
-router.delete('/delete', deleteCustomer)
+router.delete('/delete', isCustomer, deleteCustomer)
 
 module.exports = router

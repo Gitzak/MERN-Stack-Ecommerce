@@ -5,37 +5,45 @@ const Customer = require("../models/Customer");
 const CustomerRepo = new CustomerRepository(Customer);
 const CustomerServ = new CustomerService(CustomerRepo);
 
-// login a customer 
+// login a customer
 exports.loginCustomer = async (req, res) => {
-  const user = await CustomerServ.loginCustomer(req)
-  res.json(user)
-}
+  try {
+    const user = await CustomerServ.loginCustomer(req);
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
 
 // register a customer (is customer)
 exports.registerCustomer = async (req, res) => {
-  const newCustomer = await CustomerServ.RegisterCustomer(req);
-  res.json(newCustomer);
+  try {
+    const newCustomer = await CustomerServ.RegisterCustomer(req);
+    res.json(newCustomer);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
 };
 
-//update Customer data (only for admin and manager)
+// update Customer data (only for admin and manager)
 exports.updateCustomerDataByAdmins = async (req, res) => {
-  console.log(req.body);
-  console.log(req.params);
   try {
     const updatedCustomer = await CustomerServ.UpdateCustomerByAdmins(req);
     res.json(updatedCustomer);
   } catch (error) {
-    res.status(500).json({ message: "Server error 2" });
+    res.status(500).json({ message: "Server error" });
   }
 };
 
-//update Customer data (only for Customer)
+// update Customer data (only for Customer)
 exports.updateCustomerData = async (req, res) => {
-  const updatedCustomer = await CustomerServ.UpdateCustomer(req);
-  console.log(updatedCustomer);
-  res.json(updatedCustomer);
+  try {
+    const updatedCustomer = await CustomerServ.UpdateCustomer(req);
+    res.json(updatedCustomer);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
 };
-
 
 // Get Customer by ID (only for admin and manager)
 exports.getCustomerById = async (req, res) => {
@@ -50,26 +58,37 @@ exports.getCustomerById = async (req, res) => {
   }
 };
 
-//Get all Customers (only for admin and manager)
+// Get all Customers (only for admin and manager)
 exports.getCustomers = async (req, res) => {
-  //   const Customers = await CustomerServ.getCustomers(req);
-  const results = await CustomerServ.getCustomers(req);
-  res.json(results)
-}
+  try {
+    const results = await CustomerServ.getCustomers(req);
+    res.json(results);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
 
-// delete Customer  (is customer)
+// delete Customer (is customer)
 exports.deleteCustomer = async (req, res) => {
-  const result = await CustomerServ.Delete(req);
-  res.json(result);
+  try {
+    const result = await CustomerServ.Delete(req);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
 };
 
 // get customer profile (is customer)
 exports.getProfileCustomer = async (req, res) => {
-  const profile = await CustomerServ.getProfileCustomer(req);
-  res.json(profile);
+  try {
+    const profile = await CustomerServ.getProfileCustomer(req);
+    res.json(profile);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
 };
 
-//validate customer account (is customer)
+// validate customer account (is customer)
 exports.validateAccCustomer = async (req, res) => {
   try {
     const validation = await CustomerServ.validateAccCustomer(req);

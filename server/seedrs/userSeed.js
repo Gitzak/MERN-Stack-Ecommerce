@@ -35,7 +35,7 @@ const seedUser = async () => {
 
         const user = new User(userData);
         await user.save();
-        console.log("User seeded successfully.");
+        // console.log("User seeded successfully.");
 
         mongoose.connection.close();
     } catch (error) {
@@ -82,7 +82,7 @@ const seedUsers = async (count) => {
                 password: hashedPassword,
             });
             await user.save();
-            console.log(`User ${userData.userName} seeded successfully.`);
+            // console.log(`User ${userData.userName} seeded successfully.`);
         }
 
         mongoose.connection.close();

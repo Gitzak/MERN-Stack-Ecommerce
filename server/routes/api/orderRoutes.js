@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { isAdminManager } = require("../../middleware/isAdminManager");
+const { isCustomer } = require("../../middleware/isCustomer");
 const {
   createOrder,
   listOrders,
@@ -9,7 +10,7 @@ const {
 } = require('../../controllers/ordersController')
 
 // create order route
-router.post("/", createOrder);
+router.post("/", isCustomer, createOrder);
 // list all orders
 router.get("/", isAdminManager, listOrders);
 // get order by id

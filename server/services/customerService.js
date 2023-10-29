@@ -36,7 +36,7 @@ class CustomerService {
     }
     // Update the lastLogin field with the current timestamp
     const currentTimestamp = Date.now();
-    console.log(currentTimestamp);
+    // console.log(currentTimestamp);
     customer.lastLogin = currentTimestamp;
     await customer.save();
 
@@ -50,6 +50,7 @@ class CustomerService {
 
     response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
     response.message = "Login success";
+    // todo: optimize the response
     response.customer = {
       _id: customer._id,
       firstName: customer.firstName,
@@ -64,6 +65,7 @@ class CustomerService {
         : null, // Format the timestamp
       validatAccount: customer.validatAccount,
       active: customer.active,
+      role: 'CUSTOMER',
     };
     response.token = token;
     response.token_type = "Bearer";
@@ -94,7 +96,7 @@ class CustomerService {
 
     const customer = await this.customerRepo.RegisterCustomer(newCustomer);
 
-    console.log(customer._id);
+    // console.log(customer._id);
 
     if (!customer) {
       response.message = CONSTANTS.SERVER_ERROR_MESSAGE;
@@ -183,8 +185,8 @@ class CustomerService {
     const query = req.query.query
     const page = parseInt(req.query.page) || 1;
     const sort = req.query.sort || "ASC";
-    console.log("page ", page);
-    console.log("sort", sort);
+    // console.log("page ", page);
+    // console.log("sort", sort);
     const pageSize = 10;
     const skip = (page - 1) * pageSize;
     const limit = pageSize;

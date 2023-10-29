@@ -45,24 +45,31 @@ class OrdersService {
 
   // Get and search for all Orders
   async getOrders(req) {
-    const response = {}
-    // Todo: We can add search query later
-    const page = parseInt(req.query.page) || 1;
-    const sort = req.query.sort || "ASC";
-    console.log("page", page);
-    console.log("sort", sort);
-    const pageSize = 10; // Number of items per page
-    const skip = (page - 1) * pageSize;
-    const limit = pageSize;
-    response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
-    const orders = await this.orderRepo.getOrders(
-      skip,
-      limit,
-      sort
-    );
-    response.orders = orders;
-    return response;
+    try {
+      const response = {}
+      // Todo: We can add search query later
+      const page = parseInt(req.query.page) || 1;
+      const sort = req.query.sort || "ASC";
+      // console.log("page", page);
+      // console.log("sort", sort);
+      const pageSize = 10; // Number of items per page
+      const skip = (page - 1) * pageSize;
+      const limit = pageSize;
+      response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+      const orders = await this.orderRepo.getOrders(
+        skip,
+        limit,
+        sort
+      );
+      response.orders = orders;
+      return response;
+    } catch (error) {
+      // Handle the error, you can log the error or throw a custom error
+      console.error("Error in getOrders:", error);
+      throw error; // You can re-throw the error or return a custom error message
+    }
   }
+
 
   // Get one Order by its ID
   async getOrderById(req) {
@@ -105,7 +112,6 @@ class OrdersService {
         response.status = 404
         return response
       }
-
 
       response.message = "order status updated successfully"
       response.status = 200

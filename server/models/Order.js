@@ -7,6 +7,7 @@ const orderSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    // todo: Items to added to the order schema
     orderItems: {
         type: [String],
         required: true,

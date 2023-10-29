@@ -48,9 +48,9 @@ class CategoriesService {
     const response = {}
     const page = parseInt(req.query.page) || 1;
     const sort = req.query.sort || "ASC";
-    console.log("page", page);
-    console.log("sort", sort);
-    const pageSize = 10; // Number of items per page
+    // console.log("page", page);
+    // console.log("sort", sort);
+    const pageSize = 10;
     const skip = (page - 1) * pageSize;
     const limit = pageSize;
     if (query) {

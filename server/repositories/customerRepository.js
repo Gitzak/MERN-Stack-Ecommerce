@@ -27,7 +27,6 @@ class CustomerRepository {
 
     const customerWithoutPassword = createCustomer.toObject();
     delete customerWithoutPassword.password;
-    console.log(customerWithoutPassword);
 
     return customerWithoutPassword;
   }
@@ -56,30 +55,26 @@ class CustomerRepository {
       .skip(skip)
       .limit(limit)
       .exec();
-    console.log(customers.length);
+    // console.log(customers.length);
     return customers;
   }
 
   async searchCustomers(query, skip, limit, sort) {
-    try {
-      const queryOptions = {
-        $or: [
-          { email: { $regex: query, $options: "i" } },
-          { firstName: { $regex: query, $options: "i" } },
-          { lastName: { $regex: query, $options: "i" } },
-        ],
-      };
+    const queryOptions = {
+      $or: [
+        { email: { $regex: query, $options: "i" } },
+        { firstName: { $regex: query, $options: "i" } },
+        { lastName: { $regex: query, $options: "i" } },
+      ],
+    };
 
-      const searchedCustomers = await this.customerModel
-        .find(queryOptions)
-        .sort({ creationDate: sort === "ASC" ? 1 : -1 })
-        .skip(skip)
-        .limit(limit);
+    const searchedCustomers = await this.customerModel
+      .find(queryOptions)
+      .sort({ creationDate: sort === "ASC" ? 1 : -1 })
+      .skip(skip)
+      .limit(limit);
 
-      return searchedCustomers;
-    } catch (error) {
-      throw error;
-    }
+    return searchedCustomers;
   }
 
   async Delete(customerId) {
@@ -88,33 +83,29 @@ class CustomerRepository {
   }
 
   async validateAccCustomer(customerId) {
-    try {
-      const customer = await this.customerModel.findById(customerId).select('-password');
+    const customer = await this.customerModel.findById(customerId).select('-password');
 
-      if (!customer) {
-        return {
-          status: 404,
-          message: "invalid customer id"
-        };
-      }
-
-      if (customer.validatAccount) {
-        return {
-          status: 400,
-          message: "Invalid action, this email is already validated"
-        };
-      }
-
-      customer.validatAccount = true;
-      await customer.save();
-
+    if (!customer) {
       return {
-        status: 200,
-        message: "Your account validated successfully"
+        status: 404,
+        message: "invalid customer id"
       };
-    } catch (error) {
-      throw error;
     }
+
+    if (customer.validatAccount) {
+      return {
+        status: 400,
+        message: "Invalid action, this email is already validated"
+      };
+    }
+
+    customer.validatAccount = true;
+    await customer.save();
+
+    return {
+      status: 200,
+      message: "Your account validated successfully"
+    };
   }
 }
 

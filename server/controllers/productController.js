@@ -26,7 +26,8 @@ exports.listProducts = async (req, res) => {
     const products = await ProductServ.getProducts(req);
     res.json(products);
   } catch (error) {
-    throw error
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while fetching the products.' });
   }
 };
 
@@ -36,7 +37,8 @@ exports.getProductById = async (req, res) => {
     const product = await ProductServ.getProductById(req);
     res.json(product);
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while fetching the product.' });
   }
 };
 
@@ -46,7 +48,8 @@ exports.updateProductData = async (req, res) => {
     const updatedProduct = await ProductServ.updateProduct(req);
     res.json(updatedProduct);
   } catch (error) {
-    throw error
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while updating the product.' });
   }
 };
 
@@ -56,6 +59,7 @@ exports.deleteProduct = async (req, res) => {
     const result = await ProductServ.deleteProduct(req);
     res.json(result);
   } catch (error) {
-    throw error
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while deleting the product.' });
   }
 };
