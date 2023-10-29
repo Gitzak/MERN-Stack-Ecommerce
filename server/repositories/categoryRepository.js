@@ -16,17 +16,6 @@ class CategoryRepository {
     return createCategory;
   }
 
-
-  async searchCategories(query) {
-    const searchedCategories = await this.categoryModel.find({
-      $or: [
-        { category_name: { $regex: query, $options: "i" } },
-      ],
-    });
-
-    return searchedCategories;
-  }
-
   async getCategories(skip, limit, sort) {
     const categorys = await this.categoryModel
       .aggregate([{ $sort: { category_name: -1 } }])
@@ -36,6 +25,26 @@ class CategoryRepository {
       .limit(limit)
       .exec();
     return foundedCategories;
+  }
+
+  async searchCategories(query, skip, limit, sort) {
+    try {
+      const queryOptions = {
+        $or: [
+          { category_name: { $regex: query, $options: "i" } },
+        ],
+      };
+
+      const searchedCategories = await this.categoryModel
+        .find(queryOptions)
+        .sort({ category_name: sort === "ASC" ? 1 : -1 })
+        .skip(skip)
+        .limit(limit);
+
+      return searchedCategories;
+    } catch (error) {
+      throw error;
+    }
   }
 
 

@@ -11,67 +11,66 @@ class CategoriesService {
     const response = {};
 
     try {
-        const { category_name, active } = req.body;
-        
-        if (!category_name || !active) {
-          response.message = CONSTANTS.FIELD_EMPTY;
-          response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
-          return response;
-        }
-    
-        const newCategory = {
-          category_name,
-          active,
-        };
-    
-        const category = await this.categoryRepo.CreateCategory(newCategory);
-    
-        if (!category) {
-          response.message = CONSTANTS.SERVER_ERROR_MESSAGE
-          response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE
-          return response;
-        }
-    
-        response.message = CONSTANTS.CATEGORY_CREATED
-        response.status = CONSTANTS.SERVER_CREATED_HTTP_CODE
+      const { category_name, active } = req.body;
+
+      if (!category_name || !active) {
+        response.message = CONSTANTS.FIELD_EMPTY;
+        response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
         return response;
+      }
+
+      const newCategory = {
+        category_name,
+        active,
+      };
+
+      const category = await this.categoryRepo.CreateCategory(newCategory);
+
+      if (!category) {
+        response.message = CONSTANTS.SERVER_ERROR_MESSAGE
+        response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE
+        return response;
+      }
+
+      response.message = CONSTANTS.CATEGORY_CREATED
+      response.status = CONSTANTS.SERVER_CREATED_HTTP_CODE
+      return response;
     } catch {
-        response.message = error.message
-        response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
-        return response;
+      response.message = error.message
+      response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+      return response;
     }
   }
-  
+
   // Get and search for all Categories
   async getCategories(req) {
     const query = req.query.query;
     const response = {}
-
+    const page = parseInt(req.query.page) || 1;
+    const sort = req.query.sort || "ASC";
+    console.log("page", page);
+    console.log("sort", sort);
+    const pageSize = 10; // Number of items per page
+    const skip = (page - 1) * pageSize;
+    const limit = pageSize;
     if (query) {
       try {
         const searchedCategories = await this.categoryRepo.searchCategories(
-          query
+          query, skip, limit, sort
         );
         if (!searchedCategories) {
-            response.message = CONSTANTS.CATEGORY_NOT_FOUND
-            response.status =  CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE
-           return response
-        } 
+          response.message = CONSTANTS.CATEGORY_NOT_FOUND
+          response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE
+          return response
+        }
         return searchedCategories;
-        
+
       } catch (error) {
-            response.message = error.message
-            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
-            return response;      }
+        response.message = error.message
+        response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+        return response;
+      }
     } else {
-      const page = parseInt(req.query.page) || 1;
-      const sort = req.query.sort || "ASC";
-      console.log("page", page);
-      console.log("sort", sort);
-      const pageSize = 10; // Number of items per page
-      const skip = (page - 1) * pageSize;
-      const limit = pageSize;
-      const response = {};
       response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
       const categories = await this.categoryRepo.getCategories(
         skip,
@@ -97,9 +96,9 @@ class CategoriesService {
       }
       return foundedCategory;
     } catch (error) {
-        response.message = error.message
-        response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
-        return response;
+      response.message = error.message
+      response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+      return response;
     }
   }
 
@@ -107,59 +106,59 @@ class CategoriesService {
   async updateCategories(req) {
     const response = {};
     try {
-        const id = req.params.id;
-        const { category_name, active } = req.body;
+      const id = req.params.id;
+      const { category_name, active } = req.body;
 
-        const updatedCategory = {
+      const updatedCategory = {
         category_name,
         active,
-        };
+      };
 
-        const updatedCategoryMessage = await this.categoryRepo.UpdateCategory(
+      const updatedCategoryMessage = await this.categoryRepo.UpdateCategory(
         id,
         updatedCategory
-        );
+      );
 
-        if (!updatedCategoryMessage) {
-            response.message = CONSTANTS.CATEGORY_NOT_FOUND
-            response.status =  CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE
-           return response
-        }
-        
-
-        response.message= CONSTANTS.CATEGORY_UPDATED ,
-        response.status= CONSTANTS.SERVER_UPDATED_HTTP_CODE
+      if (!updatedCategoryMessage) {
+        response.message = CONSTANTS.CATEGORY_NOT_FOUND
+        response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE
         return response
+      }
+
+
+      response.message = CONSTANTS.CATEGORY_UPDATED,
+        response.status = CONSTANTS.SERVER_UPDATED_HTTP_CODE
+      return response
     } catch (error) {
-        response.message = error.message
-        response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
-        return response;
+      response.message = error.message
+      response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+      return response;
     }
-    
+
   }
 
   // Delete a Categories
   async deleteCategories(req) {
     const response = {};
-   
+
     try {
-        const categoryId = req.params.id;
-        // console.log(categoryId)
-        const deletedCategory = await this.categoryRepo.DeleteCategory(categoryId);
+      const categoryId = req.params.id;
+      // console.log(categoryId)
+      const deletedCategory = await this.categoryRepo.DeleteCategory(categoryId);
 
-        if (!deletedCategory) {
-            response.message = CONSTANTS.CATEGORY_NOT_FOUND;
-            response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
-            return response;
-        }
-
-        response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
-        response.message = CONSTANTS.CATEGORY_DELETED;
+      if (!deletedCategory) {
+        response.message = CONSTANTS.CATEGORY_NOT_FOUND;
+        response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
         return response;
+      }
+
+      response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+      response.message = CONSTANTS.CATEGORY_DELETED;
+      return response;
     } catch (error) {
-        response.message = error.message
-        response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
-        return response;
+      response.message = error.message
+      response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+      return response;
     }
   }
 }

@@ -145,19 +145,30 @@ class UserService {
   }
 
   async getUsers(req) {
+    const query = req.query.query
     const page = parseInt(req.query.page) || 1;
     const sort = req.query.sort || "ASC";
-    console.log("page", page);
+    console.log("page ", page);
     console.log("sort", sort);
-    const pageSize = 10; // Number of items per page
+    const pageSize = 10;
     const skip = (page - 1) * pageSize;
     const limit = pageSize;
     const response = {};
-    response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
-    const users = await this.userRepo.getUsers(skip, limit, sort);
-    response.users = users;
 
-    return response;
+    if (query) {
+      try {
+        const searchUsers = await this.userRepo.searchUsers(query, skip, limit, sort);
+        return searchUsers;
+      } catch (error) {
+        return error;
+      }
+    } else {
+      const response = {};
+      response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+      const users = await this.userRepo.getUsers(skip, limit, sort);
+      response.users = users;
+      return response;
+    }
   }
 
   async searchUsers(req) {
@@ -167,9 +178,9 @@ class UserService {
 
       return searchedUsers
     } catch (error) {
-       return error 
+      return error
     }
- 
+
   }
 
   async Delete(userId) {

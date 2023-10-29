@@ -96,22 +96,25 @@ class ProductService {
   }
 
   async getProducts(req) {
+    const query = req.query.query;
+    const response = {};
+    const page = parseInt(req.query.page) || 1;
+    const sort = req.query.sort || "ASC";
+    console.log("page", page);
+    console.log("sort", sort);
+    const pageSize = 10;
+    const skip = (page - 1) * pageSize;
+    const limit = pageSize;
+
     if (req.query.query) {
       try {
-        const searchProducts = await this.productRepo.searchProduct(req.query.query);
+        const searchProducts = await this.productRepo.searchProduct(query, skip, limit, sort);
 
         return searchProducts;
       } catch (error) {
         return error;
       }
     } else {
-      const page = parseInt(req.query.page) || 1;
-      const sort = req.query.sort || "ASC";
-      console.log("page", page);
-      console.log("sort", sort);
-      const pageSize = 10; // Number of items per page
-      const skip = (page - 1) * pageSize;
-      const limit = pageSize;
       const response = {};
       response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
       const products = await this.productRepo.listProducts(skip, limit, sort);

@@ -15,27 +15,6 @@ class CustomerRepository {
     return customer;
   }
 
-  // async sendMail(customer) {
-  //   let transporter = nodemailer.createTransport({
-  //     host: "smtp.mailtrap.io",
-  //     port: 587,
-  //     secure: false,
-  //     auth: {
-  //       user: cd70b6d0c2eb72,
-  //       pass: de69aefaaeae72,
-  //     },
-  //   });
-
-  //   let mailOptions = {
-  //     from: "email@example.com",
-  //     to: customer.email,
-  //     subject: "Welcome !",
-  //     text: `Welcome ${customer.firstName},\n\ your account is created successfuly, Please click the link below to activate it:`,
-  //   };
-
-  //   let info = await transporter.sendMail(mailOptions);
-  // }
-
   async RegisterCustomer(customer) {
     const { firstName, lastName, email, hashedPass } = customer;
 
@@ -81,15 +60,22 @@ class CustomerRepository {
     return customers;
   }
 
-  async searchCustomers(query) {
+  async searchCustomers(query, skip, limit, sort) {
     try {
-      const searchedCustomers = await this.customerModel.find({
+      const queryOptions = {
         $or: [
           { email: { $regex: query, $options: "i" } },
           { firstName: { $regex: query, $options: "i" } },
           { lastName: { $regex: query, $options: "i" } },
         ],
-      });
+      };
+
+      const searchedCustomers = await this.customerModel
+        .find(queryOptions)
+        .sort({ creationDate: sort === "ASC" ? 1 : -1 })
+        .skip(skip)
+        .limit(limit);
+
       return searchedCustomers;
     } catch (error) {
       throw error;

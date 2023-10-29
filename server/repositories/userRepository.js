@@ -75,24 +75,29 @@ class UserRepository {
     return users;
   }
 
-
-  async searchUsers(query) {
+  async searchUsers(query, skip, limit, sort) {
     try {
-      const searchedUsers = await this.userModel.find({
+      const queryOptions = {
         $or: [
-          { email: { $regex: query, $options: 'i' } },
-          { userName: { $regex: query, $options: 'i' } },
-          { firstName: { $regex: query, $options: 'i' } },
-          { lastName: { $regex: query, $options: 'i' } }
-        ]
-      });
+          { email: { $regex: query, $options: "i" } },
+          { firstName: { $regex: query, $options: "i" } },
+          { lastName: { $regex: query, $options: "i" } },
+          { userName: { $regex: query, $options: "i" } },
+        ],
+      };
+
+      const searchedUsers = await this.userModel
+        .find(queryOptions)
+        .sort({ creationDate: sort === "ASC" ? 1 : -1 })
+        .skip(skip)
+        .limit(limit);
+
       return searchedUsers;
     } catch (error) {
       throw error;
     }
   }
 
-  // GET USER BY ID
   async Delete(userId) {
     const user = await this.userModel.findByIdAndDelete(userId);
     return user;

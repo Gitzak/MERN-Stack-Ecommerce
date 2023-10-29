@@ -46,7 +46,7 @@ class OrdersService {
   // Get and search for all Orders
   async getOrders(req) {
     const response = {}
-
+    // Todo: We can add search query later
     const page = parseInt(req.query.page) || 1;
     const sort = req.query.sort || "ASC";
     console.log("page", page);

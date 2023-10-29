@@ -41,15 +41,22 @@ class ProductRepository {
     }
   }
 
-  async searchProduct(query) {
+  async searchProduct(query, skip, limit, sort) {
     try {
-      const searchedProducts = await this.productModel.find({
+      const queryOptions = {
         $or: [
           { productName: { $regex: query, $options: "i" } },
           { shortDescription: { $regex: query, $options: "i" } },
           { longDescription: { $regex: query, $options: "i" } },
         ],
-      });
+      };
+
+      const searchedProducts = await this.productModel
+        .find(queryOptions)
+        .sort({ productName: sort === "ASC" ? 1 : -1 })
+        .skip(skip)
+        .limit(limit);
+
       return searchedProducts;
     } catch (error) {
       throw error;

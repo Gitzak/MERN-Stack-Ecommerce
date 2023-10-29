@@ -49,11 +49,18 @@ class subCategoriesService {
   async getsubCategories(req) {
     const query = req.query.query;
     const response = {};
+    const page = parseInt(req.query.page) || 1;
+    const sort = req.query.sort || "ASC";
+    console.log("page", page);
+    console.log("sort", sort);
+    const pageSize = 10;
+    const skip = (page - 1) * pageSize;
+    const limit = pageSize;
 
     if (query) {
       try {
         const searchedsubCategories =
-          await this.subcategoryRepo.searchsubCategories(query);
+          await this.subcategoryRepo.searchsubCategories(query, skip, limit, sort);
         if (!searchedsubCategories) {
           response.message = CONSTANTS.CATEGORY_NOT_FOUND;
           response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
@@ -66,14 +73,6 @@ class subCategoriesService {
         return response;
       }
     } else {
-      const page = parseInt(req.query.page) || 1;
-      const sort = req.query.sort || "ASC";
-      console.log("page", page);
-      console.log("sort", sort);
-      const pageSize = 10; // Number of items per page
-      const skip = (page - 1) * pageSize;
-      const limit = pageSize;
-      const response = {};
       response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
       const subcategories = await this.subcategoryRepo.getsubCategories(
         skip,
