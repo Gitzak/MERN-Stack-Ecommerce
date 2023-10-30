@@ -47,6 +47,8 @@ exports.updateCustomerData = async (req, res) => {
 
 // Get Customer by ID (only for admin and manager)
 exports.getCustomerById = async (req, res) => {
+  console.log('getbyid');
+  console.log(req.params.id);
   try {
     const Customer = await CustomerServ.getCustomerById(req);
     if (!Customer) {
@@ -80,6 +82,7 @@ exports.deleteCustomer = async (req, res) => {
 
 // get customer profile (is customer)
 exports.getProfileCustomer = async (req, res) => {
+  console.log('profil');
   try {
     const profile = await CustomerServ.getProfileCustomer(req);
     res.json(profile);

@@ -35,18 +35,8 @@ class CustomerRepository {
     const filter = { _id: id };
 
     const result = await this.customerModel.findOneAndUpdate({ _id: id }, customer, { upsert: true, new: true });
-
-    if (result) {
-      return {
-        message: CONSTANTS.USER_UPDATED,
-        status: CONSTANTS.SERVER_UPDATED_HTTP_CODE,
-      };
-    } else {
-      return {
-        message: CONSTANTS.USER_NOT_FOUND,
-        status: CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE,
-      };
-    }
+    console.log(result);
+    return result;
   }
 
   async getCustomers(skip, limit, sort) {

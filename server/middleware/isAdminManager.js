@@ -2,6 +2,8 @@ const CONSTANTS = require("../constants/index");
 const { verify } = require("../utils/JWT");
 
 exports.isAdminManager = (req, res, next) => {
+  // console.log(req.path);
+  // console.log(req.params.id);
   const authHeader = req.headers.authorization || null;
 
   const token = authHeader && authHeader.split(" ")[1];
@@ -15,7 +17,7 @@ exports.isAdminManager = (req, res, next) => {
 
   const userData = verify(token);
   req.userRole = userData.userRole;
-
+  
   if (req.userRole !== "ADMIN" && req.userRole !== "MANAGER") {
     return res.json({
       message: CONSTANTS.SERVER_IFORBIDDEN_HTTP_CODE,

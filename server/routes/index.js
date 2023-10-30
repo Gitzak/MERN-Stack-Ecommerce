@@ -6,6 +6,11 @@ const subCategoriesRoutes = require("./api/subCategoriesRoutes")
 const productRoutes = require("./api/productRoutes");
 const orderRoutes = require("./api/orderRoutes");
 
+// router.use((req, res, next) => {
+//     console.log(`Accessing route: ${req.path}`);
+//     next();
+// });
+
 // api Users routes
 router.use("/users", userRoutes);
 router.use("/customers", customerRoutes);

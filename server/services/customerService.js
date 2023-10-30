@@ -44,6 +44,7 @@ class CustomerService {
       {
         customerId: customer._id,
         active: customer.active,
+        userRole: 'CUSTOMER',
       },
       config.jwt.secret
     );
@@ -65,7 +66,6 @@ class CustomerService {
         : null, // Format the timestamp
       validatAccount: customer.validatAccount,
       active: customer.active,
-      role: 'CUSTOMER',
     };
     response.token = token;
     response.token_type = "Bearer";
@@ -116,56 +116,82 @@ class CustomerService {
     response.mail = sendedCustomerMail;
     return response;
   }
-
+  // const customer = await this.customerRepo.findCustomerById(id);
+  // if (customer === null || customer === undefined) {
+  //   // If customer is not found, return a meaningful response
+  //   return { message: 'Customer not found', status: 404 };
+  // }
+  // return customer;
   async UpdateCustomerByAdmins(req) {
-    const id = req.params.id;
+    try {
+        const id = req.params.id;
+        console.log(id);
+        const customer = await this.customerRepo.findCustomerById(id);
+  if (customer === null || customer === undefined) {
+    // If customer is not found, return a meaningful response
+    return { message: 'Customer not found', status: 404 };
+    }
+        const response = {};
 
-    const response = {};
+        const { firstName, lastName, email, active } = req.body;
 
-    const { firstName, lastName, email, active } = req.body;
+        const updatedCustomer = {
+            firstName,
+            lastName,
+            email,
+            active,
+        };
 
-    const updatedCustomer = {
-      firstName,
-      lastName,
-      email,
-      active,
-    };
+        const updatedcustomer = await this.customerRepo.UpdateCustomer(
+            id,
+            req.body
+        );
 
-    const updatedcustomer = await this.customerRepo.UpdateCustomer(
-      id,
-      req.body
-    );
+        response.message = updatedcustomer;
 
-    response.message = updatedcustomer;
+        return response;
+    } catch (error) {
+        throw error; // Throw the error to be caught by higher-level error handling
+    }
+}
 
-    return response;
-  }
 
-  async UpdateCustomer(req) {
-    const id = req.params.id;
+async UpdateCustomer(req) {
+    try {
+        const id = req.id;
+        console.log('id', id);
+        const response = {};
 
-    const response = {};
+        const { firstName, lastName, email, password } = req.body;
 
-    const { firstName, lastName, email, password } = req.body;
+        const hashedPass = await HashPassword(password);
 
-    const hashedPass = await HashPassword(password);
+        const updatedCustomer = {
+            firstName,
+            lastName,
+            email,
+            password: hashedPass
+        };
 
-    const updatedCustomer = {
-      firstName,
-      lastName,
-      email,
-      password: hashedPass
-    };
+        const updatedcustomer = await this.customerRepo.UpdateCustomer(
+            id,
+            updatedCustomer
+        );
 
-    const updatedcustomer = await this.customerRepo.UpdateCustomer(
-      id,
-      updatedCustomer
-    );
+        if (updatedcustomer) {
+            response.message = CONSTANTS.USER_UPDATED;
+            response.status = CONSTANTS.SERVER_UPDATED_HTTP_CODE;
+        } else {
+            response.message = CONSTANTS.INVALID_CUSTOMER_ID;
+            response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+        }
 
-    response.message = updatedcustomer;
+        return response;
+    } catch (error) {
+        throw error; // Throw the error to be caught by higher-level error handling
+    }
+}
 
-    return response;
-  }
 
   async getCustomerById(req) {
     try {
@@ -207,11 +233,11 @@ class CustomerService {
     }
   }
 
-  async Delete(customerId) {
+  async Delete(req) {
     const response = {};
 
     try {
-      const customerId = req.params.id;
+      const customerId = req.id;
       const deletedCustomer = await this.customerRepo.Delete(customerId);
 
       if (!deletedCustomer) {
@@ -232,7 +258,8 @@ class CustomerService {
 
   async getProfileCustomer(req) {
     try {
-      const customerId = req.customerId;
+      const customerId = req.id;
+      console.log('profileid',customerId);
       const customer = await this.customerRepo.findCustomerById(customerId);
       return customer;
     } catch (error) {

@@ -15,7 +15,7 @@ exports.isCustomer = (req, res, next) => {
 
   const userData = verify(token);
   req.userRole = userData.userRole;
-
+  req.id = userData.customerId;
   if (req.userRole !== "CUSTOMER") {
     return res.json({
       message: CONSTANTS.SERVER_IFORBIDDEN_HTTP_CODE,
