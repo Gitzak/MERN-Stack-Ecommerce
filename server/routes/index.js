@@ -5,12 +5,13 @@ const categoryRoutes = require("./api/categoriesRoutes");
 const subCategoriesRoutes = require("./api/subCategoriesRoutes")
 const productRoutes = require("./api/productRoutes");
 const orderRoutes = require("./api/orderRoutes");
+const { sanitize } = require("../middleware/sanitize");
 
 // router.use((req, res, next) => {
 //     console.log(`Accessing route: ${req.path}`);
 //     next();
 // });
-
+router.use(sanitize);
 // api Users routes
 router.use("/users", userRoutes);
 router.use("/customers", customerRoutes);
