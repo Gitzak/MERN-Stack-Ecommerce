@@ -41,13 +41,16 @@ class CustomerRepository {
 
   async getCustomers(skip, limit, sort) {
     const customers = await this.customerModel
-      .aggregate([{ $sort: { creationDate: -1 } }])
+      .aggregate([
+        { $sort: { creationDate: -1 } },
+        { $project: { password: 0 } } // Exclude the password field
+      ])
       .skip(skip)
       .limit(limit)
       .exec();
-    // console.log(customers.length);
     return customers;
   }
+  
 
   async searchCustomers(query, skip, limit, sort) {
     const queryOptions = {
@@ -60,6 +63,7 @@ class CustomerRepository {
 
     const searchedCustomers = await this.customerModel
       .find(queryOptions)
+      .select('-password')
       .sort({ creationDate: sort === "ASC" ? 1 : -1 })
       .skip(skip)
       .limit(limit);

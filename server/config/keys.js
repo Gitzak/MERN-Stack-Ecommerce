@@ -1,7 +1,7 @@
 module.exports = {
     app: {
         name: 'Mern Stack - Ecommerce Api',
-        baseUrl: process.env.BASEURL
+        baseUrl: process.env.BASEURL || "http://localhost:6000/"
     },
     port: process.env.PORT || 6000,
     database: {

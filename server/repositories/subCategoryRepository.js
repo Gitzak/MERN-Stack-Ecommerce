@@ -17,7 +17,7 @@ class subCategoryRepository {
   }
 
 
-  async searchsubCategories(query) {
+  async searchsubCategories(query, skip, limit, sort) {
     const queryOptions = {
       $or: [
         { subCategory_name: { $regex: query, $options: "i" } },
