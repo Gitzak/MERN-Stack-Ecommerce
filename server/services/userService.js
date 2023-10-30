@@ -124,7 +124,7 @@ class UserService {
 
     const response = {};
 
-    const { role, userName, firstName, lastName, email, password } = req.body;
+    const { role, userName, firstName, lastName, email, active } = req.body;
 
     const updatedUser = {
       role,
@@ -132,7 +132,7 @@ class UserService {
       firstName,
       lastName,
       email,
-      password: await HashPassword(password),
+      active,
     };
 
     const updateduser = await this.userRepo.UpdateUser(id, updatedUser);

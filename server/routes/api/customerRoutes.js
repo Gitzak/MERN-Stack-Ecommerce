@@ -2,6 +2,8 @@ const express = require('express')
 const router = express.Router()
 const { isAdminManager } = require("../../middleware/isAdminManager");
 const { isCustomer } = require("../../middleware/isCustomer");
+const { validateCustomerLogin, validateCustomerForm, validateCustomerFormUpdatePut, validateCustomerFormUpdatePatch } = require("../../middleware/ValidateFormMiddleweare");
+const { handleValidationErrors } = require("../../middleware/handleValidationErrors");
 const {
     loginCustomer,
     registerCustomer,
@@ -15,25 +17,22 @@ const {
 } = require('../../controllers/customerController')
 
 // login route
-router.post('/login', loginCustomer)
+router.post('/login', validateCustomerLogin, handleValidationErrors, loginCustomer)
 //create new customers (Register)
-router.post('/', registerCustomer)
+router.post('/', validateCustomerForm, handleValidationErrors, registerCustomer)
 //customer account or email validation
 router.put('/validate/:id', validateAccCustomer)
 //get customer by id
 router.get('/customer/:id', isAdminManager, getCustomerById)
 // enter customer profil
-// todo: Token and isCustomer
 router.get('/profile', isCustomer, getProfileCustomer)
 //get all customers list
 router.get('/', isAdminManager, getCustomers)
 //update customer data (for admin and manager only)
-router.put('/:id', isAdminManager, updateCustomerDataByAdmins)
+router.put('/:id', isAdminManager, validateCustomerFormUpdatePut, handleValidationErrors, updateCustomerDataByAdmins)
 // customer update himself
-// todo: Token and isCustomer
-router.patch('/profile/update', isCustomer, updateCustomerData)
+router.patch('/profile/update', isCustomer, validateCustomerFormUpdatePatch, handleValidationErrors, updateCustomerData)
 //delete account for customer
-// todo: Token and isCustomer
 router.delete('/delete', isCustomer, deleteCustomer)
 
 module.exports = router
