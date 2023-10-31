@@ -11,9 +11,11 @@ class ProductRepository {
   }
 
   async getProductById(productId) {
-    // todo : Get Catagory Name
-    const product = await this.productModel.findById(productId);
-    return product;
+    const product = await this.productModel
+    .findById(productId)
+    .populate("subcategoryId") // Populate the subcategory data
+    .exec();
+  return product;
   }
 
   async updateProduct(productId, productData) {
@@ -27,7 +29,9 @@ class ProductRepository {
 
   async listProducts(skip, limit, sort) {
     const products = await this.productModel
-      .aggregate({ $sort: { creationDate: -1 } })
+      .find()
+      .sort({ creationDate: sort === "ASC" ? 1 : -1 })
+      .populate("subcategoryId") // Populate the subcategory data
       .skip(skip)
       .limit(limit)
       .exec();
@@ -44,12 +48,13 @@ class ProductRepository {
     };
 
     const searchedProducts = await this.productModel
-      .find(queryOptions)
-      .sort({ productName: sort === "ASC" ? 1 : -1 })
-      .skip(skip)
-      .limit(limit);
+    .find(queryOptions)
+    .sort({ productName: sort === "ASC" ? 1 : -1 })
+    .populate("subcategoryId") // Populate the subcategory data
+    .skip(skip)
+    .limit(limit);
 
-    return searchedProducts;
+  return searchedProducts;
   }
 
   async deleteProduct(productId) {

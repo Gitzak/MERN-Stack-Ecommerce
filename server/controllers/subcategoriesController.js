@@ -1,8 +1,9 @@
 const { subCategoriesService } = require("../services/subCategoriesService");
 const { subCategoryRepository } = require("../repositories/subCategoryRepository");
 const subCategories = require("../models/subCategories.js");
+const Category = require("../models/Categories.js"); // Adjust the path if needed
 
-const subCategoriesRepo = new subCategoryRepository(subCategories);
+const subCategoriesRepo = new subCategoryRepository(subCategories, Category);
 const subCategoriesServ = new subCategoriesService(subCategoriesRepo);
 
 // Create a new subCategories

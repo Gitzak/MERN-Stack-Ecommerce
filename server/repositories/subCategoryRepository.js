@@ -1,8 +1,9 @@
 const CONSTANTS = require("../constants/index");
 
 class subCategoryRepository {
-  constructor(subcategoryModel) {
+  constructor(subcategoryModel, categoryModel) {
     this.subcategoryModel = subcategoryModel;
+    this.categoryModel = categoryModel;
   }
 
 
@@ -28,28 +29,34 @@ class subCategoryRepository {
       .find(queryOptions)
       .sort({ category_name: sort === "ASC" ? 1 : -1 })
       .skip(skip)
-      .limit(limit);
+      .limit(limit)
+      .populate('category_id')
+      .exec();
 
     return searchedSubCategories;
   }
 
   async getsubCategories(skip, limit, sort) {
-    // const subcategorys = await this.subcategoryModel
-    //   .aggregate([{ $sort: { subCategory_name: -1 } }])
     const foundedsubCategories = await this.subcategoryModel
-      .aggregate([{ $sort: { subCategory_name: -1 } }])
+      .find()
+      .sort({ subCategory_name: sort === "ASC" ? 1 : -1 })
       .skip(skip)
       .limit(limit)
+      .populate('category_id') // Populate the category data
       .exec();
+  
     return foundedsubCategories;
   }
+  
+  
 
 
-  async findsubCategoryById(subcategoryId) {
-    const subcategory = await this.subcategoryModel.findById(subcategoryId);
+  async  findSubCategoryById(subcategoryId) {
+    const subcategory = await this.subcategoryModel.findById(subcategoryId)
+      .populate('category_id')
+      .exec();
+  
     return subcategory;
-    // const foundedsubCategory = await this.subcategoryModel.findById(subcategoryId).select("-password");
-    // return foundedsubCategory;
   }
 
 

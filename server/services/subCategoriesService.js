@@ -89,7 +89,7 @@ class subCategoriesService {
     const response = {};
     try {
       const subcategoryId = req.params.id;
-      const foundedsubCategory = await this.subcategoryRepo.findsubCategoryById(
+      const foundedsubCategory = await this.subcategoryRepo.findSubCategoryById(
         subcategoryId
       );
 
@@ -110,7 +110,7 @@ class subCategoriesService {
   async getsubCategoryNameById(id) {
     const response = {};
     try {
-        const foundedsubCategory = await this.subcategoryRepo.findsubCategoryById(id);
+        const foundedsubCategory = await this.subcategoryRepo.findSubCategoryById(id);
 
       if (!foundedsubCategory) {
         response.message = CONSTANTS.CATEGORY_NOT_FOUND;
