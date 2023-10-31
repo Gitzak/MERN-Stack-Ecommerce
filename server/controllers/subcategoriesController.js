@@ -33,7 +33,19 @@ exports.getsubCategoryById = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
-};
+}
+
+exports.getsubCategoryNameById = async (id) => {
+  try {
+    const foundedsubCategoryName = await subCategoriesServ.getsubCategoryNameById(id);
+    console.log(foundedsubCategoryName);
+    return foundedsubCategoryName;
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+}
+
+
 
 // Update the subCategories data
 exports.updatesubCategories = async (req, res) => {

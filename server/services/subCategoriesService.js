@@ -106,6 +106,26 @@ class subCategoriesService {
     }
   }
 
+
+  async getsubCategoryNameById(id) {
+    const response = {};
+    try {
+        const foundedsubCategory = await this.subcategoryRepo.findsubCategoryById(id);
+
+      if (!foundedsubCategory) {
+        response.message = CONSTANTS.CATEGORY_NOT_FOUND;
+        response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+        return response;
+      }
+      const  foundedsubCategoryName = foundedsubCategory.subCategory_name;
+      return foundedsubCategoryName
+    } catch (error) {
+      response.message = error.message;
+      response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+      return response;
+    }
+  }
+
   // Update subCategories
   async updatesubCategories(req) {
     const response = {};
