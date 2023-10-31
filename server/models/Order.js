@@ -8,10 +8,15 @@ const orderSchema = new mongoose.Schema({
         required: true,
     },
     // todo: Items to added to the order schema
-    orderItems: {
-        type: [String],
-        required: true,
-    },
+    orderItems: [
+        {
+            itemID: String,
+            itemName: String,
+            quantity: Number,
+            unitPrice: Number,
+            totalPrice: Number
+        }
+    ],
     orderDate: {
         type: Number,
         default: Date.now,

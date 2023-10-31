@@ -9,18 +9,18 @@ class OrdersService {
   // Create new order 
   async createOrders(req) {
     const response = {};
-
     try {
-      const { customerId, orderItems, cartTotalPrice } = req.body;
+      const customerID = req.id
+      const {orderItems, cartTotalPrice } = req.body;
 
-      if (!customerId || !orderItems || !cartTotalPrice) {
+      if (!orderItems || !cartTotalPrice) {
         response.message = CONSTANTS.FIELD_EMPTY;
         response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
         return response;
       }
 
       const newOrder = {
-        customerId,
+        customerId: customerID,
         orderItems,
         cartTotalPrice
       };
