@@ -4,10 +4,16 @@ const { ORDERS_STATUS } = require('../constants');
 
 const orderSchema = new mongoose.Schema({
     customerId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Customer',
         required: true,
     },
-    // todo: Items to added to the order schema
+    customerFirstName: {
+        type: String,
+    },
+    customerLastName: {
+        type: String,
+    },
     orderItems: [
         {
             itemID: String,

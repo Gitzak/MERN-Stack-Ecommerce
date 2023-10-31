@@ -8,10 +8,22 @@ class OrdersService {
 
   // Create new order 
   async createOrders(req) {
+    // todo: verify product exist and quantity
+
+    // todo: calculate total Price instead of body
+
+    // todo: decrease quantity from product on creation order
+
+    // todo: save order
+
+    // todo: send emails to customer and client (notify)
+
     const response = {};
     try {
       const customerID = req.id
-      const {orderItems, cartTotalPrice } = req.body;
+      const customerFirstName = req.customerFirstName
+      const customerLastName = req.customerLastName
+      const { orderItems, cartTotalPrice } = req.body;
 
       if (!orderItems || !cartTotalPrice) {
         response.message = CONSTANTS.FIELD_EMPTY;
@@ -21,6 +33,8 @@ class OrdersService {
 
       const newOrder = {
         customerId: customerID,
+        customerFirstName: customerFirstName,
+        customerLastName: customerLastName,
         orderItems,
         cartTotalPrice
       };

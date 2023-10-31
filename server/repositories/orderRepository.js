@@ -6,11 +6,13 @@ class OrderRepository {
   }
 
   async CreateOrder(order) {
-    const { customerId, orderItems, cartTotalPrice } = order;
+    const { customerId, orderItems, cartTotalPrice, customerFirstName, customerLastName } = order;
     const createOrder = await this.orderModel.create({
       customerId,
       orderItems,
-      cartTotalPrice
+      cartTotalPrice,
+      customerFirstName,
+      customerLastName
     });
     return createOrder;
   }
