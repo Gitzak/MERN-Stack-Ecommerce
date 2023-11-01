@@ -14,23 +14,23 @@ class CustomerService {
     const { email, password } = req.body;
     const customer = await this.customerRepo.Login(email);
     if (!customer) {
-      response.message = CONSTANTS.SERVER_USER_INVALID_CREDENTIALS;
+      response.message = CONSTANTS.INVALID_CREDENTIALS;
       response.status = CONSTANTS.SERVER_INVALID_CREDENTIALS;
       return response;
     }
     if (!customer.active) {
-      response.message = CONSTANTS.USER_NOT_ACTIVE;
+      response.message = CONSTANTS.CUSTOMER_NOT_ACTIVE;
       response.status = CONSTANTS.SERVER_IFORBIDDEN_HTTP_CODE;
       return response;
     }
     if (!customer.validatAccount) {
-      response.message = CONSTANTS.USER_NOT_ACTIVE;
-      response.status = CONSTANTS.SERVER_IFORBIDDEN_HTTP_CODE;
+      response.message = CONSTANTS.CUSTOMER_NOT_VALID;
+      response.status = CONSTANTS.SERVER_FORBIDDEN_HTTP_CODE;
       return response;
     }
     const passwordMatch = await VerifyPassword(password, customer.password);
     if (!passwordMatch) {
-      response.message = CONSTANTS.SERVER_USER_INVALID_CREDENTIALS;
+      response.message = CONSTANTS.INVALID_CREDENTIALS;
       response.status = CONSTANTS.SERVER_INVALID_CREDENTIALS;
       return response;
     }
@@ -46,7 +46,7 @@ class CustomerService {
         active: customer.active,
         customerFirstName: customer.firstName,
         customerLastName: customer.lastName,
-        userRole: 'CUSTOMER',
+        userRole: "CUSTOMER",
       },
       config.jwt.secret
     );
@@ -62,9 +62,6 @@ class CustomerService {
       creationDate: customer.creationDate,
       lastLogin: customer.lastLogin
         ? new Date(customer.lastLogin).toLocaleString()
-        : null, // Format the timestamp
-      lastUpdate: customer.lastUpdate
-        ? new Date(customer.lastUpdate).toLocaleString()
         : null, // Format the timestamp
       validatAccount: customer.validatAccount,
       active: customer.active,
@@ -102,7 +99,7 @@ class CustomerService {
 
     if (!customer) {
       response.message = CONSTANTS.SERVER_ERROR_MESSAGE;
-      response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+      response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
       return response;
     }
 
@@ -114,8 +111,7 @@ class CustomerService {
 
     response.message = CONSTANTS.USER_CREATED;
     response.status = CONSTANTS.SERVER_CREATED_HTTP_CODE;
-    response.data = customer;
-    response.mail = sendedCustomerMail;
+
     return response;
   }
   // const customer = await this.customerRepo.findCustomerById(id);
@@ -125,92 +121,99 @@ class CustomerService {
   // }
   // return customer;
   async UpdateCustomerByAdmins(req) {
+    const response = {};
     try {
-        const id = req.params.id;
-        console.log(id);
-        const customer = await this.customerRepo.findCustomerById(id);
-  if (customer === null || customer === undefined) {
-    // If customer is not found, return a meaningful response
-    return { message: 'Customer not found', status: 404 };
-    }
-        const response = {};
-
-        const { firstName, lastName, email, active } = req.body;
-
-        const updatedCustomer = {
-            firstName,
-            lastName,
-            email,
-            active,
-        };
-
-        const updatedcustomer = await this.customerRepo.UpdateCustomer(
-            id,
-            req.body
-        );
-
-        response.message = updatedcustomer;
-
+      const id = req.params.id;
+      const customer = await this.customerRepo.findCustomerById(id);
+      
+      if (!customer) {
+        response.message = CONSTANTS.INVALID_CUSTOMER_ID;
+        response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
         return response;
+      }
+
+      const { firstName, lastName, email, active } = req.body;
+
+      const updatedCustomer = {
+        firstName,
+        lastName,
+        email,
+        active,
+      };
+
+      const result = await this.customerRepo.UpdateCustomer(
+        id,
+        updatedCustomer
+      );
+      response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+      response.message = CONSTANTS.CUSTOMER_PROFILE_UPDATED
+
+      return response;
     } catch (error) {
-        throw error; // Throw the error to be caught by higher-level error handling
+      throw error; // Throw the error to be caught by higher-level error handling
     }
-}
+  }
 
-
-async UpdateCustomer(req) {
+  async UpdateCustomer(req) {
     try {
-        const id = req.id;
-        console.log('id', id);
-        const response = {};
+      const id = req.id;
+      console.log("id", id);
+      const response = {};
 
-        const { firstName, lastName, email, password } = req.body;
+      const { firstName, lastName, email, password } = req.body;
 
-        const hashedPass = await HashPassword(password);
+      const hashedPass = await HashPassword(password);
 
-        const updatedCustomer = {
-            firstName,
-            lastName,
-            email,
-            password: hashedPass
-        };
+      const updatedCustomer = {
+        firstName,
+        lastName,
+        email,
+        password: hashedPass,
+      };
 
-        const updatedcustomer = await this.customerRepo.UpdateCustomer(
-            id,
-            updatedCustomer
-        );
+      const updatedcustomer = await this.customerRepo.UpdateCustomer(
+        id,
+        updatedCustomer
+      );
 
-        if (updatedcustomer) {
-            response.message = CONSTANTS.USER_UPDATED;
-            response.status = CONSTANTS.SERVER_UPDATED_HTTP_CODE;
-        } else {
-            response.message = CONSTANTS.INVALID_CUSTOMER_ID;
-            response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
-        }
+      if (updatedcustomer) {
+        response.message = CONSTANTS.USER_UPDATED;
+        response.status = CONSTANTS.SERVER_UPDATED_HTTP_CODE;
+      } else {
+        response.message = CONSTANTS.INVALID_CUSTOMER_ID;
+        response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+      }
 
-        return response;
+      return response;
     } catch (error) {
-        throw error; // Throw the error to be caught by higher-level error handling
+      throw error; // Throw the error to be caught by higher-level error handling
     }
-}
-
+  }
 
   async getCustomerById(req) {
+    const response = {};
+
     try {
       const customerId = req.params.id;
       const customer = await this.customerRepo.findCustomerById(customerId);
-      if (customer === null || customer === undefined) {
-        // If customer is not found, return a meaningful response
-        return { message: 'Customer not found', status: 404 };
+      if (!customer) {
+        response.message = CONSTANTS.INVALID_CUSTOMER_ID;
+        response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+        return response;
       }
-      return customer;
+      response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+      response.data = customer;
+      return response;
     } catch (error) {
-      throw error;
+      console.log(error);
+      response.message = error.message;
+      response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
+      return response;
     }
   }
 
   async getCustomers(req) {
-    const query = req.query.query
+    const query = req.query.query;
     const page = parseInt(req.query.page) || 1;
     const sort = req.query.sort || "ASC";
     // console.log("page ", page);
@@ -218,19 +221,25 @@ async UpdateCustomer(req) {
     const pageSize = 10;
     const skip = (page - 1) * pageSize;
     const limit = pageSize;
-
+    const response = {};
     if (query) {
       try {
-        const searchCustomers = await this.customerRepo.searchCustomers(query, skip, limit, sort);
-        return searchCustomers;
+        const searchCustomers = await this.customerRepo.searchCustomers(
+          query,
+          skip,
+          limit,
+          sort
+        );
+        response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+        response.data = searchCustomers;
+        return response;
       } catch (error) {
         return error;
       }
     } else {
-      const response = {};
       response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
       const customers = await this.customerRepo.getCustomers(skip, limit, sort);
-      response.customers = customers;
+      response.data = customers;
       return response;
     }
   }
@@ -243,7 +252,7 @@ async UpdateCustomer(req) {
       const deletedCustomer = await this.customerRepo.Delete(customerId);
 
       if (!deletedCustomer) {
-        response.message = CONSTANTS.USER_NOT_FOUND;
+        response.message = CONSTANTS.ALREADY_CUSTOMER_DELETED;
         response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
         return response;
       }
@@ -253,17 +262,19 @@ async UpdateCustomer(req) {
       return response;
     } catch (error) {
       response.message = "An error occurred while deleting the customer.";
-      response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+      response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
       console.error(error);
     }
   }
 
   async getProfileCustomer(req) {
+    const response = {}
     try {
       const customerId = req.id;
-      console.log('profileid',customerId);
       const customer = await this.customerRepo.findCustomerById(customerId);
-      return customer;
+      response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+      response.data = customer;
+      return response;
     } catch (error) {
       throw error;
     }

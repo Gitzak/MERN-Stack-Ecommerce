@@ -10,10 +10,7 @@ class UserRepository {
     return user;
   }
 
-  async Findbyuser(userId) {
-    const user = await this.userModel.findById(userId);
-    return user;
-  }
+
 
 
   async FindById(userId) {

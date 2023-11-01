@@ -47,14 +47,9 @@ exports.updateCustomerData = async (req, res) => {
 
 // Get Customer by ID (only for admin and manager)
 exports.getCustomerById = async (req, res) => {
-  console.log('getbyid');
-  console.log(req.params.id);
   try {
     const Customer = await CustomerServ.getCustomerById(req);
-    if (!Customer) {
-      return res.status(404).json({ message: "Customer not found" });
-    }
-    return res.status(200).json({ status: 200, data: [Customer] });
+    res.json(Customer);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }

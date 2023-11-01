@@ -9,7 +9,7 @@ exports.isAdmin = (req, res, next) => {
   if (!token) {
     return res.json({
       message: CONSTANTS.ROUTE_NOT_FOUND,
-      status: CONSTANTS.SERVER_ERROR_HTTP_CODE,
+      status: CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE,
     });
   }
 
@@ -18,8 +18,8 @@ exports.isAdmin = (req, res, next) => {
 
   if (req.userRole !== "ADMIN") {
     return res.json({
-      message: CONSTANTS.SERVER_IFORBIDDEN_HTTP_CODE,
-      status: CONSTANTS.INSUFFICIENT_PRIVILEGE_MESSAGE,
+      message: CONSTANTS.INSUFFICIENT_PRIVILEGE,
+      status: CONSTANTS.SERVER_FORBIDDEN_HTTP_CODE,
     });
   }
 

@@ -48,6 +48,7 @@ module.exports.ALREADY_CUSTOMER_DELETED = 'No Customer Deleted';
 module.exports.CUSTOMER_NOT_ACTIVE = 'Your account is not active';
 module.exports.INVALID_CUSTOMER_ID = "Invalid customer ID.";
 module.exports.CUSTOMER_PROFILE_UPDATED = "Profile updated successfully";
+module.exports.CUSTOMER_NOT_VALID = "Check your email to validate your account ";
 
 /* Category API Success & Error Messages */
 module.exports.CATEGORY_CREATED_SUCCESS = "Category created successfully";

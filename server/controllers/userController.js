@@ -27,12 +27,9 @@ exports.updateUserData = async (req, res) => {
 // Get user by ID
 exports.getUserById = async (req, res) => {
   try {
-    const userId = req.params.id;
-    const user = await userServ.getUserById(userId);
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    return res.status(200).json({ status: 200, data: [user] });
+    
+    const user = await userServ.getUserById(req);
+    res.json(user);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
@@ -46,9 +43,9 @@ exports.getUsers = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
-}
+};
 
-// delete user 
+// delete user
 exports.deleteUser = async (req, res) => {
   try {
     const userId = req.params.id;

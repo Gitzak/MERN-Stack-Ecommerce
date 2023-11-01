@@ -15,18 +15,18 @@ class UserService {
       const { email, password } = req.body;
       const user = await this.userRepo.Login(email);
       if (!user) {
-        response.message = CONSTANTS.SERVER_USER_INVALID_CREDENTIALS;
+        response.message = CONSTANTS.INVALID_CREDENTIALS;
         response.status = CONSTANTS.SERVER_INVALID_CREDENTIALS;
         return response;
       }
       if (!user.active) {
         response.message = CONSTANTS.USER_NOT_ACTIVE;
-        response.status = CONSTANTS.SERVER_IFORBIDDEN_HTTP_CODE;
+        response.status = CONSTANTS.SERVER_FORBIDDEN_HTTP_CODE;
         return response;
       }
       const passwordMatch = await VerifyPassword(password, user.password);
       if (!passwordMatch) {
-        response.message = CONSTANTS.SERVER_USER_INVALID_CREDENTIALS;
+        response.message = CONSTANTS.INVALID_CREDENTIALS;
         response.status = CONSTANTS.SERVER_INVALID_CREDENTIALS;
         return response;
       }
@@ -56,13 +56,9 @@ class UserService {
         email: user.email,
         userName: user.userName,
         role: user.role,
-        creationDate: user.creationDate,
-        lastLogin: user.lastLogin
-          ? new Date(user.lastLogin).toLocaleString()
-          : null, // Format the timestamp
-        lastUpdate: user.lastUpdate
-          ? new Date(user.lastUpdate).toLocaleString()
-          : null, // Format the timestamp
+        creationDate: user.creationDateFormatted,
+        lastLogin: user.lastLoginFormatted,
+        lastUpdate: user.lastUpdateFormatted,
         active: user.active,
       };
       response.token = token;
@@ -79,13 +75,7 @@ class UserService {
     const response = {};
 
     const { role, userName, firstName, lastName, email, password } = req.body;
-
-    //todo: we must add validation
-    if (!role || !userName || !firstName || !lastName || !email || !password) {
-      response.message = CONSTANTS.FIELD_EMPTY;
-      response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
-      return response;
-    }
+    console.log(req.validation);
 
     const hashedPass = await HashPassword(password);
 
@@ -103,7 +93,7 @@ class UserService {
 
     if (!user) {
       response.message = CONSTANTS.SERVER_ERROR_MESSAGE;
-      response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+      response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
       return response;
     }
 
@@ -114,17 +104,18 @@ class UserService {
 
     response.message = CONSTANTS.USER_CREATED;
     response.status = CONSTANTS.SERVER_CREATED_HTTP_CODE;
-    response.data = user;
-    response.mail = sendedMail;
+
     return response;
   }
 
   async UpdateUser(req) {
     const id = req.params.id;
-
+    console.log("here" ,id);
     const response = {};
 
     const { role, userName, firstName, lastName, email, active } = req.body;
+    
+    const currentTimestamp = Date.now();
 
     const updatedUser = {
       role,
@@ -133,26 +124,48 @@ class UserService {
       lastName,
       email,
       active,
+      lastUpdate: currentTimestamp
     };
 
-    const updateduser = await this.userRepo.UpdateUser(id, updatedUser);
 
+    const updateduser = await this.userRepo.UpdateUser(id, updatedUser);
     response.message = updateduser;
+
+  
 
     return response;
   }
 
-  async getUserById(userId) {
+  async getUserById(req) {
+    const userId = req.params.id;
+    const response = {};
     try {
       const user = await this.userRepo.FindById(userId);
-      return user;
+      if (!user) {
+        response.message = CONSTANTS.INVALID_USER_ID;
+        response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+        return response
+      }
+      response.data = {
+        ...user._doc,
+        creationDate: user.creationDateFormatted,
+        lastLogin: user.lastLoginFormatted,
+        lastUpdate: user.lastUpdateFormatted,
+      };
+      response.status = CONSTANTS.SERVER_OK_HTTP_CODE; 
+      console.log(user);
+      
+      return response
     } catch (error) {
-      throw error;
+      console.log(error);
+      response.message = error.message;
+      response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
+      return response; 
     }
   }
 
   async getUsers(req) {
-    const query = req.query.query
+    const query = req.query.query;
     const page = parseInt(req.query.page) || 1;
     const sort = req.query.sort || "ASC";
     // console.log("page ", page);
@@ -164,16 +177,22 @@ class UserService {
 
     if (query) {
       try {
-        const searchUsers = await this.userRepo.searchUsers(query, skip, limit, sort);
-        return searchUsers;
+        const searchUsers = await this.userRepo.searchUsers(
+          query,
+          skip,
+          limit,
+          sort
+        );
+        response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+        response.data = searchUsers;
+        return response;
       } catch (error) {
         return error;
       }
     } else {
-      const response = {};
       response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
       const users = await this.userRepo.getUsers(skip, limit, sort);
-      response.users = users;
+      response.data = users;
       return response;
     }
   }
@@ -183,35 +202,39 @@ class UserService {
     try {
       const searchedUsers = await this.userRepo.searchUsers(query);
 
-      return searchedUsers
+      return searchedUsers;
     } catch (error) {
-      return error
+      return error;
     }
-
   }
 
   async Delete(userId) {
     const response = {};
 
     try {
-      const user = await this.userRepo.Findbyuser(userId);
+      const user = await this.userRepo.FindById(userId);
 
       if (!user) {
-        response.message = CONSTANTS.USER_NOT_FOUND;
+        response.message = CONSTANTS.INVALID_USER_ID;
         response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
         return response;
       }
-
-      await this.userRepo.Delete(userId);
-
+      const deletedUser = await this.userRepo.Delete(userId);
+      if (!deletedUser) {
+        response.message = CONSTANTS.ALREADY_USER_DELETED;
+        response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+        return response;
+      }
       response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
       response.message = CONSTANTS.USER_DELETED;
+      return response;
     } catch (error) {
-      response.message = "An error occurred while deleting the user.";
-      response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+      response.message = CONSTANTS.SERVER_ERROR;
+      response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
       console.error(error);
+      return response;
     }
-    return response;
+   
   }
 }
 
