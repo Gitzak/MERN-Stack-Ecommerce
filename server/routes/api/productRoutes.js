@@ -4,9 +4,10 @@ const { isAdminManager } = require("../../middleware/isAdminManager");
 const { createProduct, listProducts, getProductById, updateProductData, deleteProduct } = require('../../controllers/productController')
 const { validateProductForm, validateProductFormUpdate } = require("../../middleware/ValidateFormMiddleweare");
 const { handleValidationErrors } = require("../../middleware/handleValidationErrors");
+const upload = require('../../middleware/multerMiddleware');
 
 //create new product
-router.post('/', isAdminManager, validateProductForm, handleValidationErrors, createProduct)
+router.post('/', isAdminManager, upload.array('images', 3), validateProductForm, handleValidationErrors, createProduct)
 //get all products list
 router.get('/', listProducts)
 //get product by id

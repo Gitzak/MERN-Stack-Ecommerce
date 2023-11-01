@@ -1,5 +1,6 @@
 const CONSTANTS = require("../constants");
 const config = require("../config/keys");
+const cloudinary = require('../utils/cloudinary')
 
 class ProductService {
   constructor(productRepo) {
@@ -8,13 +9,29 @@ class ProductService {
 
   async createProduct(req) {
     try {
+      const imagesUrlPromises = req.files.map(file => {
+        return new Promise((resolve, reject) => {
+          cloudinary.uploader.upload(file.path, (err, result) => {
+            if (err) {
+              console.log(err);
+              reject(err);
+            } else {
+              resolve(result.secure_url);
+            }
+          });
+        });
+      });
+
+      const imagesUrls = await Promise.all(imagesUrlPromises);
+
+      console.log(imagesUrls);
+
       const response = {};
-      const { sku, productImage, productName, subcategoryId, shortDescription,
-        longDescription, price, discountPrice, quantity, options, active } = req.body;
+      const { sku, productName, subcategoryId, shortDescription, longDescription, price, discountPrice, quantity, options, active } = req.body;
 
       const newProduct = {
         sku,
-        productImage,
+        productImages: imagesUrls,
         productName,
         subcategoryId,
         shortDescription,
@@ -39,7 +56,7 @@ class ProductService {
       response.data = product;
       return response;
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
@@ -48,11 +65,10 @@ class ProductService {
       const productId = req.params.id;
       const response = {};
 
-      const { sku, productImage, productName, subcategoryId, shortDescription, longDescription, price, discountPrice, quantity, options, active } = req.body;
+      const { sku, productName, subcategoryId, shortDescription, longDescription, price, discountPrice, quantity, options, active } = req.body;
 
       const updatedProduct = {
         sku,
-        productImage,
         productName,
         subcategoryId,
         shortDescription,
@@ -83,7 +99,7 @@ class ProductService {
         throw error; // Re-throw any other error types
       }
     }
-  }
+  } 
 
   async getProductById(req) {
     try {

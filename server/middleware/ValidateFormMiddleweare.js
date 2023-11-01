@@ -84,6 +84,18 @@ exports.validateProductForm = [
     body('quantity').isInt().withMessage('Quantity must be an integer value'),
     body('options').isArray().withMessage('Options must be an array'),
     body('active').isBoolean().withMessage('Active must be a boolean value'),
+    // Multi Images Add
+    body('images').custom((value, { req }) => {
+        if (!req.files) {
+            return true;
+        }
+        const allowedExtensions = ['jpg', 'jpeg', 'png'];
+        const fileExtension = req.file.originalname.split('.').pop().toLowerCase();
+        if (!allowedExtensions.includes(fileExtension)) {
+            throw new Error('Invalid image format. Use jpg, jpeg, or png.');
+        }
+        return true;
+    })
 ];
 
 exports.validateProductFormUpdate = [

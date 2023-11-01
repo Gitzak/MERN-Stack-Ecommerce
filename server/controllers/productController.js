@@ -2,7 +2,7 @@ const { ProductService } = require("../services/productService");
 const { ProductRepository } = require("../repositories/productRepository");
 const Product = require("../models/Product");
 
-const { getsubCategoryNameById } =  require('../controllers/subcategoriesController')
+const { getsubCategoryNameById } = require('../controllers/subcategoriesController')
 
 const ProductRepo = new ProductRepository(Product);
 const ProductServ = new ProductService(ProductRepo);
@@ -38,9 +38,9 @@ exports.listProducts = async (req, res) => {
 exports.getProductById = async (req, res) => {
   try {
     const product = await ProductServ.getProductById(req);
-    const subCaId = product.subcategoryId 
+    const subCaId = product.subcategoryId
     const subcategoryName = await getsubCategoryNameById(subCaId)
-    const updatedProduct = {...product._doc,subcategoryName: subcategoryName };
+    const updatedProduct = { ...product._doc, subcategoryName: subcategoryName };
     res.json(updatedProduct);
   } catch (error) {
     console.error(error);
