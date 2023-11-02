@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 const { body } = require('express-validator');
 const CONSTANTS = require("../constants/index");
-=======
-const { body } = require("express-validator");
->>>>>>> 83825088ed01d0a4b3424bef9b678da8978a646d
 
 exports.validateUserLogin = [body("email", "Email is required").notEmpty(), body("email", "Invalid email format").isEmail(), body("password", "Password is required").notEmpty()];
 
