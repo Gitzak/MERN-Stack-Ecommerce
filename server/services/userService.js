@@ -129,6 +129,13 @@ class UserService {
 
         const { role, userName, firstName, lastName, email, active } = req.body;
 
+        const user = await this.userRepo.FindById(id);
+        if (!user) {
+            response.message = CONSTANTS.INVALID_USER_ID;
+            response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+            return response;
+        }
+
         const existingUserByUserName = await this.userRepo.findUserByNameExcludingId(userName, id);
         const existingUserByEmail = await this.userRepo.findUserByEmailExcludingId(email, id);
 
@@ -192,7 +199,7 @@ class UserService {
         } catch (error) {
             // console.log(error);
             response.message = error.message;
-            response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
+            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
             return response;
         }
     }
@@ -258,7 +265,7 @@ class UserService {
             return response;
         } catch (error) {
             response.message = CONSTANTS.SERVER_ERROR;
-            response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
+            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
             console.error(error);
             return response;
         }

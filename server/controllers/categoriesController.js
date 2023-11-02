@@ -1,6 +1,7 @@
 const { CategoriesService } = require("../services/categoriesService");
 const { CategoryRepository } = require("../repositories/categoryRepository");
 const Categories = require("../models/Categories.js");
+const CONSTANTS = require("../constants/index");
 
 const CategoriesRepo = new CategoryRepository(Categories);
 const CategoriesServ = new CategoriesService(CategoriesRepo);

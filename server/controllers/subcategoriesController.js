@@ -2,6 +2,7 @@ const { subCategoriesService } = require("../services/subCategoriesService");
 const { subCategoryRepository } = require("../repositories/subCategoryRepository");
 const subCategories = require("../models/subCategories.js");
 const Category = require("../models/Categories.js"); // Adjust the path if needed
+const CONSTANTS = require("../constants/index");
 
 const subCategoriesRepo = new subCategoryRepository(subCategories, Category);
 const subCategoriesServ = new subCategoriesService(subCategoriesRepo);
@@ -12,7 +13,7 @@ exports.createsubCategories = async (req, res) => {
         const newsubCategories = await subCategoriesServ.createsubCategories(req);
         res.json(newsubCategories);
     } catch (error) {
-        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };
 
@@ -22,7 +23,7 @@ exports.getsubCategories = async (req, res) => {
         const subcategories = await subCategoriesServ.getsubCategories(req);
         res.json(subcategories);
     } catch (error) {
-        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };
 
@@ -32,7 +33,7 @@ exports.getsubCategoryById = async (req, res) => {
         const foundedsubCategory = await subCategoriesServ.getsubCategoryById(req);
         res.json(foundedsubCategory);
     } catch (error) {
-        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };
 
@@ -42,7 +43,7 @@ exports.getsubCategoryNameById = async (id) => {
         // console.log(foundedsubCategoryName);
         return foundedsubCategoryName;
     } catch (error) {
-        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };
 
@@ -52,7 +53,7 @@ exports.updatesubCategories = async (req, res) => {
         const updatedsubCategories = await subCategoriesServ.updatesubCategories(req);
         res.json(updatedsubCategories);
     } catch (error) {
-        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };
 
@@ -62,6 +63,6 @@ exports.deletesubCategories = async (req, res) => {
         const result = await subCategoriesServ.deletesubCategories(req);
         res.json(result);
     } catch (error) {
-        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };

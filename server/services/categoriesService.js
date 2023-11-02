@@ -30,7 +30,7 @@ class CategoriesService {
 
             if (!category) {
                 response.message = CONSTANTS.SERVER_ERROR;
-                response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
+                response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
                 return response;
             }
 
@@ -39,7 +39,7 @@ class CategoriesService {
             return response;
         } catch (error) {
             response.message = CONSTANTS.SERVER_ERROR;
-            response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
+            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
             return response;
         }
     }
@@ -68,7 +68,7 @@ class CategoriesService {
                 return response;
             } catch (error) {
                 response.message = error.message;
-                response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
+                response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
                 return response;
             }
         } else {
@@ -95,7 +95,7 @@ class CategoriesService {
             response.data = foundedCategory;
             return response;
         } catch (error) {
-            response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
+            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
             response.message = CONSTANTS.SERVER_ERROR;
             return response;
         }
@@ -133,7 +133,7 @@ class CategoriesService {
             (response.message = CONSTANTS.CATEGORY_UPDATED_SUCCESS), (response.status = CONSTANTS.SERVER_UPDATED_HTTP_CODE);
             return response;
         } catch (error) {
-            response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
+            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
             response.message = CONSTANTS.SERVER_ERROR;
             return response;
         }
@@ -159,7 +159,7 @@ class CategoriesService {
             response.message = CONSTANTS.CATEGORY_DELETED_SUCCESS;
             return response;
         } catch (error) {
-            response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
+            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
             response.message = CONSTANTS.SERVER_ERROR;
             return response;
         }

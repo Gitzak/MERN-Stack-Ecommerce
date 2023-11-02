@@ -15,6 +15,16 @@ class CustomerRepository {
         return customer;
     }
 
+    async findCustomerByEmail(email) {
+        const customer = await this.customerModel.findOne({ email: email }).select("-password");
+        return customer;
+    }
+
+    async findCustomerByEmailExcludingId(email, excludeId) {
+        const customer = await this.customerModel.findOne({ email: email, _id: { $ne: excludeId } }).select("-password");
+        return customer;
+    }
+
     async RegisterCustomer(customer) {
         const { firstName, lastName, email, hashedPass } = customer;
 

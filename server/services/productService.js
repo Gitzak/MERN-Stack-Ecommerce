@@ -65,7 +65,7 @@ class ProductService {
 
             if (!product) {
                 response.message = CONSTANTS.SERVER_ERROR;
-                response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
+                response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
                 return response;
             }
 
@@ -75,7 +75,7 @@ class ProductService {
             return response;
         } catch (error) {
             response.message = CONSTANTS.SERVER_ERROR;
-            response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
+            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
             return response;
         }
     }
@@ -177,7 +177,7 @@ class ProductService {
             return response;
         } catch (error) {
             response.message = CONSTANTS.SERVER_ERROR;
-            response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
+            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
             console.error(error);
         }
     }

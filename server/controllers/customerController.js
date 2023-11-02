@@ -1,6 +1,7 @@
 const { CustomerService } = require("../services/customerService");
 const { CustomerRepository } = require("../repositories/customerRepository");
 const Customer = require("../models/Customer");
+const CONSTANTS = require("../constants/index");
 
 const CustomerRepo = new CustomerRepository(Customer);
 const CustomerServ = new CustomerService(CustomerRepo);
@@ -11,7 +12,7 @@ exports.loginCustomer = async (req, res) => {
         const user = await CustomerServ.loginCustomer(req);
         res.json(user);
     } catch (error) {
-        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };
 
@@ -21,7 +22,7 @@ exports.registerCustomer = async (req, res) => {
         const newCustomer = await CustomerServ.RegisterCustomer(req);
         res.json(newCustomer);
     } catch (error) {
-        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };
 
@@ -31,7 +32,7 @@ exports.updateCustomerDataByAdmins = async (req, res) => {
         const updatedCustomer = await CustomerServ.UpdateCustomerByAdmins(req);
         res.json(updatedCustomer);
     } catch (error) {
-        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };
 
@@ -41,7 +42,7 @@ exports.updateCustomerData = async (req, res) => {
         const updatedCustomer = await CustomerServ.UpdateCustomer(req);
         res.json(updatedCustomer);
     } catch (error) {
-        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };
 
@@ -51,7 +52,7 @@ exports.getCustomerById = async (req, res) => {
         const Customer = await CustomerServ.getCustomerById(req);
         res.json(Customer);
     } catch (error) {
-        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };
 
@@ -61,7 +62,7 @@ exports.getCustomers = async (req, res) => {
         const results = await CustomerServ.getCustomers(req);
         res.json(results);
     } catch (error) {
-        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };
 
@@ -71,7 +72,7 @@ exports.deleteCustomer = async (req, res) => {
         const result = await CustomerServ.Delete(req);
         res.json(result);
     } catch (error) {
-        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };
 
@@ -82,7 +83,7 @@ exports.getProfileCustomer = async (req, res) => {
         const profile = await CustomerServ.getProfileCustomer(req);
         res.json(profile);
     } catch (error) {
-        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };
 
@@ -92,6 +93,6 @@ exports.validateAccCustomer = async (req, res) => {
         const validation = await CustomerServ.validateAccCustomer(req);
         res.json(validation);
     } catch (error) {
-        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };

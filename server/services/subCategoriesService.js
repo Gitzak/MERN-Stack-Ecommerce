@@ -33,7 +33,7 @@ class subCategoriesService {
 
             if (!subcategory) {
                 response.message = CONSTANTS.SERVER_ERROR;
-                response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
+                response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
                 return response;
             }
 
@@ -42,7 +42,7 @@ class subCategoriesService {
             return response;
         } catch {
             response.message = CONSTANTS.SERVER_ERROR;
-            response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
+            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
             return response;
         }
     }
@@ -67,7 +67,7 @@ class subCategoriesService {
                 return response;
             } catch (error) {
                 response.message = error.message;
-                response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
+                response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
                 return response;
             }
         } else {
@@ -95,7 +95,7 @@ class subCategoriesService {
             return response;
         } catch (error) {
             response.message = CONSTANTS.SERVER_ERROR;
-            response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
+            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
             return response;
         }
     }
@@ -114,7 +114,7 @@ class subCategoriesService {
             return foundedsubCategoryName;
         } catch (error) {
             response.message = CONSTANTS.SERVER_ERROR;
-            response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
+            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
             return response;
         }
     }
@@ -153,7 +153,7 @@ class subCategoriesService {
             return response;
         } catch (error) {
             response.message = CONSTANTS.SERVER_ERROR;
-            response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
+            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
             return response;
         }
     }
@@ -177,7 +177,7 @@ class subCategoriesService {
             return response;
         } catch (error) {
             response.message = CONSTANTS.SERVER_ERROR;
-            response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
+            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
             return response;
         }
     }

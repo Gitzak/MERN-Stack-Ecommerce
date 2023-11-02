@@ -199,7 +199,7 @@ const SendOrderMail = async (order) => {
             if (err) {
                 reject({
                     message: CONSTANTS.EMAIL_SEND_ERROR,
-                    status: CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE,
+                    status: CONSTANTS.SERVER_ERROR_HTTP_CODE,
                 });
             } else {
                 resolve({

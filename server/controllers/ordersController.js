@@ -3,6 +3,7 @@ const { OrderRepository } = require("../repositories/orderRepository");
 const Orders = require("../models/Order.js");
 const { ProductRepository } = require("../repositories/productRepository");
 const Product = require("../models/Product");
+const CONSTANTS = require("../constants/index");
 
 const OrderRepo = new OrderRepository(Orders);
 const ProductRepo = new ProductRepository(Product);
@@ -20,7 +21,7 @@ exports.createOrder = async (req, res) => {
         const newOrders = await OrdersServ.createOrders(req);
         res.json(newOrders);
     } catch (error) {
-        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };
 
@@ -30,7 +31,7 @@ exports.listOrders = async (req, res) => {
         const orders = await OrdersServ.getOrders(req);
         res.json(orders);
     } catch (error) {
-        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };
 
@@ -40,7 +41,7 @@ exports.getOrderById = async (req, res) => {
         const Orders = await OrdersServ.getOrderById(req);
         res.json(Orders);
     } catch (error) {
-        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };
 
@@ -50,6 +51,6 @@ exports.updateOrder = async (req, res) => {
         const updatedOrders = await OrdersServ.updateOrders(req);
         res.json(updatedOrders);
     } catch (error) {
-        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };

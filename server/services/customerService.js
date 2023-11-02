@@ -75,10 +75,11 @@ class CustomerService {
 
         const { firstName, lastName, email, password } = req.body;
 
-        //todo: we must add validation
-        if (!firstName || !lastName || !email || !password) {
-            response.message = CONSTANTS.FIELD_EMPTY;
-            response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+        const existingCustomerByEmail = await this.customerRepo.findCustomerByEmail(email);
+
+        if (existingCustomerByEmail) {
+            response.message = "Email already exists.";
+            response.status = CONSTANTS.SERVER_BAD_REQUEST_HTTP_CODE;
             return response;
         }
 
@@ -113,12 +114,7 @@ class CustomerService {
 
         return response;
     }
-    // const customer = await this.customerRepo.findCustomerById(id);
-    // if (customer === null || customer === undefined) {
-    //   // If customer is not found, return a meaningful response
-    //   return { message: 'Customer not found', status: 404 };
-    // }
-    // return customer;
+
     async UpdateCustomerByAdmins(req) {
         const response = {};
         try {
@@ -132,6 +128,16 @@ class CustomerService {
             }
 
             const { firstName, lastName, email, active } = req.body;
+
+            const existingCustomerByEmail = await this.customerRepo.findCustomerByEmailExcludingId(email, id);
+
+            console.log(existingCustomerByEmail);
+
+            if (existingCustomerByEmail) {
+                response.message = "Email already exists.";
+                response.status = CONSTANTS.SERVER_BAD_REQUEST_HTTP_CODE;
+                return response;
+            }
 
             const updatedCustomer = {
                 firstName,
@@ -153,10 +159,19 @@ class CustomerService {
     async UpdateCustomer(req) {
         try {
             const id = req.id;
-            // console.log("id", id);
             const response = {};
 
             const { firstName, lastName, email, password } = req.body;
+
+            const existingCustomerByEmail = await this.customerRepo.findCustomerByEmailExcludingId(email, id);
+
+            console.log(existingCustomerByEmail);
+
+            if (existingCustomerByEmail) {
+                response.message = "Email already exists.";
+                response.status = CONSTANTS.SERVER_BAD_REQUEST_HTTP_CODE;
+                return response;
+            }
 
             const hashedPass = await HashPassword(password);
 
@@ -185,7 +200,6 @@ class CustomerService {
 
     async getCustomerById(req) {
         const response = {};
-
         try {
             const customerId = req.params.id;
             const customer = await this.customerRepo.findCustomerById(customerId);
@@ -198,9 +212,8 @@ class CustomerService {
             response.data = customer;
             return response;
         } catch (error) {
-            // console.log(error);
-            response.message = error.message;
-            response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
+            response.message = CONSTANTS.SERVER_ERROR;
+            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
             return response;
         }
     }
@@ -250,7 +263,7 @@ class CustomerService {
             return response;
         } catch (error) {
             response.message = "An error occurred while deleting the customer.";
-            response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
+            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
             console.error(error);
         }
     }

@@ -1,6 +1,7 @@
 const { ProductService } = require("../services/productService");
 const { ProductRepository } = require("../repositories/productRepository");
 const Product = require("../models/Product");
+const CONSTANTS = require("../constants/index");
 
 const { getsubCategoryNameById } = require("../controllers/subcategoriesController");
 
@@ -13,7 +14,7 @@ exports.createProduct = async (req, res) => {
         const newProduct = await ProductServ.createProduct(req);
         res.json(newProduct);
     } catch (error) {
-        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };
 
@@ -23,7 +24,7 @@ exports.listProducts = async (req, res) => {
         const products = await ProductServ.getProducts(req);
         res.json(products);
     } catch (error) {
-        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };
 
@@ -36,7 +37,7 @@ exports.getProductById = async (req, res) => {
         const updatedProduct = { ...product._doc, subcategoryName: subcategoryName };
         res.json(updatedProduct);
     } catch (error) {
-        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };
 
@@ -46,7 +47,7 @@ exports.updateProductData = async (req, res) => {
         const updatedProduct = await ProductServ.updateProduct(req);
         res.json(updatedProduct);
     } catch (error) {
-        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };
 
@@ -56,6 +57,6 @@ exports.deleteProduct = async (req, res) => {
         const result = await ProductServ.deleteProduct(req);
         res.json(result);
     } catch (error) {
-        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };

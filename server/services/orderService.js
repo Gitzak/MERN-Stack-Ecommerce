@@ -96,7 +96,7 @@ class OrdersService {
 
             if (!order) {
                 response.message = CONSTANTS.SERVER_ERROR;
-                response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
+                response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
                 return response;
             }
 
@@ -107,7 +107,7 @@ class OrdersService {
             return response;
         } catch {
             response.message = error.message;
-            response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
+            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
             return response;
         }
     }
@@ -162,7 +162,7 @@ class OrdersService {
             return foundedOrder;
         } catch (error) {
             response.message = error.message;
-            response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
+            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
             return response;
         }
     }
@@ -191,7 +191,7 @@ class OrdersService {
             return response;
         } catch (error) {
             response.message = error.message;
-            response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
+            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
             return response;
         }
     }
