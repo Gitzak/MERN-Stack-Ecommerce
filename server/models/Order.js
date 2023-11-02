@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const { ORDERS_STATUS } = require("../constants");
 
 const orderSchema = new mongoose.Schema({
-    customerId: {
+    customerID: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Customer",
         required: true,
@@ -18,12 +18,7 @@ const orderSchema = new mongoose.Schema({
         {
             itemID: String,
             itemName: String,
-            itemOptions: [
-                {
-                    label: String,
-                    option: String
-                }
-            ],
+            itemOptions: String,
             quantity: Number,
             unitPrice: Number,
             totalPrice: Number,
@@ -36,6 +31,14 @@ const orderSchema = new mongoose.Schema({
     cartTotalPrice: {
         type: Number,
         default: 0,
+    },
+    cartSubTotalPrice: {
+        type: Number,
+        default: 0,
+    },
+    tvaApplied: {
+        type: Number,
+        default: 20,
     },
     status: {
         type: String,

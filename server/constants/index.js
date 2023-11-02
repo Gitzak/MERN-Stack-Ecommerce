@@ -11,6 +11,8 @@ exports.ORDERS_STATUS = {
     Cancled: "Cancled",
 };
 
+exports.ORDERS_TVA = 0.2
+
 /* HTTP status code constant starts */
 module.exports.SERVER_OK_HTTP_CODE = 200;
 module.exports.SERVER_CREATED_HTTP_CODE = 201;

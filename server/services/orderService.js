@@ -31,58 +31,61 @@ class OrdersService {
                 response.status = CONSTANTS.SERVER_BAD_REQUEST_HTTP_CODE;
                 return response;
             }
-            let totalOrderPrice = 0;
+            let subTotalOrderPrice = 0;
             const orderItems = [];
 
             for (const item of cartItems) {
                 // Verify product existence and quantity
-                const product = await this.productRepo.getProductById(
-                    item.productId
-                );
+                const product = await this.productRepo.getProductById(item.productId);
+
+                // console.log(product);
+
                 if (!product || product.quantity < item.quantity) {
-                    response.message =
-                        "Product not available in the required quantity";
+                    response.message = product.productName + " not available in the required quantity";
                     response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
                     return response;
                 }
 
                 // Check product options
+
                 if (!this.validateProductOptions(product, item.itemOptions)) {
                     response.message = "Invalid product options";
                     response.status = CONSTANTS.SERVER_BAD_REQUEST_HTTP_CODE;
                     return response;
                 }
 
-                // Calculate the total price for this item and add it to totalOrderPrice
+                // Calculate the total price for this item and add it to subTotalOrderPrice
                 const itemPrice = product.price * item.quantity;
-                totalOrderPrice += itemPrice;
+                subTotalOrderPrice += itemPrice;
 
                 // Decrease the product's quantity in the database
-                // await this.productRepo.updateProductQuantity(product.id, product.quantity - item.quantity);
+                await this.productRepo.updateProduct(product.id, { quantity: product.quantity - item.quantity });
+
+                const formattedItemOptions = item.itemOptions.map((option) => `${option.label}: ${option.option}`).join(", ");
 
                 // Create an orderItem object and add it to the orderItems array
                 orderItems.push({
                     itemID: product.id,
-                    itemName: product.name,
+                    itemName: product.productName,
                     quantity: item.quantity,
                     unitPrice: product.price,
-                    itemOptions: item.itemOptions,
-                    totalPrice: itemPrice
+                    itemOptions: formattedItemOptions,
+                    totalPrice: itemPrice,
                 });
-
             }
 
-            console.log(orderItems);
-            
-            return;
+            const totalTva = subTotalOrderPrice * (1 * CONSTANTS.ORDERS_TVA);
+
+            const cartTotalPrice = totalTva + subTotalOrderPrice;
+
             const newOrder = {
                 customerID,
-                    customerFirstName,
-                    customerLastName,
-                customerId: customerID,
-                customerFirstName: customerFirstName,
-                customerLastName: customerLastName,
+                customerFirstName,
+                customerLastName,
                 orderItems,
+                cartSubTotalPrice: subTotalOrderPrice,
+                tvaApplied: CONSTANTS.ORDERS_TVA,
+                cartTotalPrice: cartTotalPrice,
             };
 
             const order = await this.orderRepo.CreateOrder(newOrder);
@@ -105,14 +108,10 @@ class OrdersService {
 
     // Function to validate product options
     validateProductOptions(product, itemOptions) {
-        for (const option of itemOptions) {
-            const optionExists = product.options.some(
-                (productOption) =>
-                    productOption.label === option.label &&
-                    productOption.values.includes(option.option)
-            );
+        for (const itemOption of itemOptions) {
+            const productOption = product.options.find((option) => option.label === itemOption.label);
 
-            if (!optionExists) {
+            if (!productOption || !productOption.option.includes(itemOption.option)) {
                 return false;
             }
         }
@@ -173,10 +172,7 @@ class OrdersService {
                 status,
             };
 
-            const updatedOrderMessage = await this.orderRepo.UpdateOrder(
-                id,
-                updatedOrder
-            );
+            const updatedOrderMessage = await this.orderRepo.UpdateOrder(id, updatedOrder);
 
             if (!updatedOrderMessage) {
                 response.message = "invalid order id";
