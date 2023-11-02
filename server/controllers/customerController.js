@@ -11,7 +11,7 @@ exports.loginCustomer = async (req, res) => {
         const user = await CustomerServ.loginCustomer(req);
         res.json(user);
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
     }
 };
 
@@ -21,7 +21,7 @@ exports.registerCustomer = async (req, res) => {
         const newCustomer = await CustomerServ.RegisterCustomer(req);
         res.json(newCustomer);
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
     }
 };
 
@@ -31,7 +31,7 @@ exports.updateCustomerDataByAdmins = async (req, res) => {
         const updatedCustomer = await CustomerServ.UpdateCustomerByAdmins(req);
         res.json(updatedCustomer);
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
     }
 };
 
@@ -41,7 +41,7 @@ exports.updateCustomerData = async (req, res) => {
         const updatedCustomer = await CustomerServ.UpdateCustomer(req);
         res.json(updatedCustomer);
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
     }
 };
 
@@ -51,7 +51,7 @@ exports.getCustomerById = async (req, res) => {
         const Customer = await CustomerServ.getCustomerById(req);
         res.json(Customer);
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
     }
 };
 
@@ -61,7 +61,7 @@ exports.getCustomers = async (req, res) => {
         const results = await CustomerServ.getCustomers(req);
         res.json(results);
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
     }
 };
 
@@ -71,18 +71,18 @@ exports.deleteCustomer = async (req, res) => {
         const result = await CustomerServ.Delete(req);
         res.json(result);
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
     }
 };
 
 // get customer profile (is customer)
 exports.getProfileCustomer = async (req, res) => {
-    console.log("profil");
+    // console.log("profil");
     try {
         const profile = await CustomerServ.getProfileCustomer(req);
         res.json(profile);
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
     }
 };
 
@@ -92,6 +92,6 @@ exports.validateAccCustomer = async (req, res) => {
         const validation = await CustomerServ.validateAccCustomer(req);
         res.json(validation);
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
     }
 };

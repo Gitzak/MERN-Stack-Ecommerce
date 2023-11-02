@@ -35,7 +35,7 @@ class CustomerRepository {
         const filter = { _id: id };
 
         const result = await this.customerModel.findOneAndUpdate({ _id: id }, customer, { upsert: true, new: true });
-        console.log(result);
+        // console.log(result);
         return result;
     }
 

@@ -13,7 +13,7 @@ exports.createProduct = async (req, res) => {
         const newProduct = await ProductServ.createProduct(req);
         res.json(newProduct);
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
     }
 };
 
@@ -23,7 +23,7 @@ exports.listProducts = async (req, res) => {
         const products = await ProductServ.getProducts(req);
         res.json(products);
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
     }
 };
 
@@ -36,7 +36,7 @@ exports.getProductById = async (req, res) => {
         const updatedProduct = { ...product._doc, subcategoryName: subcategoryName };
         res.json(updatedProduct);
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
     }
 };
 
@@ -46,7 +46,7 @@ exports.updateProductData = async (req, res) => {
         const updatedProduct = await ProductServ.updateProduct(req);
         res.json(updatedProduct);
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
     }
 };
 
@@ -56,6 +56,6 @@ exports.deleteProduct = async (req, res) => {
         const result = await ProductServ.deleteProduct(req);
         res.json(result);
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
     }
 };

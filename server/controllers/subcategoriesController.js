@@ -12,7 +12,7 @@ exports.createsubCategories = async (req, res) => {
         const newsubCategories = await subCategoriesServ.createsubCategories(req);
         res.json(newsubCategories);
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
     }
 };
 
@@ -22,7 +22,7 @@ exports.getsubCategories = async (req, res) => {
         const subcategories = await subCategoriesServ.getsubCategories(req);
         res.json(subcategories);
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
     }
 };
 
@@ -32,7 +32,7 @@ exports.getsubCategoryById = async (req, res) => {
         const foundedsubCategory = await subCategoriesServ.getsubCategoryById(req);
         res.json(foundedsubCategory);
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
     }
 };
 
@@ -42,7 +42,7 @@ exports.getsubCategoryNameById = async (id) => {
         // console.log(foundedsubCategoryName);
         return foundedsubCategoryName;
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
     }
 };
 
@@ -52,7 +52,7 @@ exports.updatesubCategories = async (req, res) => {
         const updatedsubCategories = await subCategoriesServ.updatesubCategories(req);
         res.json(updatedsubCategories);
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
     }
 };
 
@@ -62,6 +62,6 @@ exports.deletesubCategories = async (req, res) => {
         const result = await subCategoriesServ.deletesubCategories(req);
         res.json(result);
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
     }
 };

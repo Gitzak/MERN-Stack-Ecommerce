@@ -148,7 +148,8 @@ class subCategoriesService {
                 return response;
             }
 
-            (response.message = CONSTANTS.CATEGORY_UPDATED_SUCCESS), (response.status = CONSTANTS.SERVER_UPDATED_HTTP_CODE);
+            response.message = CONSTANTS.CATEGORY_UPDATED_SUCCESS;
+            response.status = CONSTANTS.SERVER_UPDATED_HTTP_CODE;
             return response;
         } catch (error) {
             response.message = CONSTANTS.SERVER_ERROR;

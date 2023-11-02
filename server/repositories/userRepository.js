@@ -15,6 +15,26 @@ class UserRepository {
         return userWithoutPass;
     }
 
+    async findUserByName(userName) {
+        const user = await this.userModel.findOne({ userName: userName }).select("-password");
+        return user;
+    }
+
+    async findUserByEmail(email) {
+        const user = await this.userModel.findOne({ email: email }).select("-password");
+        return user;
+    }
+
+    async findUserByNameExcludingId(userName, excludeId) {
+        const user = await this.userModel.findOne({ userName: userName, _id: { $ne: excludeId } }).select("-password");;
+        return user;
+    }
+
+    async findUserByEmailExcludingId(email, excludeId) {
+        const user = await this.userModel.findOne({ email: email, _id: { $ne: excludeId } }).select("-password");;
+        return user;
+    }
+
     async AddUser(user) {
         const { role, userName, firstName, lastName, email, hashedPass } = user;
 
@@ -33,25 +53,8 @@ class UserRepository {
     }
 
     async UpdateUser(id, user) {
-        const filter = { _id: id };
-
-        const updateData = {
-            $set: user,
-        };
-
-        const result = await this.userModel.updateOne(filter, updateData);
-
-        if (result.matchedCount === 1) {
-            return {
-                message: CONSTANTS.USER_UPDATED,
-                status: CONSTANTS.SERVER_UPDATED_HTTP_CODE,
-            };
-        } else {
-            return {
-                message: CONSTANTS.USER_NOT_FOUND,
-                status: CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE,
-            };
-        }
+        const userUpdated = await this.userModel.findOneAndUpdate({ _id: id }, user, { upsert: false, new: true });
+        return userUpdated;
     }
 
     async getUsers(skip, limit, sort) {

@@ -5,7 +5,7 @@ exports.handleValidationErrors = (req, res, next) => {
     req.validationErrors = [];
 
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors });
+        return res.status(400).json({ errors: errors.array() });
     }
 
     next();

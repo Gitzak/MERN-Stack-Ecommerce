@@ -75,7 +75,22 @@ class UserService {
         const response = {};
 
         const { role, userName, firstName, lastName, email, password } = req.body;
-        console.log(req.validation);
+
+        // Check if a product with the same name or SKU already exists
+        const existingUserByUserName = await this.userRepo.findUserByName(userName);
+        const existingUserByEmail = await this.userRepo.findUserByEmail(email);
+
+        if (existingUserByUserName) {
+            response.message = "UserName already exists.";
+            response.status = CONSTANTS.SERVER_BAD_REQUEST_HTTP_CODE;
+            return response;
+        }
+
+        if (existingUserByEmail) {
+            response.message = "Email already exists.";
+            response.status = CONSTANTS.SERVER_BAD_REQUEST_HTTP_CODE;
+            return response;
+        }
 
         const hashedPass = await HashPassword(password);
 
@@ -110,10 +125,24 @@ class UserService {
 
     async UpdateUser(req) {
         const id = req.params.id;
-        console.log("here", id);
         const response = {};
 
         const { role, userName, firstName, lastName, email, active } = req.body;
+
+        const existingUserByUserName = await this.userRepo.findUserByNameExcludingId(userName, id);
+        const existingUserByEmail = await this.userRepo.findUserByEmailExcludingId(email, id);
+
+        if (existingUserByUserName) {
+            response.message = "UserName already exists.";
+            response.status = CONSTANTS.SERVER_BAD_REQUEST_HTTP_CODE;
+            return response;
+        }
+
+        if (existingUserByEmail) {
+            response.message = "Email already exists.";
+            response.status = CONSTANTS.SERVER_BAD_REQUEST_HTTP_CODE;
+            return response;
+        }
 
         const currentTimestamp = Date.now();
 
@@ -128,8 +157,15 @@ class UserService {
         };
 
         const updateduser = await this.userRepo.UpdateUser(id, updatedUser);
-        response.message = updateduser;
 
+        if (!updateduser) {
+            response.message = CONSTANTS.USER_NOT_ACTIVE;
+            response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+            return response;
+        }
+
+        response.message = CONSTANTS.USER_UPDATED;
+        response.status = CONSTANTS.SERVER_UPDATED_HTTP_CODE;
         return response;
     }
 
@@ -150,11 +186,11 @@ class UserService {
                 lastUpdate: user.lastUpdateFormatted,
             };
             response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
-            console.log(user);
+            // console.log(user);
 
             return response;
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             response.message = error.message;
             response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
             return response;

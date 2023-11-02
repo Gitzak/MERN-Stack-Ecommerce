@@ -11,7 +11,7 @@ exports.ORDERS_STATUS = {
     Cancled: "Cancled",
 };
 
-exports.ORDERS_TVA = 0.2
+exports.ORDERS_TVA = 0.2;
 
 /* HTTP status code constant starts */
 module.exports.SERVER_OK_HTTP_CODE = 200;
@@ -83,7 +83,7 @@ module.exports.INVALID_ORDER_ID = "Invalid Order ID";
 
 /* General Errors  constants start */
 module.exports.ROUTE_NOT_FOUND = "You are at wrong place. Shhoooo...";
-module.exports.SERVER_ERROR = "Something bad happend. It's not you, it's me.";
+module.exports.SERVER_ERROR = "Something bad happened please try again";
 module.exports.INSUFFICIENT_PRIVILEGE = "You don't have enough privilege";
 module.exports.INVALID_CREDENTIALS = "Invalid credentials";
 

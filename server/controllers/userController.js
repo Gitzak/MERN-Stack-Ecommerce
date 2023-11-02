@@ -1,6 +1,7 @@
 const { UserService } = require("../services/userService");
 const { UserRepository } = require("../repositories/userRepository");
 const User = require("../models/User");
+const CONSTANTS = require("../constants/index");
 
 const userRepo = new UserRepository(User);
 const userServ = new UserService(userRepo);
@@ -10,7 +11,7 @@ exports.addNewUser = async (req, res) => {
         const newUser = await userServ.AddUser(req);
         res.json(newUser);
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
     }
 };
 
@@ -20,7 +21,7 @@ exports.updateUserData = async (req, res) => {
         const updatedUser = await userServ.UpdateUser(req);
         res.json(updatedUser);
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
     }
 };
 
@@ -30,7 +31,7 @@ exports.getUserById = async (req, res) => {
         const user = await userServ.getUserById(req);
         res.json(user);
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
     }
 };
 
@@ -40,7 +41,7 @@ exports.getUsers = async (req, res) => {
         const users = await userServ.getUsers(req);
         res.json(users);
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
     }
 };
 
@@ -51,6 +52,6 @@ exports.deleteUser = async (req, res) => {
         const result = await userServ.Delete(userId);
         res.json(result);
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
     }
 };

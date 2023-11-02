@@ -20,7 +20,7 @@ exports.createOrder = async (req, res) => {
         const newOrders = await OrdersServ.createOrders(req);
         res.json(newOrders);
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
     }
 };
 
@@ -30,7 +30,7 @@ exports.listOrders = async (req, res) => {
         const orders = await OrdersServ.getOrders(req);
         res.json(orders);
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
     }
 };
 
@@ -40,7 +40,7 @@ exports.getOrderById = async (req, res) => {
         const Orders = await OrdersServ.getOrderById(req);
         res.json(Orders);
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
     }
 };
 
@@ -50,6 +50,6 @@ exports.updateOrder = async (req, res) => {
         const updatedOrders = await OrdersServ.updateOrders(req);
         res.json(updatedOrders);
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR });
     }
 };

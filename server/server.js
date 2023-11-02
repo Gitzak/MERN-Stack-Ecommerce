@@ -6,7 +6,6 @@ const helmet = require('helmet');
 const cors = require('cors');
 const config = require('./config/keys');
 
-
 const {connection} = require('./utils/database')
 const database = connection();
 
