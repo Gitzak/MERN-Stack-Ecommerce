@@ -3,6 +3,11 @@ const mongoose = require("mongoose");
 const { ORDERS_STATUS } = require("../constants");
 
 const orderSchema = new mongoose.Schema({
+    orderNumber: {
+        type: Number,
+        required: true,
+        default: 1,
+    },
     customerID: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Customer",
@@ -45,6 +50,26 @@ const orderSchema = new mongoose.Schema({
         enum: [ORDERS_STATUS.Open, ORDERS_STATUS.Shipped, ORDERS_STATUS.Paid, ORDERS_STATUS.Closed, ORDERS_STATUS.Cancled],
         default: ORDERS_STATUS.Open,
     },
+});
+
+// Define a pre-save middleware to generate the orderNumber
+orderSchema.pre("save", async function (next) {
+    try {
+        // Check if it's a new order (not updating an existing one)
+        if (this.isNew) {
+            // Find the highest orderNumber in the database and increment it by 1
+            const highestOrder = await this.constructor.findOne({}).sort("-orderNumber").exec();
+            if (highestOrder) {
+                this.orderNumber = highestOrder.orderNumber + 1;
+            } else {
+                // If there are no existing orders, start with 1
+                this.orderNumber = 1;
+            }
+        }
+        next();
+    } catch (error) {
+        next(error);
+    }
 });
 
 module.exports = mongoose.model("Order", orderSchema);
