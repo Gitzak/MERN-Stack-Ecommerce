@@ -1,5 +1,13 @@
 const mongoose = require("mongoose");
 
+const productOptionSchema = new mongoose.Schema({
+    label: {
+        type: String,
+        required: true,
+    },
+    option: [String],
+});
+
 const productSchema = new mongoose.Schema({
     sku: {
         type: String,
@@ -41,9 +49,7 @@ const productSchema = new mongoose.Schema({
         required: true,
         default: 0,
     },
-    options: {
-        type: [String],
-    },
+    options: [productOptionSchema],
     active: {
         type: Boolean,
         default: false,
