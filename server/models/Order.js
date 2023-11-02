@@ -19,6 +19,9 @@ const orderSchema = new mongoose.Schema({
     customerLastName: {
         type: String,
     },
+    customerEmail: {
+        type: String,
+    },
     orderItems: [
         {
             itemID: String,

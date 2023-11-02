@@ -46,6 +46,7 @@ class CustomerService {
                 active: customer.active,
                 customerFirstName: customer.firstName,
                 customerLastName: customer.lastName,
+                customerEmail: customer.email,
                 userRole: "CUSTOMER",
             },
             config.jwt.secret

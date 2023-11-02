@@ -1,5 +1,7 @@
 const CONSTANTS = require("../constants");
 const config = require("../config/keys");
+const SendOrderMail = require("../utils/sendOrderMail");
+
 
 class OrdersService {
     constructor(orderRepo, productRepo) {
@@ -24,6 +26,7 @@ class OrdersService {
             const customerID = req.id;
             const customerFirstName = req.customerFirstName;
             const customerLastName = req.customerLastName;
+            const customerEmail = req.customerEmail;
             const { cartItems } = req.body;
 
             if (cartItems.length == 0) {
@@ -82,6 +85,7 @@ class OrdersService {
                 customerID,
                 customerFirstName,
                 customerLastName,
+                customerEmail,
                 orderItems,
                 cartSubTotalPrice: subTotalOrderPrice,
                 tvaApplied: CONSTANTS.ORDERS_TVA,

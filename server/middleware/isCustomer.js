@@ -14,10 +14,12 @@ exports.isCustomer = (req, res, next) => {
     }
 
     const userData = verify(token);
-    req.userRole = userData.userRole;
-    req.id = userData.customerId;
+
+    req.userRole          = userData.userRole;
+    req.id                = userData.customerId;
     req.customerFirstName = userData.customerFirstName;
-    req.customerLastName = userData.customerLastName;
+    req.customerLastName  = userData.customerLastName;
+    req.customerEmail     = userData.customerEmail;
 
     if (req.userRole !== "CUSTOMER") {
         return res.json({
