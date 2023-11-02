@@ -2,8 +2,9 @@ const CONSTANTS = require("../constants");
 const config = require("../config/keys");
 
 class OrdersService {
-    constructor(orderRepo) {
+    constructor(orderRepo, productRepo) {
         this.orderRepo = orderRepo;
+        this.productRepo = productRepo;
     }
 
     // Create new order
@@ -23,20 +24,65 @@ class OrdersService {
             const customerID = req.id;
             const customerFirstName = req.customerFirstName;
             const customerLastName = req.customerLastName;
-            const { orderItems, cartTotalPrice } = req.body;
+            const { cartItems } = req.body;
 
-            if (!orderItems || !cartTotalPrice) {
-                response.message = CONSTANTS.FIELD_EMPTY;
-                response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+            if (cartItems.length == 0) {
+                response.message = `cart is empty`;
+                response.status = CONSTANTS.SERVER_BAD_REQUEST_HTTP_CODE;
                 return response;
             }
+            let totalOrderPrice = 0;
+            const orderItems = [];
 
+            for (const item of cartItems) {
+                // Verify product existence and quantity
+                const product = await this.productRepo.getProductById(
+                    item.productId
+                );
+                if (!product || product.quantity < item.quantity) {
+                    response.message =
+                        "Product not available in the required quantity";
+                    response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+                    return response;
+                }
+
+                // Check product options
+                if (!this.validateProductOptions(product, item.itemOptions)) {
+                    response.message = "Invalid product options";
+                    response.status = CONSTANTS.SERVER_BAD_REQUEST_HTTP_CODE;
+                    return response;
+                }
+
+                // Calculate the total price for this item and add it to totalOrderPrice
+                const itemPrice = product.price * item.quantity;
+                totalOrderPrice += itemPrice;
+
+                // Decrease the product's quantity in the database
+                // await this.productRepo.updateProductQuantity(product.id, product.quantity - item.quantity);
+
+                // Create an orderItem object and add it to the orderItems array
+                orderItems.push({
+                    itemID: product.id,
+                    itemName: product.name,
+                    quantity: item.quantity,
+                    unitPrice: product.price,
+                    itemOptions: item.itemOptions,
+                    totalPrice: itemPrice
+                });
+
+            }
+
+            console.log(orderItems);
+            
+            return;
             const newOrder = {
+                customerID,
+                    customerFirstName,
+                    customerLastName,
                 customerId: customerID,
                 customerFirstName: customerFirstName,
                 customerLastName: customerLastName,
                 orderItems,
-                cartTotalPrice,
             };
 
             const order = await this.orderRepo.CreateOrder(newOrder);
@@ -55,6 +101,22 @@ class OrdersService {
             response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
             return response;
         }
+    }
+
+    // Function to validate product options
+    validateProductOptions(product, itemOptions) {
+        for (const option of itemOptions) {
+            const optionExists = product.options.some(
+                (productOption) =>
+                    productOption.label === option.label &&
+                    productOption.values.includes(option.option)
+            );
+
+            if (!optionExists) {
+                return false;
+            }
+        }
+        return true;
     }
 
     // Get and search for all Orders
@@ -111,7 +173,10 @@ class OrdersService {
                 status,
             };
 
-            const updatedOrderMessage = await this.orderRepo.UpdateOrder(id, updatedOrder);
+            const updatedOrderMessage = await this.orderRepo.UpdateOrder(
+                id,
+                updatedOrder
+            );
 
             if (!updatedOrderMessage) {
                 response.message = "invalid order id";

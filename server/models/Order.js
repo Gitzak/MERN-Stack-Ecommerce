@@ -18,6 +18,12 @@ const orderSchema = new mongoose.Schema({
         {
             itemID: String,
             itemName: String,
+            itemOptions: [
+                {
+                    label: String,
+                    option: String
+                }
+            ],
             quantity: Number,
             unitPrice: Number,
             totalPrice: Number,

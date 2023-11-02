@@ -1,4 +1,5 @@
 const { body } = require('express-validator');
+const CONSTANTS = require("../constants/index");
 
 exports.validateUserLogin = [
     body('email', 'Email is required').notEmpty(),
@@ -110,4 +111,5 @@ exports.validateProductFormUpdate = [
     body('options').isArray().withMessage('Options must be an array'),
     body('active').isBoolean().withMessage('Active must be a boolean value'),
 ];
+
 
