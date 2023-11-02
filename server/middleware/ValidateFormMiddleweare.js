@@ -121,8 +121,5 @@ exports.validateProductFormUpdate = [
     body("options").custom(validateOptions),
     body("active").isBoolean().withMessage("Active must be a boolean value"),
 ];
-<<<<<<< HEAD
 
 
-=======
->>>>>>> 83825088ed01d0a4b3424bef9b678da8978a646d
