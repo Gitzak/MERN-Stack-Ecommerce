@@ -96,6 +96,8 @@ class OrdersService {
                 return response;
             }
 
+            const sendedMail = await SendOrderMail(order)
+
             response.message = "order created successfully";
             response.status = 201;
             return response;
