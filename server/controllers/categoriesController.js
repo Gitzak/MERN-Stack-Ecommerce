@@ -59,11 +59,7 @@ exports.updateCategories = async (req, res) => {
 exports.deleteCategories = async (req, res) => {
   try {
     const result = await CategoriesServ.deleteCategories(req);
-    if (result) {
-      res.json({ message: "Category deleted successfully." });
-    } else {
-      res.status(404).json({ error: "Category not found." });
-    }
+    res.json(result);
   } catch (error) {
     res.status(500).json({ error: "An error occurred while deleting the category." });
     console.error("Error deleting the category:", error);

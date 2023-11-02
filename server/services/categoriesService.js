@@ -13,9 +13,11 @@ class CategoriesService {
     try {
       const { category_name, active } = req.body;
 
-      if (!category_name || !active) {
-        response.message = CONSTANTS.FIELD_EMPTY;
-        response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+      const existingCategory = await this.categoryRepo.findCategoryByName(category_name);
+
+      if (existingCategory) {
+        response.message = `The category '${category_name}' already exists`;
+        response.status = CONSTANTS.SERVER_BAD_REQUEST_HTTP_CODE;
         return response;
       }
 
@@ -27,20 +29,21 @@ class CategoriesService {
       const category = await this.categoryRepo.CreateCategory(newCategory);
 
       if (!category) {
-        response.message = CONSTANTS.SERVER_ERROR_MESSAGE
-        response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE
+        response.message = CONSTANTS.SERVER_ERROR;
+        response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
         return response;
       }
 
-      response.message = CONSTANTS.CATEGORY_CREATED
-      response.status = CONSTANTS.SERVER_CREATED_HTTP_CODE
+      response.message = CONSTANTS.CATEGORY_CREATED_SUCCESS;
+      response.status = CONSTANTS.SERVER_CREATED_HTTP_CODE;
       return response;
-    } catch {
-      response.message = error.message
+    } catch (error) {
+      response.message = CONSTANTS.SERVER_ERROR;
       response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
       return response;
     }
   }
+
 
   // Get and search for all Categories
   async getCategories(req) {
@@ -63,7 +66,9 @@ class CategoriesService {
           response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE
           return response
         }
-        return searchedCategories;
+        response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+        response.data = searchedCategories;
+        return response;
 
       } catch (error) {
         response.message = error.message
@@ -71,13 +76,13 @@ class CategoriesService {
         return response;
       }
     } else {
-      response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
       const categories = await this.categoryRepo.getCategories(
         skip,
         limit,
         sort
       );
-      response.categories = categories;
+      response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+      response.data = categories;
       return response;
     }
   }
@@ -90,14 +95,16 @@ class CategoriesService {
       const foundedCategory = await this.categoryRepo.findCategoryById(categoryId);
 
       if (!foundedCategory) {
-        response.message = CONSTANTS.CATEGORY_NOT_FOUND;
         response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+        response.message = CONSTANTS.CATEGORY_NOT_FOUND;
         return response;
       }
-      return foundedCategory;
+      response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+      response.data = foundedCategory;
+      return response;
     } catch (error) {
-      response.message = error.message
-      response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+      response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
+      response.message = CONSTANTS.SERVER_ERROR
       return response;
     }
   }
@@ -107,7 +114,16 @@ class CategoriesService {
     const response = {};
     try {
       const id = req.params.id;
+
       const { category_name, active } = req.body;
+
+      const existingCategory = await this.categoryRepo.findCategoryByNameExcludingId(category_name, id);
+
+      if (existingCategory) {
+        response.message = `The category '${category_name}' already exists`;
+        response.status = CONSTANTS.SERVER_BAD_REQUEST_HTTP_CODE;
+        return response;
+      }
 
       const updatedCategory = {
         category_name,
@@ -125,13 +141,12 @@ class CategoriesService {
         return response
       }
 
-
-      response.message = CONSTANTS.CATEGORY_UPDATED,
+      response.message = CONSTANTS.CATEGORY_UPDATED_SUCCESS,
         response.status = CONSTANTS.SERVER_UPDATED_HTTP_CODE
       return response
     } catch (error) {
-      response.message = error.message
-      response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+      response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
+      response.message = CONSTANTS.SERVER_ERROR
       return response;
     }
 
@@ -143,21 +158,22 @@ class CategoriesService {
 
     try {
       const categoryId = req.params.id;
-      // console.log(categoryId)
       const deletedCategory = await this.categoryRepo.DeleteCategory(categoryId);
 
+      console.log(!deletedCategory);
+
       if (!deletedCategory) {
-        response.message = CONSTANTS.CATEGORY_NOT_FOUND;
-        response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+        response.message = CONSTANTS.CATEGORY_NOT_FOUND
+        response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE
         return response;
       }
 
       response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
-      response.message = CONSTANTS.CATEGORY_DELETED;
+      response.message = CONSTANTS.CATEGORY_DELETED_SUCCESS;
       return response;
     } catch (error) {
-      response.message = error.message
-      response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+      response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
+      response.message = CONSTANTS.SERVER_ERROR
       return response;
     }
   }

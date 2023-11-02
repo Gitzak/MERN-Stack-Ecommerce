@@ -46,7 +46,7 @@ class ProductService {
       const product = await this.productRepo.createProduct(newProduct);
 
       if (!product) {
-        response.message = CONSTANTS.SERVER_ERROR_MESSAGE;
+        response.message = CONSTANTS.SERVER_ERROR;
         response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
         return response;
       }

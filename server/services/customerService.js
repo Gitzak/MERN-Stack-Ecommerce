@@ -98,7 +98,7 @@ class CustomerService {
     // console.log(customer._id);
 
     if (!customer) {
-      response.message = CONSTANTS.SERVER_ERROR_MESSAGE;
+      response.message = CONSTANTS.SERVER_ERROR;
       response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
       return response;
     }

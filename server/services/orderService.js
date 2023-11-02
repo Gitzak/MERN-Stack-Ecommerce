@@ -42,7 +42,7 @@ class OrdersService {
       const order = await this.orderRepo.CreateOrder(newOrder);
 
       if (!order) {
-        response.message = CONSTANTS.SERVER_ERROR_MESSAGE
+        response.message = CONSTANTS.SERVER_ERROR
         response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE
         return response;
       }

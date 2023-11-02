@@ -16,10 +16,8 @@ class CategoryRepository {
   }
 
   async getCategories(skip, limit, sort) {
-    const categorys = await this.categoryModel
-      .aggregate([{ $sort: { category_name: -1 } }])
     const foundedCategories = await this.categoryModel
-      .aggregate([{ $sort: { creationDate: -1 } }])
+      .aggregate([{ $sort: { category_name: -1 } }])
       .skip(skip)
       .limit(limit)
       .exec();
@@ -46,23 +44,28 @@ class CategoryRepository {
   async findCategoryById(categoryId) {
     const category = await this.categoryModel.findById(categoryId);
     return category;
-    const foundedCategory = await this.categoryModel.findById(categoryId).select("-password");
-    return foundedCategory;
   }
 
+  async findCategoryByName(category_name) {
+    const category = await this.categoryModel.findOne({ 'category_name': category_name });
+    return category;
+  }
+
+  async findCategoryByNameExcludingId(category_name, excludeId) {
+    const category = await this.categoryModel.findOne({ 'category_name': category_name, _id: { $ne: excludeId } });
+    return category;
+  }
 
   async UpdateCategory(id, category) {
-    const updatedCategory = await this.categoryModel.findOneAndUpdate({ _id: id }, category, { upsert: true, new: true });
+    const updatedCategory = await this.categoryModel.findOneAndUpdate({ _id: id }, category, { upsert: false, new: true });
     return updatedCategory
   }
 
-
   async DeleteCategory(categoryId) {
-    // console.log("repo",categoryId)
     const deletedCategory = await this.categoryModel.findByIdAndDelete(categoryId);
     return deletedCategory;
   }
- 
+
 }
 
 module.exports = { CategoryRepository };
