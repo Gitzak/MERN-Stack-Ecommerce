@@ -18,6 +18,16 @@ class ProductRepository {
         return product;
     }
 
+    async findProductByName(productName) {
+        const product = await this.productModel.findOne({ productName: productName });
+        return product;
+    }
+
+    async findProductBySku(sku) {
+        const product = await this.productModel.findOne({ sku: sku });
+        return product;
+    }
+
     async updateProduct(productId, productData) {
         const filter = { _id: productId };
         const updateData = { $set: productData };

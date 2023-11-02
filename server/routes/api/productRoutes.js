@@ -7,7 +7,7 @@ const { handleValidationErrors } = require("../../middleware/handleValidationErr
 const upload = require("../../middleware/multerMiddleware");
 
 //create new product
-router.post("/", isAdminManager, upload.array("images", 3), validateProductForm, handleValidationErrors, createProduct);
+router.post("/", isAdminManager, upload.array("images", 5), validateProductForm, handleValidationErrors, createProduct);
 //get all products list
 router.get("/", listProducts);
 //get product by id

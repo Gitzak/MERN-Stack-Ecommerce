@@ -13,12 +13,7 @@ exports.createProduct = async (req, res) => {
         const newProduct = await ProductServ.createProduct(req);
         res.json(newProduct);
     } catch (error) {
-        if (error.code === 11000) {
-            res.status(400).json({ error: "Duplicate product. Please use a different SKU." });
-        } else {
-            console.error(error);
-            res.status(500).json({ error: "An error occurred while creating the product." });
-        }
+        res.status(500).json({ message: "Server error" });
     }
 };
 
@@ -28,8 +23,7 @@ exports.listProducts = async (req, res) => {
         const products = await ProductServ.getProducts(req);
         res.json(products);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "An error occurred while fetching the products." });
+        res.status(500).json({ message: "Server error" });
     }
 };
 
@@ -42,8 +36,7 @@ exports.getProductById = async (req, res) => {
         const updatedProduct = { ...product._doc, subcategoryName: subcategoryName };
         res.json(updatedProduct);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "An error occurred while fetching the product." });
+        res.status(500).json({ message: "Server error" });
     }
 };
 
@@ -53,8 +46,7 @@ exports.updateProductData = async (req, res) => {
         const updatedProduct = await ProductServ.updateProduct(req);
         res.json(updatedProduct);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "An error occurred while updating the product." });
+        res.status(500).json({ message: "Server error" });
     }
 };
 
@@ -64,7 +56,6 @@ exports.deleteProduct = async (req, res) => {
         const result = await ProductServ.deleteProduct(req);
         res.json(result);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "An error occurred while deleting the product." });
+        res.status(500).json({ message: "Server error" });
     }
 };

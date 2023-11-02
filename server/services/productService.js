@@ -8,12 +8,33 @@ class ProductService {
     }
 
     async createProduct(req) {
+        const response = {};
+
         try {
+            // Extract data from the request
+            const { sku, productName, subcategoryId, shortDescription, longDescription, price, discountPrice, quantity, options, active } = req.body;
+
+            // Check if a product with the same name or SKU already exists
+            const existingProductByName = await this.productRepo.findProductByName(productName);
+            const existingProductBySku = await this.productRepo.findProductBySku(sku);
+
+            if (existingProductByName) {
+                response.message = "Product name already exists.";
+                response.status = CONSTANTS.SERVER_BAD_REQUEST_HTTP_CODE;
+                return response;
+            }
+
+            if (existingProductBySku) {
+                response.message = "Product SKU already exists.";
+                response.status = CONSTANTS.SERVER_BAD_REQUEST_HTTP_CODE;
+                return response;
+            }
+
+            // Continue with the image uploading logic
             const imagesUrlPromises = req.files.map((file) => {
                 return new Promise((resolve, reject) => {
                     cloudinary.uploader.upload(file.path, (err, result) => {
                         if (err) {
-                            console.log(err);
                             reject(err);
                         } else {
                             resolve(result.secure_url);
@@ -24,11 +45,7 @@ class ProductService {
 
             const imagesUrls = await Promise.all(imagesUrlPromises);
 
-            console.log(imagesUrls);
-
-            const response = {};
-            const { sku, productName, subcategoryId, shortDescription, longDescription, price, discountPrice, quantity, options, active } = req.body;
-
+            // Create a new product object
             const newProduct = {
                 sku,
                 productImages: imagesUrls,
@@ -43,6 +60,7 @@ class ProductService {
                 active,
             };
 
+            // Create the product
             const product = await this.productRepo.createProduct(newProduct);
 
             if (!product) {
@@ -56,7 +74,9 @@ class ProductService {
             response.data = product;
             return response;
         } catch (error) {
-            throw error;
+            response.message = CONSTANTS.SERVER_ERROR;
+            response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
+            return response;
         }
     }
 
@@ -147,16 +167,16 @@ class ProductService {
             const deletedProduct = await this.productRepo.deleteProduct(productId);
 
             if (!deletedProduct) {
-                response.message = "product deleted successfully";
-                response.status = 200;
+                response.message = CONSTANTS.PRODUCT_NOT_FOUND;
+                response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
                 return response;
             }
 
             response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
-            response.message = CONSTANTS.PRODUCT_DELETED;
+            response.message = CONSTANTS.PRODUCT_DELETED_SUCCESS;
             return response;
         } catch (error) {
-            response.message = "An error occurred while deleting the product.";
+            response.message = CONSTANTS.SERVER_ERROR;
             response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
             console.error(error);
         }
