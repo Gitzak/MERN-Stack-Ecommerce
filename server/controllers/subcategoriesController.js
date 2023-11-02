@@ -39,7 +39,7 @@ exports.getsubCategoryById = async (req, res) => {
 exports.getsubCategoryNameById = async (id) => {
   try {
     const foundedsubCategoryName = await subCategoriesServ.getsubCategoryNameById(id);
-    console.log(foundedsubCategoryName);
+    // console.log(foundedsubCategoryName);
     return foundedsubCategoryName;
   } catch (error) {
     res.status(500).json({ message: "Server error" });

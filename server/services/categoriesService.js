@@ -30,7 +30,7 @@ class CategoriesService {
 
       if (!category) {
         response.message = CONSTANTS.SERVER_ERROR;
-        response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+        response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
         return response;
       }
 
@@ -39,7 +39,7 @@ class CategoriesService {
       return response;
     } catch (error) {
       response.message = CONSTANTS.SERVER_ERROR;
-      response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+      response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
       return response;
     }
   }
@@ -72,7 +72,7 @@ class CategoriesService {
 
       } catch (error) {
         response.message = error.message
-        response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+        response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
         return response;
       }
     } else {

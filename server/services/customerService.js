@@ -157,7 +157,7 @@ class CustomerService {
   async UpdateCustomer(req) {
     try {
       const id = req.id;
-      console.log("id", id);
+      // console.log("id", id);
       const response = {};
 
       const { firstName, lastName, email, password } = req.body;
@@ -205,7 +205,7 @@ class CustomerService {
       response.data = customer;
       return response;
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       response.message = error.message;
       response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
       return response;

@@ -13,9 +13,13 @@ class subCategoriesService {
     try {
       const { subCategory_name, category_id, active } = req.body;
 
-      if (!subCategory_name || !category_id || !active) {
-        response.message = CONSTANTS.FIELD_EMPTY;
-        response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+      const existingCategory = await this.subcategoryRepo.findSubCategoryByName(subCategory_name);
+
+      console.log(existingCategory);
+
+      if (existingCategory) {
+        response.message = `The SubCategory '${subCategory_name}' already exists`;
+        response.status = CONSTANTS.SERVER_BAD_REQUEST_HTTP_CODE;
         return response;
       }
 
@@ -31,16 +35,16 @@ class subCategoriesService {
 
       if (!subcategory) {
         response.message = CONSTANTS.SERVER_ERROR;
-        response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+        response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
         return response;
       }
 
-      response.message = CONSTANTS.CATEGORY_CREATED;
+      response.message = CONSTANTS.SUBCATEGORY_CREATED_SUCCESS;
       response.status = CONSTANTS.SERVER_CREATED_HTTP_CODE;
       return response;
     } catch {
-      response.message = error.message;
-      response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+      response.message = CONSTANTS.SERVER_ERROR;
+      response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
       return response;
     }
   }
@@ -59,27 +63,23 @@ class subCategoriesService {
 
     if (query) {
       try {
-        const searchedsubCategories =
-          await this.subcategoryRepo.searchsubCategories(query, skip, limit, sort);
-        if (!searchedsubCategories) {
-          response.message = CONSTANTS.CATEGORY_NOT_FOUND;
-          response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
-          return response;
-        }
-        return searchedsubCategories;
+        const searchedsubCategories = await this.subcategoryRepo.searchsubCategories(query, skip, limit, sort);
+        response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+        response.data = searchedsubCategories;
+        return response;
       } catch (error) {
         response.message = error.message;
-        response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+        response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
         return response;
       }
     } else {
-      response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
       const subcategories = await this.subcategoryRepo.getsubCategories(
         skip,
         limit,
         sort
       );
-      response.subcategories = subcategories;
+      response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+      response.data = subcategories;
       return response;
     }
   }
@@ -89,39 +89,38 @@ class subCategoriesService {
     const response = {};
     try {
       const subcategoryId = req.params.id;
-      const foundedsubCategory = await this.subcategoryRepo.findSubCategoryById(
-        subcategoryId
-      );
+      const foundedsubCategory = await this.subcategoryRepo.findSubCategoryById(subcategoryId);
 
       if (!foundedsubCategory) {
-        response.message = CONSTANTS.CATEGORY_NOT_FOUND;
+        response.message = CONSTANTS.SUBCATEGORY_NOT_FOUND;
         response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
         return response;
       }
-      return foundedsubCategory;
+      response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+      response.data = foundedsubCategory;
+      return response;
     } catch (error) {
-      response.message = error.message;
-      response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+      response.message = CONSTANTS.SERVER_ERROR;
+      response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
       return response;
     }
   }
 
-
   async getsubCategoryNameById(id) {
     const response = {};
     try {
-        const foundedsubCategory = await this.subcategoryRepo.findSubCategoryById(id);
+      const foundedsubCategory = await this.subcategoryRepo.findSubCategoryById(id);
 
       if (!foundedsubCategory) {
         response.message = CONSTANTS.CATEGORY_NOT_FOUND;
         response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
         return response;
       }
-      const  foundedsubCategoryName = foundedsubCategory.subCategory_name;
+      const foundedsubCategoryName = foundedsubCategory.subCategory_name;
       return foundedsubCategoryName
     } catch (error) {
-      response.message = error.message;
-      response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+      response.message = CONSTANTS.SERVER_ERROR;
+      response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
       return response;
     }
   }
@@ -133,14 +132,21 @@ class subCategoriesService {
       const id = req.params.id;
       const { subCategory_name, category_id, active } = req.body;
 
+      const existingSubCategory = await this.subcategoryRepo.findSubCategoryByNameExcludingId(subCategory_name, id);
+
+      if (existingSubCategory) {
+        response.message = `The subCategory '${subCategory_name}' already exists`;
+        response.status = CONSTANTS.SERVER_BAD_REQUEST_HTTP_CODE;
+        return response;
+      }
+
       const updatedsubCategory = {
         subCategory_name,
         category_id,
         active,
       };
 
-      const updatedsubCategoryMessage =
-        await this.subcategoryRepo.UpdatesubCategory(id, updatedsubCategory);
+      const updatedsubCategoryMessage = await this.subcategoryRepo.UpdatesubCategory(id, updatedsubCategory);
 
       if (!updatedsubCategoryMessage) {
         response.message = CONSTANTS.CATEGORY_NOT_FOUND;
@@ -148,12 +154,12 @@ class subCategoriesService {
         return response;
       }
 
-      (response.message = CONSTANTS.CATEGORY_UPDATED),
-        (response.status = CONSTANTS.SERVER_UPDATED_HTTP_CODE);
+      response.message = CONSTANTS.CATEGORY_UPDATED_SUCCESS,
+        response.status = CONSTANTS.SERVER_UPDATED_HTTP_CODE;
       return response;
     } catch (error) {
-      response.message = error.message;
-      response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+      response.message = CONSTANTS.SERVER_ERROR;
+      response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
       return response;
     }
   }
@@ -164,7 +170,6 @@ class subCategoriesService {
 
     try {
       const subcategoryId = req.params.id;
-      // console.log(subcategoryId)
       const deletedsubCategory = await this.subcategoryRepo.DeletesubCategory(
         subcategoryId
       );
@@ -176,11 +181,11 @@ class subCategoriesService {
       }
 
       response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
-      response.message = CONSTANTS.CATEGORY_DELETED;
+      response.message = CONSTANTS.CATEGORY_DELETED_SUCCESS;
       return response;
     } catch (error) {
-      response.message = error.message;
-      response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+      response.message = CONSTANTS.SERVER_ERROR;
+      response.status = CONSTANTS.SERVER_INTERNAL_ERROR_HTTP_CODE;
       return response;
     }
   }
