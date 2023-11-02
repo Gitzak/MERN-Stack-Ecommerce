@@ -4,7 +4,7 @@ module.exports = (requiredRoles) => {
         if (requiredRoles.includes(userRole)) {
             next();
         } else {
-            res.status(403).json({message: 'Access denied'});
+            res.status(403).json({ message: "Access denied" });
         }
     };
 };

@@ -91,7 +91,6 @@ const seedUsers = async (count) => {
     }
 };
 
-
 module.exports = {
     seedUser,
     seedUsers,

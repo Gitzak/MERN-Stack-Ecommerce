@@ -3,13 +3,7 @@ const router = express.Router();
 const { isAdminManager } = require("../../middleware/isAdminManager");
 const { validateCategoryForm, validateCategoryFormUpdate } = require("../../middleware/ValidateFormMiddleweare");
 const { handleValidationErrors } = require("../../middleware/handleValidationErrors");
-const {
-  createCategories,
-  getCategories,
-  getCategoryById,
-  updateCategories,
-  deleteCategories,
-} = require('../../controllers/categoriesController')
+const { createCategories, getCategories, getCategoryById, updateCategories, deleteCategories } = require("../../controllers/categoriesController");
 
 // Create a new Categories
 router.post("/", isAdminManager, validateCategoryForm, handleValidationErrors, createCategories);

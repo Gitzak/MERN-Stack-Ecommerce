@@ -1,8 +1,7 @@
-const mongoose = require('mongoose');
-const config = require('../config/keys');
+const mongoose = require("mongoose");
+const config = require("../config/keys");
 
-mongoose.set('strictQuery', false);
-
+mongoose.set("strictQuery", false);
 
 const connectToDatabase = async () => {
     try {
@@ -10,9 +9,9 @@ const connectToDatabase = async () => {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
-        console.log('Connected to the database.');
+        console.log("Connected to the database.");
     } catch (error) {
-        console.error('Error connecting to the database:', error);
+        console.error("Error connecting to the database:", error);
     }
 };
 

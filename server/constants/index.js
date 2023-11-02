@@ -1,14 +1,14 @@
 exports.ROLES_USER = {
-    Admin: 'ADMIN',
-    Manager: 'MANAGER',
+    Admin: "ADMIN",
+    Manager: "MANAGER",
 };
 
 exports.ORDERS_STATUS = {
-    Open: 'Open',
-    Shipped: 'Shipped',
-    Paid: 'Paid',
-    Closed: 'Closed',
-    Cancled: 'Cancled',
+    Open: "Open",
+    Shipped: "Shipped",
+    Paid: "Paid",
+    Closed: "Closed",
+    Cancled: "Cancled",
 };
 
 /* HTTP status code constant starts */
@@ -24,28 +24,28 @@ module.exports.SERVER_INTERNAL_ERROR_HTTP_CODE = 500;
 module.exports.SERVER_NOT_ALLOWED_HTTP_CODE = 503;
 
 /* User API Success & Error Messages */
-module.exports.USER_REGISTRATION_OK = 'User registration successful.';
-module.exports.USER_REGISTRATION_FAILED = 'User registration unsuccessful.';
-module.exports.USER_LOGIN_OK = 'Login success.';
-module.exports.USER_LOGIN_FAILED = 'User not found.';
-module.exports.USER_FOUND = 'Users founds.';
-module.exports.USER_CREATED = 'User Created successfully.';
-module.exports.USER_UPDATED = 'User Updated successfully.';
-module.exports.USER_DELETED = 'User Deleted successfully.';
-module.exports.ALREADY_USER_DELETED = 'No User Deleted';
-module.exports.USER_NOT_ACTIVE = 'Your account is not active';
+module.exports.USER_REGISTRATION_OK = "User registration successful.";
+module.exports.USER_REGISTRATION_FAILED = "User registration unsuccessful.";
+module.exports.USER_LOGIN_OK = "Login success.";
+module.exports.USER_LOGIN_FAILED = "User not found.";
+module.exports.USER_FOUND = "Users founds.";
+module.exports.USER_CREATED = "User Created successfully.";
+module.exports.USER_UPDATED = "User Updated successfully.";
+module.exports.USER_DELETED = "User Deleted successfully.";
+module.exports.ALREADY_USER_DELETED = "No User Deleted";
+module.exports.USER_NOT_ACTIVE = "Your account is not active";
 module.exports.INVALID_USER_ID = "Invalid user ID.";
 
 /* Customer API Success & Error Messages */
-module.exports.CUSTOMER_LOGIN_OK = 'Login success';
-module.exports.CUSTOMER_LOGIN_FAILED = 'Customer not found.';
+module.exports.CUSTOMER_LOGIN_OK = "Login success";
+module.exports.CUSTOMER_LOGIN_FAILED = "Customer not found.";
 module.exports.CUSTOMER_ACCOUNT_VALIDATED = "Customer account validated successfully";
 module.exports.INVALID_EMAIL_ALREADY_VALIDATED = "Invalid action, this email is already validated";
-module.exports.CUSTOMER_CREATED = 'Customer Created successfully.';
-module.exports.CUSTOMER_UPDATED = 'Customer Updated successfully.';
-module.exports.CUSTOMER_DELETED = 'Customer Deleted successfully.';
-module.exports.ALREADY_CUSTOMER_DELETED = 'No Customer Deleted';
-module.exports.CUSTOMER_NOT_ACTIVE = 'Your account is not active';
+module.exports.CUSTOMER_CREATED = "Customer Created successfully.";
+module.exports.CUSTOMER_UPDATED = "Customer Updated successfully.";
+module.exports.CUSTOMER_DELETED = "Customer Deleted successfully.";
+module.exports.ALREADY_CUSTOMER_DELETED = "No Customer Deleted";
+module.exports.CUSTOMER_NOT_ACTIVE = "Your account is not active";
 module.exports.INVALID_CUSTOMER_ID = "Invalid customer ID.";
 module.exports.CUSTOMER_PROFILE_UPDATED = "Profile updated successfully";
 module.exports.CUSTOMER_NOT_VALID = "Check your email to validate your account ";
@@ -80,12 +80,11 @@ module.exports.ORDER_NOT_FOUND = "Order not found";
 module.exports.INVALID_ORDER_ID = "Invalid Order ID";
 
 /* General Errors  constants start */
-module.exports.ROUTE_NOT_FOUND = 'You are at wrong place. Shhoooo...';
-module.exports.SERVER_ERROR = 'Something bad happend. It\'s not you, it\'s me.';
+module.exports.ROUTE_NOT_FOUND = "You are at wrong place. Shhoooo...";
+module.exports.SERVER_ERROR = "Something bad happend. It's not you, it's me.";
 module.exports.INSUFFICIENT_PRIVILEGE = "You don't have enough privilege";
 module.exports.INVALID_CREDENTIALS = "Invalid credentials";
 
-// Mail related messages  
+// Mail related messages
 module.exports.EMAIL_SEND_ERROR = "Error sending email";
 module.exports.EMAIL_SEND_SUCCESS = "Email sent successfully";
-

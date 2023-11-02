@@ -7,21 +7,14 @@ const { handleValidationErrors } = require("../../middleware/handleValidationErr
 const { isAdminManager } = require("../../middleware/isAdminManager");
 const checkUserRole = require("../../middleware/checkUserRole");
 
-const {
-  addNewUser,
-  deleteUser,
-  getUserById,
-  getUsers,
-  searchUsers,
-  updateUserData,
-} = require("../../controllers/userController");
+const { addNewUser, deleteUser, getUserById, getUsers, searchUsers, updateUserData } = require("../../controllers/userController");
 
 // login route
 router.post("/login", validateUserLogin, handleValidationErrors, loginUser);
 //Add new user route
 router.post("/", isAdmin, validateUserForm, handleValidationErrors, addNewUser);
 //Route for getting all users
-router.get('/', isAdminManager, getUsers)
+router.get("/", isAdminManager, getUsers);
 // Route to get a user by ID
 router.get("/:id", isAdminManager, getUserById);
 //Update user's data

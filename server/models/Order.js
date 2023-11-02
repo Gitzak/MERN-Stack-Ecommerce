@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const { ORDERS_STATUS } = require('../constants');
+const { ORDERS_STATUS } = require("../constants");
 
 const orderSchema = new mongoose.Schema({
     customerId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Customer',
+        ref: "Customer",
         required: true,
     },
     customerFirstName: {
@@ -20,8 +20,8 @@ const orderSchema = new mongoose.Schema({
             itemName: String,
             quantity: Number,
             unitPrice: Number,
-            totalPrice: Number
-        }
+            totalPrice: Number,
+        },
     ],
     orderDate: {
         type: Number,
@@ -34,8 +34,8 @@ const orderSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: [ORDERS_STATUS.Open, ORDERS_STATUS.Shipped, ORDERS_STATUS.Paid, ORDERS_STATUS.Closed, ORDERS_STATUS.Cancled],
-        default: ORDERS_STATUS.Open
+        default: ORDERS_STATUS.Open,
     },
 });
 
-module.exports = mongoose.model('Order', orderSchema);
+module.exports = mongoose.model("Order", orderSchema);

@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
-const config = require('../config/keys');
+const jwt = require("jsonwebtoken");
+const config = require("../config/keys");
 
 class JwtManager {
     sign(payload, expiresIn = config.jwt.tokenLife) {
@@ -21,5 +21,4 @@ class JwtManager {
     }
 }
 
-
-module.exports = new JwtManager
+module.exports = new JwtManager();

@@ -1,38 +1,28 @@
-const express = require('express')
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
 const { isAdminManager } = require("../../middleware/isAdminManager");
 const { isCustomer } = require("../../middleware/isCustomer");
 const { validateCustomerLogin, validateCustomerForm, validateCustomerFormUpdatePut, validateCustomerFormUpdatePatch } = require("../../middleware/ValidateFormMiddleweare");
 const { handleValidationErrors } = require("../../middleware/handleValidationErrors");
-const {
-    loginCustomer,
-    registerCustomer,
-    validateAccCustomer,
-    getCustomerById,
-    getCustomers,
-    updateCustomerDataByAdmins,
-    updateCustomerData,
-    getProfileCustomer,
-    deleteCustomer,
-} = require('../../controllers/customerController')
+const { loginCustomer, registerCustomer, validateAccCustomer, getCustomerById, getCustomers, updateCustomerDataByAdmins, updateCustomerData, getProfileCustomer, deleteCustomer } = require("../../controllers/customerController");
 
 // login route
-router.post('/login', validateCustomerLogin, handleValidationErrors, loginCustomer)
+router.post("/login", validateCustomerLogin, handleValidationErrors, loginCustomer);
 //create new customers (Register)
-router.post('/', validateCustomerForm, handleValidationErrors, registerCustomer)
+router.post("/", validateCustomerForm, handleValidationErrors, registerCustomer);
 //customer account or email validation
-router.put('/validate/:id', validateAccCustomer)
+router.put("/validate/:id", validateAccCustomer);
 //get customer by id
-router.get('/customer/:id', isAdminManager, getCustomerById)
+router.get("/customer/:id", isAdminManager, getCustomerById);
 // enter customer profil
-router.get('/profile', isCustomer, getProfileCustomer)
+router.get("/profile", isCustomer, getProfileCustomer);
 //get all customers list
-router.get('/', isAdminManager, getCustomers)
+router.get("/", isAdminManager, getCustomers);
 //update customer data (for admin and manager only)
-router.put('/:id', isAdminManager, validateCustomerFormUpdatePut, handleValidationErrors, updateCustomerDataByAdmins)
+router.put("/:id", isAdminManager, validateCustomerFormUpdatePut, handleValidationErrors, updateCustomerDataByAdmins);
 // customer update himself
-router.patch('/profile/update', isCustomer, validateCustomerFormUpdatePatch, handleValidationErrors, updateCustomerData)
+router.patch("/profile/update", isCustomer, validateCustomerFormUpdatePatch, handleValidationErrors, updateCustomerData);
 //delete account for customer
-router.delete('/delete', isCustomer, deleteCustomer)
+router.delete("/delete", isCustomer, deleteCustomer);
 
-module.exports = router
+module.exports = router;
