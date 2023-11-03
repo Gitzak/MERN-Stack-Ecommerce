@@ -73,6 +73,7 @@ module.exports.PRODUCT_CREATED_SUCCESS = "Product created successfully";
 module.exports.PRODUCT_UPDATED_SUCCESS = "Product updated successfully";
 module.exports.PRODUCT_DELETED_SUCCESS = "Product deleted successfully";
 module.exports.PRODUCT_NOT_FOUND = "Product not found";
+module.exports.PRODUCT_NO_CHANGE_MADE= "No changes were made to the product";
 module.exports.INVALID_PRODUCT_ID = "Invalid Product ID";
 
 /* Order API Success & Error Messages */

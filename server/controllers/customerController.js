@@ -40,8 +40,7 @@ exports.updateCustomerDataByAdmins = async (req, res) => {
 exports.updateCustomerData = async (req, res) => {
     try {
         const updatedCustomer = await CustomerServ.UpdateCustomer(req);
-        // todo : status
-        res.json(updatedCustomer);
+        res.status(updatedCustomer.status).json(updatedCustomer);
     } catch (error) {
         res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
@@ -61,8 +60,7 @@ exports.getCustomerById = async (req, res) => {
 exports.getCustomers = async (req, res) => {
     try {
         const results = await CustomerServ.getCustomers(req);
-        // todo: response
-        res.json(results);
+        res.status(results.status).json(results);
     } catch (error) {
         res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
@@ -92,8 +90,7 @@ exports.getProfileCustomer = async (req, res) => {
 exports.validateAccCustomer = async (req, res) => {
     try {
         const validation = await CustomerServ.validateAccCustomer(req);
-        // todo: response
-        res.json(validation);
+        res.status(validation.status).json(validation);
     } catch (error) {
         res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }

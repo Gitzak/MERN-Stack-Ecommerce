@@ -32,15 +32,18 @@ exports.listProducts = async (req, res) => {
 exports.getProductById = async (req, res) => {
     try {
         const product = await ProductServ.getProductById(req);
+        if(product.status !== 200) {
+            res.status(product.status).json(product);
+        }
         const subCaId = product.subcategoryId;
         const subcategoryName = await getsubCategoryNameById(subCaId);
         const updatedProduct = { ...product._doc, subcategoryName: subcategoryName };
-        // todo: response status
-        res.json(updatedProduct);
+        res.status(updatedProduct.status).json(updatedProduct);
     } catch (error) {
         res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };
+
 
 // Update product data
 exports.updateProductData = async (req, res) => {
@@ -56,7 +59,7 @@ exports.updateProductData = async (req, res) => {
 exports.deleteProduct = async (req, res) => {
     try {
         const result = await ProductServ.deleteProduct(req);
-        res.status(result?.status).json(result);
+        res.status(result.status).json(result);
     } catch (error) {
         res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }

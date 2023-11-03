@@ -10,109 +10,119 @@ class CustomerService {
     }
 
     async loginCustomer(req) {
-        const response = {};
-        const { email, password } = req.body;
-        const customer = await this.customerRepo.Login(email);
-        if (!customer) {
-            response.message = CONSTANTS.INVALID_CREDENTIALS;
-            response.status = CONSTANTS.SERVER_INVALID_CREDENTIALS;
-            return response;
-        }
-        if (!customer.active) {
-            response.message = CONSTANTS.CUSTOMER_NOT_ACTIVE;
-            response.status = CONSTANTS.SERVER_IFORBIDDEN_HTTP_CODE;
-            return response;
-        }
-        if (!customer.validatAccount) {
-            response.message = CONSTANTS.CUSTOMER_NOT_VALID;
-            response.status = CONSTANTS.SERVER_FORBIDDEN_HTTP_CODE;
-            return response;
-        }
-        const passwordMatch = await VerifyPassword(password, customer.password);
-        if (!passwordMatch) {
-            response.message = CONSTANTS.INVALID_CREDENTIALS;
-            response.status = CONSTANTS.SERVER_INVALID_CREDENTIALS;
-            return response;
-        }
-        // Update the lastLogin field with the current timestamp
-        const currentTimestamp = Date.now();
-        // console.log(currentTimestamp);
-        customer.lastLogin = currentTimestamp;
-        await customer.save();
+        try {
+            const response = {};
+            const { email, password } = req.body;
+            const customer = await this.customerRepo.Login(email);
+            if (!customer) {
+                response.message = CONSTANTS.INVALID_CREDENTIALS;
+                response.status = CONSTANTS.SERVER_INVALID_CREDENTIALS;
+                return response;
+            }
+            if (!customer.active) {
+                response.message = CONSTANTS.CUSTOMER_NOT_ACTIVE;
+                response.status = CONSTANTS.SERVER_IFORBIDDEN_HTTP_CODE;
+                return response;
+            }
+            if (!customer.validatAccount) {
+                response.message = CONSTANTS.CUSTOMER_NOT_VALID;
+                response.status = CONSTANTS.SERVER_FORBIDDEN_HTTP_CODE;
+                return response;
+            }
+            const passwordMatch = await VerifyPassword(password, customer.password);
+            if (!passwordMatch) {
+                response.message = CONSTANTS.INVALID_CREDENTIALS;
+                response.status = CONSTANTS.SERVER_INVALID_CREDENTIALS;
+                return response;
+            }
+            // Update the lastLogin field with the current timestamp
+            const currentTimestamp = Date.now();
+            // console.log(currentTimestamp);
+            customer.lastLogin = currentTimestamp;
+            await customer.save();
 
-        const token = jwt.sign(
-            {
-                customerId: customer._id,
+            const token = jwt.sign(
+                {
+                    customerId: customer._id,
+                    active: customer.active,
+                    customerFirstName: customer.firstName,
+                    customerLastName: customer.lastName,
+                    customerEmail: customer.email,
+                    userRole: "CUSTOMER",
+                },
+                config.jwt.secret
+            );
+
+            response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+            response.message = "Login success";
+            // todo: optimize the response
+            response.customer = {
+                _id: customer._id,
+                firstName: customer.firstName,
+                lastName: customer.lastName,
+                email: customer.email,
+                creationDate: customer.creationDate,
+                lastLogin: customer.lastLogin ? new Date(customer.lastLogin).toLocaleString() : null, // Format the timestamp
+                validatAccount: customer.validatAccount,
                 active: customer.active,
-                customerFirstName: customer.firstName,
-                customerLastName: customer.lastName,
-                customerEmail: customer.email,
-                userRole: "CUSTOMER",
-            },
-            config.jwt.secret
-        );
-
-        response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
-        response.message = "Login success";
-        // todo: optimize the response
-        response.customer = {
-            _id: customer._id,
-            firstName: customer.firstName,
-            lastName: customer.lastName,
-            email: customer.email,
-            creationDate: customer.creationDate,
-            lastLogin: customer.lastLogin ? new Date(customer.lastLogin).toLocaleString() : null, // Format the timestamp
-            validatAccount: customer.validatAccount,
-            active: customer.active,
-        };
-        response.token = token;
-        response.token_type = "Bearer";
-        return response;
+            };
+            response.token = token;
+            response.token_type = "Bearer";
+            return response;
+        } catch (error) {
+            response.message = CONSTANTS.SERVER_ERROR;
+            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+            return response;   
+        }
     }
 
     async RegisterCustomer(req) {
         const response = {};
+        try {
+            const { firstName, lastName, email, password } = req.body;
 
-        const { firstName, lastName, email, password } = req.body;
+            const existingCustomerByEmail = await this.customerRepo.findCustomerByEmail(email);
 
-        const existingCustomerByEmail = await this.customerRepo.findCustomerByEmail(email);
+            if (existingCustomerByEmail) {
+                response.message = "Email already exists.";
+                response.status = CONSTANTS.SERVER_BAD_REQUEST_HTTP_CODE;
+                return response;
+            }
 
-        if (existingCustomerByEmail) {
-            response.message = "Email already exists.";
-            response.status = CONSTANTS.SERVER_BAD_REQUEST_HTTP_CODE;
+            const hashedPass = await HashPassword(password);
+
+            const newCustomer = {
+                firstName,
+                lastName,
+                email,
+                hashedPass,
+                password,
+            };
+
+            const customer = await this.customerRepo.RegisterCustomer(newCustomer);
+
+            // console.log(customer._id);
+
+            if (!customer) {
+                response.message = CONSTANTS.SERVER_ERROR;
+                response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+                return response;
+            }
+
+            const sendedCustomerMail = await SendMailToCustomer({
+                customerId: customer._id,
+                customerEmail: newCustomer.email,
+                customerPassword: newCustomer.password,
+            });
+
+            response.message = CONSTANTS.USER_CREATED;
+            response.status = CONSTANTS.SERVER_CREATED_HTTP_CODE;
             return response;
-        }
-
-        const hashedPass = await HashPassword(password);
-
-        const newCustomer = {
-            firstName,
-            lastName,
-            email,
-            hashedPass,
-            password,
-        };
-
-        const customer = await this.customerRepo.RegisterCustomer(newCustomer);
-
-        // console.log(customer._id);
-
-        if (!customer) {
+        } catch (error) {
             response.message = CONSTANTS.SERVER_ERROR;
-            response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
-            return response;
+            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+            return response;   
         }
-
-        const sendedCustomerMail = await SendMailToCustomer({
-            customerId: customer._id,
-            customerEmail: newCustomer.email,
-            customerPassword: newCustomer.password,
-        });
-
-        response.message = CONSTANTS.USER_CREATED;
-        response.status = CONSTANTS.SERVER_CREATED_HTTP_CODE;
-
-        return response;
     }
 
     async UpdateCustomerByAdmins(req) {
@@ -149,23 +159,22 @@ class CustomerService {
             const result = await this.customerRepo.UpdateCustomer(id, updatedCustomer);
             response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
             response.message = CONSTANTS.CUSTOMER_PROFILE_UPDATED;
-
             return response;
+
         } catch (error) {
-            throw error; // Throw the error to be caught by higher-level error handling
+            response.message = CONSTANTS.SERVER_ERROR;
+            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+            return response;        
         }
     }
 
     async UpdateCustomer(req) {
+        const response = {};
+
         try {
             const id = req.id;
-            const response = {};
-
             const { firstName, lastName, email, password } = req.body;
-
             const existingCustomerByEmail = await this.customerRepo.findCustomerByEmailExcludingId(email, id);
-
-            console.log(existingCustomerByEmail);
 
             if (existingCustomerByEmail) {
                 response.message = "Email already exists.";
@@ -187,14 +196,17 @@ class CustomerService {
             if (updatedcustomer) {
                 response.message = CONSTANTS.USER_UPDATED;
                 response.status = CONSTANTS.SERVER_UPDATED_HTTP_CODE;
+                return response;
             } else {
                 response.message = CONSTANTS.INVALID_CUSTOMER_ID;
                 response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+                return response;
             }
 
-            return response;
         } catch (error) {
-            throw error; // Throw the error to be caught by higher-level error handling
+            response.message = CONSTANTS.SERVER_ERROR;
+            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+            return response;    
         }
     }
 
@@ -222,8 +234,6 @@ class CustomerService {
         const query = req.query.query;
         const page = parseInt(req.query.page) || 1;
         const sort = req.query.sort || "ASC";
-        // console.log("page ", page);
-        // console.log("sort", sort);
         const pageSize = 10;
         const skip = (page - 1) * pageSize;
         const limit = pageSize;
@@ -262,9 +272,9 @@ class CustomerService {
             response.message = CONSTANTS.USER_DELETED;
             return response;
         } catch (error) {
-            response.message = "An error occurred while deleting the customer.";
+            response.message = CONSTANTS.SERVER_ERROR;
             response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
-            console.error(error);
+            return response;   
         }
     }
 
@@ -277,17 +287,40 @@ class CustomerService {
             response.data = customer;
             return response;
         } catch (error) {
-            throw error;
+            response.message = CONSTANTS.SERVER_ERROR;
+            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+            return response;          
         }
     }
 
     async validateAccCustomer(req) {
+        const response = {}
         try {
             const customerId = req.params.id;
-            const customer = await this.customerRepo.validateAccCustomer(customerId);
-            return customer;
+            const customer = await this.customerRepo.findCustomerById(customerId);
+
+            if (!customer) {
+                response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE
+                response.message=  CONSTANTS.INVALID_CUSTOMER_ID
+                return response 
+            }
+    
+            if (customer.validatAccount) {
+                response.status = CONSTANTS.SERVER_BAD_REQUEST_HTTP_CODE
+                response.message=  CONSTANTS.INVALID_EMAIL_ALREADY_VALIDATED
+                return response 
+            }
+
+            const validatedCustomer = await this.customerRepo.validateAccCustomer(customerId);
+
+            response.status = CONSTANTS.SERVER_OK_HTTP_CODE
+            response.message=  CONSTANTS.CUSTOMER_UPDATED
+            return response 
+    
         } catch (error) {
-            throw error;
+            response.message = CONSTANTS.SERVER_ERROR;
+            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+            return response;   
         }
     }
 }

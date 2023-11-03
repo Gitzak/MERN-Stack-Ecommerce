@@ -4,6 +4,7 @@ const { isAdminManager } = require("../../middleware/isAdminManager");
 const { createProduct, listProducts, getProductById, updateProductData, deleteProduct } = require("../../controllers/productController");
 const { validateProductForm, validateProductFormUpdate } = require("../../middleware/ValidateFormMiddleweare");
 const { handleValidationErrors } = require("../../middleware/handleValidationErrors");
+const { validateIdFormat } = require("../../middleware/validateIdFormat");
 const upload = require("../../middleware/multerMiddleware");
 
 //create new product
@@ -11,10 +12,10 @@ router.post("/", isAdminManager, upload.array("images", 5), validateProductForm,
 //get all products list
 router.get("/", listProducts);
 //get product by id
-router.get("/:id", getProductById);
+router.get("/:id", validateIdFormat, getProductById);
 //update product data
-router.patch("/:id", isAdminManager, validateProductFormUpdate, handleValidationErrors, updateProductData);
+router.patch("/:id", isAdminManager, validateIdFormat, validateProductFormUpdate, handleValidationErrors, updateProductData);
 //delete product
-router.delete("/delete/:id", isAdminManager, deleteProduct);
+router.delete("/delete/:id", isAdminManager, validateIdFormat, deleteProduct);
 
 module.exports = router;

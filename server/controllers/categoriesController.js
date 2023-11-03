@@ -12,8 +12,7 @@ exports.createCategories = async (req, res) => {
         const newCategories = await CategoriesServ.createCategories(req);
         res.status(newCategories.status).json(newCategories);
     } catch (error) {
-        res.status(500).json({ error: "An error occurred while creating categories." });
-        console.error("Error creating categories:", error);
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };
 
@@ -23,8 +22,7 @@ exports.getCategories = async (req, res) => {
         const categories = await CategoriesServ.getCategories(req);
         res.status(categories.status).json(categories);
     } catch (error) {
-        res.status(500).json({ error: "An error occurred while fetching categories." });
-        console.error("Error fetching categories:", error);
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };
 
@@ -32,15 +30,9 @@ exports.getCategories = async (req, res) => {
 exports.getCategoryById = async (req, res) => {
     try {
         const foundedCategory = await CategoriesServ.getCategoryById(req);
-        // todo: handle errors in server return response
-        if (!foundedCategory) {
-            res.status(404).json({ error: "Category not found." });
-        } else {
-            res.json(foundedCategory);
-        }
+        res.status(foundedCategory.status).json(foundedCategory);
     } catch (error) {
-        res.status(500).json({ error: "An error occurred while fetching the category." });
-        console.error("Error fetching the category:", error);
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };
 
@@ -50,8 +42,7 @@ exports.updateCategories = async (req, res) => {
         const updatedCategories = await CategoriesServ.updateCategories(req);
         res.status(updatedCategories.status).json(updatedCategories);
     } catch (error) {
-        res.status(500).json({ error: "An error occurred while updating categories." });
-        console.error("Error updating categories:", error);
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };
 
@@ -61,7 +52,6 @@ exports.deleteCategories = async (req, res) => {
         const result = await CategoriesServ.deleteCategories(req);
         res.status(result.status).json(result);
     } catch (error) {
-        res.status(500).json({ error: "An error occurred while deleting the category." });
-        console.error("Error deleting the category:", error);
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };

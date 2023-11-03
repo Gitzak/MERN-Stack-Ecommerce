@@ -53,8 +53,6 @@ class subCategoriesService {
         const response = {};
         const page = parseInt(req.query.page) || 1;
         const sort = req.query.sort || "ASC";
-        // console.log("page", page);
-        // console.log("sort", sort);
         const pageSize = 10;
         const skip = (page - 1) * pageSize;
         const limit = pageSize;
@@ -111,7 +109,9 @@ class subCategoriesService {
                 return response;
             }
             const foundedsubCategoryName = foundedsubCategory.subCategory_name;
-            return foundedsubCategoryName;
+            response.status = CONSTANTS.SERVER_OK_HTTP_CODE
+            response.data = foundedsubCategoryName
+            return response;
         } catch (error) {
             response.message = CONSTANTS.SERVER_ERROR;
             response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
@@ -171,7 +171,6 @@ class subCategoriesService {
                 response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
                 return response;
             }
-
             response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
             response.message = CONSTANTS.CATEGORY_DELETED_SUCCESS;
             return response;

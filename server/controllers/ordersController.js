@@ -34,8 +34,7 @@ exports.listOrders = async (req, res) => {
 exports.getOrderById = async (req, res) => {
     try {
         const order = await OrdersServ.getOrderById(req);
-        // todo: status
-        res.json(order);
+        res.status(order.status).json(order);
     } catch (error) {
         res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }

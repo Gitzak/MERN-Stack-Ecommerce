@@ -243,9 +243,9 @@ class UserService {
         }
     }
 
-    async Delete(userId) {
+    async Delete(req) {
+        const userId = req.params.id;
         const response = {};
-
         try {
             const user = await this.userRepo.FindById(userId);
 
