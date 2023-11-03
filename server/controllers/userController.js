@@ -9,7 +9,7 @@ const userServ = new UserService(userRepo);
 exports.addNewUser = async (req, res) => {
     try {
         const newUser = await userServ.AddUser(req);
-        res.json(newUser);
+        res.status(newUser.status).json(newUser);
     } catch (error) {
         res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
@@ -19,7 +19,7 @@ exports.addNewUser = async (req, res) => {
 exports.updateUserData = async (req, res) => {
     try {
         const updatedUser = await userServ.UpdateUser(req);
-        res.json(updatedUser);
+        res.status(updatedUser.status).json(updatedUser);
     } catch (error) {
         res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
@@ -29,7 +29,7 @@ exports.updateUserData = async (req, res) => {
 exports.getUserById = async (req, res) => {
     try {
         const user = await userServ.getUserById(req);
-        res.json(user);
+        res.status(user.status).json(user);
     } catch (error) {
         res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
@@ -39,6 +39,7 @@ exports.getUserById = async (req, res) => {
 exports.getUsers = async (req, res) => {
     try {
         const users = await userServ.getUsers(req);
+        // todo : status
         res.json(users);
     } catch (error) {
         res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
@@ -50,7 +51,7 @@ exports.deleteUser = async (req, res) => {
     try {
         const userId = req.params.id;
         const result = await userServ.Delete(userId);
-        res.json(result);
+        res.status(result.status).json(result);
     } catch (error) {
         res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }

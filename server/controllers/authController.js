@@ -10,7 +10,7 @@ const userServ = new UserService(userRepo);
 exports.loginUser = async (req, res) => {
     try {
         const user = await userServ.Login(req);
-        res.json(user);
+        res.status(user.status).json(user);
     } catch (error) {
         res.status(500).json({ error: "An error occurred during login." });
     }

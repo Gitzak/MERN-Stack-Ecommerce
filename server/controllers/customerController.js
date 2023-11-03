@@ -9,8 +9,8 @@ const CustomerServ = new CustomerService(CustomerRepo);
 // login a customer
 exports.loginCustomer = async (req, res) => {
     try {
-        const user = await CustomerServ.loginCustomer(req);
-        res.json(user);
+        const customer = await CustomerServ.loginCustomer(req);
+        res.status(customer.status).json(customer);
     } catch (error) {
         res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
@@ -20,7 +20,7 @@ exports.loginCustomer = async (req, res) => {
 exports.registerCustomer = async (req, res) => {
     try {
         const newCustomer = await CustomerServ.RegisterCustomer(req);
-        res.json(newCustomer);
+        res.status(newCustomer.status).json(newCustomer);
     } catch (error) {
         res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
@@ -30,7 +30,7 @@ exports.registerCustomer = async (req, res) => {
 exports.updateCustomerDataByAdmins = async (req, res) => {
     try {
         const updatedCustomer = await CustomerServ.UpdateCustomerByAdmins(req);
-        res.json(updatedCustomer);
+        res.status(updatedCustomer.status).json(updatedCustomer);
     } catch (error) {
         res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
@@ -40,6 +40,7 @@ exports.updateCustomerDataByAdmins = async (req, res) => {
 exports.updateCustomerData = async (req, res) => {
     try {
         const updatedCustomer = await CustomerServ.UpdateCustomer(req);
+        // todo : status
         res.json(updatedCustomer);
     } catch (error) {
         res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
@@ -49,8 +50,8 @@ exports.updateCustomerData = async (req, res) => {
 // Get Customer by ID (only for admin and manager)
 exports.getCustomerById = async (req, res) => {
     try {
-        const Customer = await CustomerServ.getCustomerById(req);
-        res.json(Customer);
+        const customer = await CustomerServ.getCustomerById(req);
+        res.status(customer.status).json(customer);
     } catch (error) {
         res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
@@ -60,6 +61,7 @@ exports.getCustomerById = async (req, res) => {
 exports.getCustomers = async (req, res) => {
     try {
         const results = await CustomerServ.getCustomers(req);
+        // todo: response
         res.json(results);
     } catch (error) {
         res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
@@ -70,7 +72,7 @@ exports.getCustomers = async (req, res) => {
 exports.deleteCustomer = async (req, res) => {
     try {
         const result = await CustomerServ.Delete(req);
-        res.json(result);
+        res.status(result.status).json(result);
     } catch (error) {
         res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
@@ -78,10 +80,9 @@ exports.deleteCustomer = async (req, res) => {
 
 // get customer profile (is customer)
 exports.getProfileCustomer = async (req, res) => {
-    // console.log("profil");
     try {
         const profile = await CustomerServ.getProfileCustomer(req);
-        res.json(profile);
+        res.status(profile.status).json(profile);
     } catch (error) {
         res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
@@ -91,6 +92,7 @@ exports.getProfileCustomer = async (req, res) => {
 exports.validateAccCustomer = async (req, res) => {
     try {
         const validation = await CustomerServ.validateAccCustomer(req);
+        // todo: response
         res.json(validation);
     } catch (error) {
         res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });

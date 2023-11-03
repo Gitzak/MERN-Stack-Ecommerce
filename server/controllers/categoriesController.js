@@ -10,7 +10,7 @@ const CategoriesServ = new CategoriesService(CategoriesRepo);
 exports.createCategories = async (req, res) => {
     try {
         const newCategories = await CategoriesServ.createCategories(req);
-        res.json(newCategories);
+        res.status(newCategories.status).json(newCategories);
     } catch (error) {
         res.status(500).json({ error: "An error occurred while creating categories." });
         console.error("Error creating categories:", error);
@@ -21,7 +21,7 @@ exports.createCategories = async (req, res) => {
 exports.getCategories = async (req, res) => {
     try {
         const categories = await CategoriesServ.getCategories(req);
-        res.json(categories);
+        res.status(categories.status).json(categories);
     } catch (error) {
         res.status(500).json({ error: "An error occurred while fetching categories." });
         console.error("Error fetching categories:", error);
@@ -32,6 +32,7 @@ exports.getCategories = async (req, res) => {
 exports.getCategoryById = async (req, res) => {
     try {
         const foundedCategory = await CategoriesServ.getCategoryById(req);
+        // todo: handle errors in server return response
         if (!foundedCategory) {
             res.status(404).json({ error: "Category not found." });
         } else {
@@ -47,7 +48,7 @@ exports.getCategoryById = async (req, res) => {
 exports.updateCategories = async (req, res) => {
     try {
         const updatedCategories = await CategoriesServ.updateCategories(req);
-        res.json(updatedCategories);
+        res.status(updatedCategories.status).json(updatedCategories);
     } catch (error) {
         res.status(500).json({ error: "An error occurred while updating categories." });
         console.error("Error updating categories:", error);
@@ -58,7 +59,7 @@ exports.updateCategories = async (req, res) => {
 exports.deleteCategories = async (req, res) => {
     try {
         const result = await CategoriesServ.deleteCategories(req);
-        res.json(result);
+        res.status(result.status).json(result);
     } catch (error) {
         res.status(500).json({ error: "An error occurred while deleting the category." });
         console.error("Error deleting the category:", error);
