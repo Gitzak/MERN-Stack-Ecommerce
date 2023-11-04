@@ -15,8 +15,14 @@ class JwtManager {
         try {
             const decoded = jwt.verify(token, config.jwt.secret);
             return decoded;
-        } catch (error) {
-            throw error;
+        } catch (error) {            
+            const errorMessage = error.message || "Invalid token";
+            const statusCode = error.name === "JsonWebTokenError" ? 401 : 500;
+
+            return {
+                status: statusCode,
+                error: errorMessage,
+            };
         }
     }
 }

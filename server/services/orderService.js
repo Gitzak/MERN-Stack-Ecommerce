@@ -12,16 +12,6 @@ class OrdersService {
 
     // Create new order
     async createOrders(req) {
-        // todo: verify product exist and quantity
-
-        // todo: calculate total Price instead of body
-
-        // todo: decrease quantity from product on creation order
-
-        // todo: save order
-
-        // todo: send emails to customer and client (notify)
-
         const response = {};
         try {
             const customerID = req.id;
@@ -43,8 +33,6 @@ class OrdersService {
                 const product = await this.productRepo.getProductById(
                     item.productId
                 );
-
-                // console.log(product);
 
                 if (!product || product.quantity < item.quantity) {
                     response.message =
@@ -111,13 +99,13 @@ class OrdersService {
 
             const sendedMail = await SendOrderMail(order);
 
-            response.message = "order created successfully";
-            response.status = 201;
+            response.message = CONSTANTS.ORDER_CREATED_SUCCESS
+            response.status = CONSTANTS.SERVER_CREATED_HTTP_CODE
             return response;
         } catch {
-            response.message = error.message;
+            response.message = CONSTANTS.SERVER_ERROR;
             response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
-            return response;
+            return response;      
         }
     }
 
@@ -138,6 +126,7 @@ class OrdersService {
         return true;
     }
 
+
     // Get and search for all Orders
     async getOrders(req) {
         try {
@@ -145,9 +134,6 @@ class OrdersService {
             // Todo: We can add search query later
             const page = parseInt(req.query.page) || 1;
             const sort = req.query.sort || "ASC";
-            // console.log("page", page);
-            // console.log("sort", sort);
-            const pageSize = 10; // Number of items per page
             const skip = (page - 1) * pageSize;
             const limit = pageSize;
             response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
@@ -155,11 +141,12 @@ class OrdersService {
             response.orders = orders;
             return response;
         } catch (error) {
-            // Handle the error, you can log the error or throw a custom error
-            console.error("Error in getOrders:", error);
-            throw error; // You can re-throw the error or return a custom error message
+            response.message = CONSTANTS.SERVER_ERROR;
+            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+            return response;      
         }
     }
+
 
     // Get one Order by its ID
     async getOrderById(req) {
@@ -173,13 +160,17 @@ class OrdersService {
                 response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
                 return response;
             }
-            return foundedOrder;
-        } catch (error) {
-            response.message = error.message;
-            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+
+            response.status = CONSTANTS.SERVER_OK_HTTP_CODE
+            response.data = foundedOrder
             return response;
+        } catch (error) {
+            response.message = CONSTANTS.SERVER_ERROR;
+            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+            return response;      
         }
     }
+    
 
     // Update Orders
     async updateOrders(req) {
@@ -192,17 +183,14 @@ class OrdersService {
                 response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
                 return response;
             }
-            const updatedOrder = {
-                status,
-            };
 
-            const updatedOrderMessage = await this.orderRepo.UpdateOrder(
-                id,
-                updatedOrder
-            );
+            const updatedOrder = {status};
+            
+            const updatedOrderMessage = await this.orderRepo.UpdateOrder(id, updatedOrder);
+
             if (!updatedOrderMessage) {
-                response.message = "invalid order id";
-                response.status = 404;
+                response.message = CONSTANTS.INVALID_ORDER_ID
+                response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE
                 return response;
             }
 
@@ -274,9 +262,9 @@ class OrdersService {
             response.status = 200;
             return response;
         } catch (error) {
-            response.message = error.message;
+            response.message = CONSTANTS.SERVER_ERROR;
             response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
-            return response;
+            return response;      
         }
     }
 }

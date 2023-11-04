@@ -9,7 +9,6 @@ class ProductService {
 
     async createProduct(req) {
         const response = {};
-
         try {
             // Extract data from the request
             const { sku, productName, subcategoryId, shortDescription, longDescription, price, discountPrice, quantity, options, active } = req.body;
@@ -17,7 +16,6 @@ class ProductService {
             // Check if a product with the same name or SKU already exists
             const existingProductByName = await this.productRepo.findProductByName(productName);
             const existingProductBySku = await this.productRepo.findProductBySku(sku);
-
             if (existingProductByName) {
                 response.message = "Product name already exists.";
                 response.status = CONSTANTS.SERVER_BAD_REQUEST_HTTP_CODE;
@@ -103,31 +101,46 @@ class ProductService {
             // If all checks pass, update the product
             const updateResult = await this.productRepo.updateProduct(productId, updatedProduct);
 
-            // console.log(updateResult);
 
             if (updateResult.modifiedCount === 1) {
-                return { status: 200, message: "Product updated successfully" };
+                response.message = CONSTANTS.PRODUCT_UPDATED_SUCCESS
+                response.status = CONSTANTS.SERVER_OK_HTTP_CODE
+                return response;
             } else if (updateResult.matchedCount === 1) {
-                return { status: 200, message: "No changes were made to the product" };
+                response.message = CONSTANTS.PRODUCT_NO_CHANGE_MADE
+                response.status = CONSTANTS.SERVER_OK_HTTP_CODE
+                return response;
             } else {
-                return { status: 404, message: "Product not found for the given ID" };
-            }
+                response.message = CONSTANTS.PRODUCT_NOT_FOUND
+                response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE
+                return response;
+                        }
         } catch (error) {
-            if (error.code === 11000 && error.keyPattern && error.keyPattern.productName) {
-                return { status: 400, message: "The product name should be unique" };
-            } else {
-                throw error; // Re-throw any other error types
-            }
+            response.message = CONSTANTS.SERVER_ERROR;
+            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+            return response; 
         }
     }
 
     async getProductById(req) {
+        const response = {};
         try {
             const productId = req.params.id;
             const product = await this.productRepo.getProductById(productId);
-            return product;
+
+            if (!product){
+                response.message = CONSTANTS.PRODUCT_NOT_FOUND;
+                response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+                return response;
+            }
+            response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+            response.data = product
+            return response;
+
         } catch (error) {
-            throw error;
+            response.message = CONSTANTS.SERVER_ERROR;
+            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+            return response;         
         }
     }
 
@@ -136,8 +149,6 @@ class ProductService {
         const response = {};
         const page = parseInt(req.query.page) || 1;
         const sort = req.query.sort || "ASC";
-        // console.log("page", page);
-        // console.log("sort", sort);
         const pageSize = 10;
         const skip = (page - 1) * pageSize;
         const limit = pageSize;
@@ -145,7 +156,6 @@ class ProductService {
         if (req.query.query) {
             try {
                 const searchProducts = await this.productRepo.searchProduct(query, skip, limit, sort);
-
                 return searchProducts;
             } catch (error) {
                 return error;

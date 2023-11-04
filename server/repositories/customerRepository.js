@@ -42,8 +42,6 @@ class CustomerRepository {
     }
 
     async UpdateCustomer(id, customer) {
-        const filter = { _id: id };
-
         const result = await this.customerModel.findOneAndUpdate({ _id: id }, customer, { upsert: true, new: true });
         // console.log(result);
         return result;
@@ -82,30 +80,10 @@ class CustomerRepository {
     }
 
     async validateAccCustomer(customerId) {
-        const customer = await this.customerModel.findById(customerId).select("-password");
-
-        if (!customer) {
-            return {
-                status: 404,
-                message: "invalid customer id",
-            };
-        }
-
-        if (customer.validatAccount) {
-            return {
-                status: 400,
-                message: "Invalid action, this email is already validated",
-            };
-        }
-
-        customer.validatAccount = true;
-        await customer.save();
-
-        return {
-            status: 200,
-            message: "Your account validated successfully",
-        };
+        const validatedCustomer = await this.customerModel.findOneAndUpdate({ _id: customerId }, {validatAccount: true}, { upsert: false, new: true });
+        return validatedCustomer;
     }
+
 }
 
 module.exports = { CustomerRepository };
