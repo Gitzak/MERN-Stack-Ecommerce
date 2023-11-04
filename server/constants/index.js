@@ -10,6 +10,14 @@ exports.ORDERS_STATUS = {
     Closed: "Closed",
     Cancled: "Cancled",
 };
+exports.ORDERS_STATUS_MSG = {
+    Shipped: "We're excited to inform you that your order has been shipped. You can expect it to arrive at your doorstep soon!",
+    Paid: "Thank you for your payment! We've received it and your order is now being processed. You'll receive a notification once it's shipped.",
+    Closed: "Your order has been successfully delivered and marked as closed. We hope you enjoy your purchase! If you have any questions, feel free to reach out.",
+    Cancelled: "We're sorry to inform you that your order has been cancelled. If you have any questions or need further assistance, please contact our support team."
+};
+
+
 
 exports.ORDERS_TVA = 0.2;
 
@@ -78,8 +86,10 @@ module.exports.INVALID_PRODUCT_ID = "Invalid Product ID";
 /* Order API Success & Error Messages */
 module.exports.ORDER_CREATED_SUCCESS = "Order created successfully";
 module.exports.ORDER_UPDATED_SUCCESS = "Order updated successfully";
+module.exports.ORDER_STATUS_UPDATED_SUCCESS = "order status updated successfully";
 module.exports.ORDER_NOT_FOUND = "Order not found";
 module.exports.INVALID_ORDER_ID = "Invalid Order ID";
+module.exports.ORDER_STATUS_NOT_FOUND = "Order Status not found";
 
 /* General Errors  constants start */
 module.exports.ROUTE_NOT_FOUND = "You are at wrong place. Shhoooo...";

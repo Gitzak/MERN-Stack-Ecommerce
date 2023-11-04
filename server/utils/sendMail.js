@@ -47,7 +47,10 @@ const SendMailToUser = async ({ userEmail, userPassword }) => {
                      <table border="0" cellpadding="0" cellspacing="0" width="480" >
                         <tr>
                            <td bgcolor="#ffffff" align="left" valign="top" style="padding: 30px 30px 20px 30px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: Helvetica, Arial, sans-serif; font-size: 48px; font-weight: 400; line-height: 48px;">
-                              <h1 style="font-size: 32px; font-weight: 400; margin: 0;">Your Account Information</h1>
+                           <h1 style="font-size: 24px; color: #333333; margin-bottom: 20px;">Welcome to your favorite Shop!</h1>
+
+                           <p style="font-size: 16px; color: #555555; margin-bottom: 30px;">We are thrilled to have you join our community.</p>
+                           <h1 style="font-size: 32px; font-weight: 400; margin: 0;">Your Account Information</h1>
                            </td>
                         </tr>
                      </table>

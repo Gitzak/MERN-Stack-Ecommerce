@@ -20,7 +20,7 @@ class CustomerService {
         }
         if (!customer.active) {
             response.message = CONSTANTS.CUSTOMER_NOT_ACTIVE;
-            response.status = CONSTANTS.SERVER_IFORBIDDEN_HTTP_CODE;
+            response.status = CONSTANTS.SERVER_FORBIDDEN_HTTP_CODE;
             return response;
         }
         if (!customer.validatAccount) {
