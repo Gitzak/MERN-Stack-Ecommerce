@@ -15,7 +15,6 @@ class subCategoriesService {
 
             const existingCategory = await this.subcategoryRepo.findSubCategoryByName(subCategory_name);
 
-            console.log(existingCategory);
 
             if (existingCategory) {
                 response.message = `The SubCategory '${subCategory_name}' already exists`;

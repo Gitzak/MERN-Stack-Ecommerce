@@ -28,6 +28,11 @@ class ProductRepository {
         return product;
     }
 
+    async hasProducts(id){
+        const hasProducts = await this.productModel.countDocuments({ categories: id });
+        return hasProducts > 0;
+    }
+
     async updateProduct(productId, productData) {
         const filter = { _id: productId };
         const updateData = { $set: productData };
@@ -41,7 +46,7 @@ class ProductRepository {
         const products = await this.productModel
             .find()
             .sort({ creationDate: sort === "ASC" ? 1 : -1 })
-            .populate("subcategoryId") // Populate the subcategory data
+            .populate("categories") // Populate the subcategory data
             .skip(skip)
             .limit(limit)
             .exec();
@@ -56,7 +61,7 @@ class ProductRepository {
         const searchedProducts = await this.productModel
             .find(queryOptions)
             .sort({ productName: sort === "ASC" ? 1 : -1 })
-            .populate("subcategoryId") // Populate the subcategory data
+            .populate("categories") // Populate the subcategory data
             .skip(skip)
             .limit(limit);
 

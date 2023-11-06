@@ -1,10 +1,14 @@
 const { CategoriesService } = require("../services/categoriesService");
 const { CategoryRepository } = require("../repositories/categoryRepository");
+const { ProductRepository } = require("../repositories/productRepository");
+
 const Categories = require("../models/Category");
 const CONSTANTS = require("../constants/index");
+const Product = require("../models/Product");
 
+const ProductRepo = new ProductRepository(Product);
 const CategoriesRepo = new CategoryRepository(Categories);
-const CategoriesServ = new CategoriesService(CategoriesRepo);
+const CategoriesServ = new CategoriesService(CategoriesRepo,ProductRepo);
 
 // Create a new Categories
 exports.createCategories = async (req, res) => {
