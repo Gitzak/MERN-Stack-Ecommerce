@@ -51,7 +51,6 @@ class subCategoryRepository {
 
     async findSubCategoryById(subcategoryId) {
         const subcategory = await this.subcategoryModel.findById(subcategoryId).populate("category_id").exec();
-
         return subcategory;
     }
 

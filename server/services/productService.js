@@ -1,6 +1,7 @@
 const CONSTANTS = require("../constants");
 const config = require("../config/keys");
 const cloudinary = require("../utils/cloudinary");
+const { getsubCategoryNameById } = require("../controllers/subcategoriesController");
 
 class ProductService {
     constructor(productRepo) {
@@ -12,6 +13,14 @@ class ProductService {
         try {
             // Extract data from the request
             const { sku, productName, subcategoryId, shortDescription, longDescription, price, discountPrice, quantity, options, active } = req.body;
+
+            // check if subCategory Exist
+            const subcategoryName = await getsubCategoryNameById(subcategoryId);
+            if (subcategoryName?.status === 404) {
+                response.message = "You cannot create this product, because the " + CONSTANTS.CATEGORY_NOT_FOUND;
+                response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+                return response;
+            }
 
             // Check if a product with the same name or SKU already exists
             const existingProductByName = await this.productRepo.findProductByName(productName);
@@ -79,9 +88,9 @@ class ProductService {
     }
 
     async updateProduct(req) {
+        const response = {};
         try {
             const productId = req.params.id;
-            const response = {};
 
             const { sku, productName, subcategoryId, shortDescription, longDescription, price, discountPrice, quantity, options, active } = req.body;
 
@@ -98,27 +107,40 @@ class ProductService {
                 active,
             };
 
+            // check if subCategory Exist
+            const subcategoryName = await getsubCategoryNameById(subcategoryId);
+            if (subcategoryName?.status === 404) {
+                response.message = "You cannot update this product, because the " + CONSTANTS.CATEGORY_NOT_FOUND;
+                response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+                return response;
+            }
+
             // If all checks pass, update the product
             const updateResult = await this.productRepo.updateProduct(productId, updatedProduct);
 
-
             if (updateResult.modifiedCount === 1) {
-                response.message = CONSTANTS.PRODUCT_UPDATED_SUCCESS
-                response.status = CONSTANTS.SERVER_OK_HTTP_CODE
+                response.message = CONSTANTS.PRODUCT_UPDATED_SUCCESS;
+                response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
                 return response;
             } else if (updateResult.matchedCount === 1) {
-                response.message = CONSTANTS.PRODUCT_NO_CHANGE_MADE
-                response.status = CONSTANTS.SERVER_OK_HTTP_CODE
+                response.message = CONSTANTS.PRODUCT_NO_CHANGE_MADE;
+                response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
                 return response;
             } else {
-                response.message = CONSTANTS.PRODUCT_NOT_FOUND
-                response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE
+                response.message = CONSTANTS.PRODUCT_NOT_FOUND;
+                response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
                 return response;
-                        }
+            }
         } catch (error) {
+            if (error.code === 11000) {
+                const field = Object.keys(error.keyPattern)[0];
+                response.message = CONSTANTS.PRODUCT_DUPLICATE_KEY(field);
+                response.status = CONSTANTS.SERVER_BAD_REQUEST_HTTP_CODE;
+                return response;
+            }
             response.message = CONSTANTS.SERVER_ERROR;
             response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
-            return response; 
+            return response;
         }
     }
 
@@ -128,19 +150,18 @@ class ProductService {
             const productId = req.params.id;
             const product = await this.productRepo.getProductById(productId);
 
-            if (!product){
+            if (!product) {
                 response.message = CONSTANTS.PRODUCT_NOT_FOUND;
                 response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
                 return response;
             }
             response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
-            response.data = product
+            response.data = product;
             return response;
-
         } catch (error) {
             response.message = CONSTANTS.SERVER_ERROR;
             response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
-            return response;         
+            return response;
         }
     }
 

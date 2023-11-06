@@ -40,7 +40,9 @@ exports.getsubCategoryById = async (req, res) => {
 exports.getsubCategoryNameById = async (id) => {
     try {
         const foundedsubCategoryName = await subCategoriesServ.getsubCategoryNameById(id);
-        res.status(foundedsubCategoryName.status).json(foundedsubCategoryName);
+        // console.log(foundedsubCategoryName);
+        return foundedsubCategoryName;
+        // res.status(foundedsubCategoryName.status).json(foundedsubCategoryName);
     } catch (error) {
         res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }

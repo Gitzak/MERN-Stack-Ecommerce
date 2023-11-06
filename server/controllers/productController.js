@@ -32,18 +32,22 @@ exports.listProducts = async (req, res) => {
 exports.getProductById = async (req, res) => {
     try {
         const product = await ProductServ.getProductById(req);
-        if(product.status !== 200) {
+        if (product.status !== 200) {
             res.status(product.status).json(product);
+            return;
         }
-        const subCaId = product.subcategoryId;
+        const subCaId = product.data.subcategoryId._id;
         const subcategoryName = await getsubCategoryNameById(subCaId);
-        const updatedProduct = { ...product._doc, subcategoryName: subcategoryName };
+        if (subcategoryName.status !== 200) {
+            res.status(subcategoryName.status).json(subcategoryName);
+            return;
+        }
+        const updatedProduct = { ...product, subcategoryName: subcategoryName.data };
         res.status(updatedProduct.status).json(updatedProduct);
     } catch (error) {
         res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };
-
 
 // Update product data
 exports.updateProductData = async (req, res) => {

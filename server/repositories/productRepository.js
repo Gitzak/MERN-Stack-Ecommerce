@@ -32,8 +32,8 @@ class ProductRepository {
         const filter = { _id: productId };
         const updateData = { $set: productData };
 
-        const result = await this.productModel.updateOne(filter, updateData, { upsert: true, new: true });
-
+        const result = await this.productModel.updateOne(filter, updateData, { upsert: false, new: true });
+        
         return result;
     }
 

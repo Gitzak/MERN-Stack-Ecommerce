@@ -103,6 +103,8 @@ class subCategoriesService {
         try {
             const foundedsubCategory = await this.subcategoryRepo.findSubCategoryById(id);
 
+            // console.log(!foundedsubCategory);
+            
             if (!foundedsubCategory) {
                 response.message = CONSTANTS.CATEGORY_NOT_FOUND;
                 response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;

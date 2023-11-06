@@ -53,6 +53,10 @@ exports.validateSubCategoryForm = [body("subCategory_name").notEmpty().withMessa
 exports.validateSubCategoryFormUpdate = [body("subCategory_name").notEmpty().withMessage("Subcategory name is required"), body("category_id").notEmpty().withMessage("Category Parent is required"), body("active").isBoolean().withMessage("Active must be a boolean value")];
 
 const validateOptions = (value) => {
+    if(!value){
+        return true;
+    }
+
     if (!Array.isArray(value)) {
         throw new Error("Options must be an array of objects");
     }
