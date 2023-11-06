@@ -1,7 +1,7 @@
 const CONSTANTS = require("../constants");
 const config = require("../config/keys");
 const cloudinary = require("../utils/cloudinary");
-const { getsubCategoryNameById } = require("../controllers/subcategoriesController");
+const { checkCategoryById } = require("../controllers/categoriesController");
 
 class ProductService {
     constructor(productRepo) {
@@ -12,24 +12,29 @@ class ProductService {
         const response = {};
         try {
             // Extract data from the request
-            const { sku, productName, subcategoryId, shortDescription, longDescription, price, discountPrice, quantity, options, active } = req.body;
+            const { sku, productName, categories, shortDescription, longDescription, price, discountPrice, quantity, options, active } = req.body;
 
-            // check if subCategory Exist
-            const subcategoryName = await getsubCategoryNameById(subcategoryId);
-            if (subcategoryName?.status === 404) {
-                response.message = "You cannot create this product, because the " + CONSTANTS.CATEGORY_NOT_FOUND;
-                response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
-                return response;
+            // Check if any of the categories don't exist
+            for (const categoryId of categories) {
+                const category = await checkCategoryById(categoryId);
+
+                if (category?.status === 404) {
+                    response.message = "You cannot create this product because one or more categories were not found.";
+                    response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+                    return response;
+                }
             }
 
             // Check if a product with the same name or SKU already exists
             const existingProductByName = await this.productRepo.findProductByName(productName);
-            const existingProductBySku = await this.productRepo.findProductBySku(sku);
+
             if (existingProductByName) {
                 response.message = "Product name already exists.";
                 response.status = CONSTANTS.SERVER_BAD_REQUEST_HTTP_CODE;
                 return response;
             }
+
+            const existingProductBySku = await this.productRepo.findProductBySku(sku);
 
             if (existingProductBySku) {
                 response.message = "Product SKU already exists.";
@@ -57,7 +62,7 @@ class ProductService {
                 sku,
                 productImages: imagesUrls,
                 productName,
-                subcategoryId,
+                categories,
                 shortDescription,
                 longDescription,
                 price,
@@ -92,12 +97,12 @@ class ProductService {
         try {
             const productId = req.params.id;
 
-            const { sku, productName, subcategoryId, shortDescription, longDescription, price, discountPrice, quantity, options, active } = req.body;
+            const { sku, productName, categories, shortDescription, longDescription, price, discountPrice, quantity, options, active } = req.body;
 
             const updatedProduct = {
                 sku,
                 productName,
-                subcategoryId,
+                categories,
                 shortDescription,
                 longDescription,
                 price,
@@ -107,12 +112,15 @@ class ProductService {
                 active,
             };
 
-            // check if subCategory Exist
-            const subcategoryName = await getsubCategoryNameById(subcategoryId);
-            if (subcategoryName?.status === 404) {
-                response.message = "You cannot update this product, because the " + CONSTANTS.CATEGORY_NOT_FOUND;
-                response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
-                return response;
+            // Check if any of the categories don't exist
+            for (const categoryId of categories) {
+                const category = await checkCategoryById(categoryId);
+
+                if (category?.status === 404) {
+                    response.message = "You cannot create this product because one or more categories were not found.";
+                    response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+                    return response;
+                }
             }
 
             // If all checks pass, update the product

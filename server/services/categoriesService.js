@@ -11,19 +11,26 @@ class CategoriesService {
         const response = {};
 
         try {
-            const { category_name, active } = req.body;
+            const { category_name, active, description, parentId } = req.body;
 
-            const existingCategory = await this.categoryRepo.findCategoryByName(category_name);
+            let parentName = null;
 
-            if (existingCategory) {
-                response.message = `The category '${category_name}' already exists`;
-                response.status = CONSTANTS.SERVER_BAD_REQUEST_HTTP_CODE;
-                return response;
+            if (parentId) {
+                const foundedCategory = await this.categoryRepo.findCategoryById(parentId);
+                if (!foundedCategory) {
+                    response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+                    response.message = CONSTANTS.CATEGORY_PARENT_NOT_FOUND;
+                    return response;
+                }
+                parentName = foundedCategory.category_name;
             }
 
             const newCategory = {
                 category_name,
                 active,
+                description,
+                parentId,
+                parentName,
             };
 
             const category = await this.categoryRepo.CreateCategory(newCategory);
@@ -101,26 +108,55 @@ class CategoriesService {
         }
     }
 
+    async findCategoryById(categoryId) {
+        const response = {};
+        try {
+            const foundedCategory = await this.categoryRepo.findCategoryById(categoryId);
+
+            if (!foundedCategory) {
+                response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+                response.message = CONSTANTS.CATEGORY_NOT_FOUND;
+                return response;
+            }
+            response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+            response.data = foundedCategory;
+            return response;
+        } catch (error) {
+            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+            response.message = CONSTANTS.SERVER_ERROR;
+            return response;
+        }
+    }
+
     // Update Categories
     async updateCategories(req) {
         const response = {};
         try {
             const id = req.params.id;
 
-            const { category_name, active } = req.body;
+            const { category_name, active, description, parentId } = req.body;
 
-            const existingCategory = await this.categoryRepo.findCategoryByNameExcludingId(category_name, id);
+            let parentName = null;
 
-            if (existingCategory) {
-                response.message = `The category '${category_name}' already exists`;
-                response.status = CONSTANTS.SERVER_BAD_REQUEST_HTTP_CODE;
-                return response;
+            if (parentId) {
+                const foundedCategory = await this.categoryRepo.findCategoryById(parentId);
+                if (!foundedCategory) {
+                    response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+                    response.message = CONSTANTS.CATEGORY_PARENT_NOT_FOUND;
+                    return response;
+                }
+                parentName = foundedCategory.category_name;
             }
 
             const updatedCategory = {
                 category_name,
                 active,
+                description,
+                parentId : parentId ? parentId : null,
+                parentName,
             };
+
+            console.log(updatedCategory);
 
             const updatedCategoryMessage = await this.categoryRepo.UpdateCategory(id, updatedCategory);
 
@@ -130,7 +166,8 @@ class CategoriesService {
                 return response;
             }
 
-            (response.message = CONSTANTS.CATEGORY_UPDATED_SUCCESS), (response.status = CONSTANTS.SERVER_UPDATED_HTTP_CODE);
+            response.message = CONSTANTS.CATEGORY_UPDATED_SUCCESS;
+            response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
             return response;
         } catch (error) {
             response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
@@ -145,9 +182,19 @@ class CategoriesService {
 
         try {
             const categoryId = req.params.id;
-            const deletedCategory = await this.categoryRepo.DeleteCategory(categoryId);
 
-            console.log(!deletedCategory);
+            // Check if the category has child categories
+            const hasChildCategories = await this.categoryRepo.hasChildCategories(categoryId);
+
+            if (hasChildCategories) {
+                response.status = CONSTANTS.SERVER_BAD_REQUEST_HTTP_CODE;
+                response.message = "You cannot delete this category because it has child categories";
+                return response;
+            }
+
+            // TODO: Check if the category is linked to any products
+
+            const deletedCategory = await this.categoryRepo.DeleteCategory(categoryId);
 
             if (!deletedCategory) {
                 response.message = CONSTANTS.CATEGORY_NOT_FOUND;
@@ -159,6 +206,7 @@ class CategoriesService {
             response.message = CONSTANTS.CATEGORY_DELETED_SUCCESS;
             return response;
         } catch (error) {
+            console.log(error);
             response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
             response.message = CONSTANTS.SERVER_ERROR;
             return response;

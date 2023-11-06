@@ -2,58 +2,66 @@ const mongoose = require("mongoose");
 
 const { ORDERS_STATUS } = require("../constants");
 
-const orderSchema = new mongoose.Schema({
-    orderNumber: {
-        type: Number,
-        required: true,
-        default: 1,
-    },
-    customerID: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Customer",
-        required: true,
-    },
-    customerFirstName: {
-        type: String,
-    },
-    customerLastName: {
-        type: String,
-    },
-    customerEmail: {
-        type: String,
-    },
-    orderItems: [
-        {
-            itemID: String,
-            itemName: String,
-            itemOptions: String,
-            quantity: Number,
-            unitPrice: Number,
-            totalPrice: Number,
+const orderSchema = new mongoose.Schema(
+    {
+        orderNumber: {
+            type: Number,
+            required: true,
+            default: 1,
         },
-    ],
-    orderDate: {
-        type: Number,
-        default: Date.now,
+        customerID: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Customer",
+            required: true,
+        },
+        customerFirstName: {
+            type: String,
+        },
+        customerLastName: {
+            type: String,
+        },
+        customerEmail: {
+            type: String,
+        },
+        customerAddress: {
+            type: String,
+        },
+        orderItems: [
+            {
+                itemID: String,
+                itemName: String,
+                itemOptions: String,
+                quantity: Number,
+                unitPrice: Number,
+                totalPrice: Number,
+            },
+        ],
+        orderDate: {
+            type: Number,
+            default: Date.now,
+        },
+        cartTotalPrice: {
+            type: Number,
+            default: 0,
+        },
+        cartSubTotalPrice: {
+            type: Number,
+            default: 0,
+        },
+        tvaApplied: {
+            type: Number,
+            default: 20,
+        },
+        status: {
+            type: String,
+            enum: [ORDERS_STATUS.Open, ORDERS_STATUS.Shipped, ORDERS_STATUS.Paid, ORDERS_STATUS.Closed, ORDERS_STATUS.Cancled],
+            default: ORDERS_STATUS.Open,
+        },
     },
-    cartTotalPrice: {
-        type: Number,
-        default: 0,
-    },
-    cartSubTotalPrice: {
-        type: Number,
-        default: 0,
-    },
-    tvaApplied: {
-        type: Number,
-        default: 20,
-    },
-    status: {
-        type: String,
-        enum: [ORDERS_STATUS.Open, ORDERS_STATUS.Shipped, ORDERS_STATUS.Paid, ORDERS_STATUS.Closed, ORDERS_STATUS.Cancled],
-        default: ORDERS_STATUS.Open,
-    },
-});
+    {
+        timestamps: true,
+    }
+);
 
 // Define a pre-save middleware to generate the orderNumber
 orderSchema.pre("save", async function (next) {

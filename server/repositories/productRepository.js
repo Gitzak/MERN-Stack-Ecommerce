@@ -13,7 +13,7 @@ class ProductRepository {
     async getProductById(productId) {
         const product = await this.productModel
             .findById(productId)
-            .populate("subcategoryId") // Populate the subcategory data
+            .populate("categories") // Populate the subcategory data
             .exec();
         return product;
     }

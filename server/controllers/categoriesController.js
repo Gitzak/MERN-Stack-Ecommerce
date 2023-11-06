@@ -1,6 +1,6 @@
 const { CategoriesService } = require("../services/categoriesService");
 const { CategoryRepository } = require("../repositories/categoryRepository");
-const Categories = require("../models/Categories.js");
+const Categories = require("../models/Category");
 const CONSTANTS = require("../constants/index");
 
 const CategoriesRepo = new CategoryRepository(Categories);
@@ -26,7 +26,19 @@ exports.getCategories = async (req, res) => {
     }
 };
 
-// Get Categories by ID
+exports.checkCategoryById = async (id) => {
+    const response = {};
+    try {
+        const category = await CategoriesServ.findCategoryById(id);
+        return category;
+    } catch (error) {
+        response.message = CONSTANTS.SERVER_ERROR;
+        response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+        return response;
+    }
+};
+
+// check Categorie by ID
 exports.getCategoryById = async (req, res) => {
     try {
         const foundedCategory = await CategoriesServ.getCategoryById(req);

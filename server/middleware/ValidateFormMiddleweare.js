@@ -1,4 +1,4 @@
-const { body } = require('express-validator');
+const { body } = require("express-validator");
 const CONSTANTS = require("../constants/index");
 
 exports.validateUserLogin = [body("email", "Email is required").notEmpty(), body("email", "Invalid email format").isEmail(), body("password", "Password is required").notEmpty()];
@@ -26,6 +26,16 @@ exports.validateCustomerLogin = [body("email", "Email is required").notEmpty(), 
 exports.validateCustomerForm = [
     body("firstName").notEmpty().withMessage("First name is required"),
     body("lastName").notEmpty().withMessage("Last name is required"),
+    body("phoneNumber")
+        .notEmpty()
+        .withMessage("Phone number is required")
+        .custom((value) => {
+            const phoneRegex = /^[+][0-9]+$/;
+            if (!phoneRegex.test(value) || value.includes("-")) {
+                throw new Error("Invalid phone number format");
+            }
+            return true;
+        }),
     body("email").notEmpty().withMessage("Email is required").isEmail().withMessage("Invalid email format"),
     body("password").notEmpty().withMessage("Password is required"),
 ];
@@ -33,6 +43,16 @@ exports.validateCustomerForm = [
 exports.validateCustomerFormUpdatePut = [
     body("firstName").notEmpty().withMessage("First name is required"),
     body("lastName").notEmpty().withMessage("Last name is required"),
+    body("phoneNumber")
+        .notEmpty()
+        .withMessage("Phone number is required")
+        .custom((value) => {
+            const phoneRegex = /^[+][0-9]+$/;
+            if (!phoneRegex.test(value) || value.includes("-")) {
+                throw new Error("Invalid phone number format");
+            }
+            return true;
+        }),
     body("email").notEmpty().withMessage("Email is required").isEmail().withMessage("Invalid email format"),
     body("active").isBoolean().withMessage("Active must be a boolean value"),
 ];
@@ -44,16 +64,24 @@ exports.validateCustomerFormUpdatePatch = [
     body("password").notEmpty().withMessage("Password is required"),
 ];
 
-exports.validateCategoryForm = [body("category_name").notEmpty().withMessage("Category name is required"), body("active").isBoolean().withMessage("Active must be a boolean value")];
+exports.validateCategoryForm = [
+    body("category_name").notEmpty().withMessage("Category name is required"),
+    body("parentId").optional().isMongoId().withMessage("Parent ID must be a valid MongoDB ID"),
+    body("active").optional().isBoolean().withMessage("Active must be a boolean value"),
+];
 
-exports.validateCategoryFormUpdate = [body("category_name").notEmpty().withMessage("Category name is required"), body("active").isBoolean().withMessage("Active must be a boolean value")];
+exports.validateCategoryFormUpdate = [
+    body("category_name").notEmpty().withMessage("Category name is required"),
+    body("parentId").optional().isMongoId().withMessage("Parent ID must be a valid MongoDB ID"),
+    body("active").optional().isBoolean().withMessage("Active must be a boolean value"),
+];
 
 exports.validateSubCategoryForm = [body("subCategory_name").notEmpty().withMessage("Subcategory name is required"), body("category_id").notEmpty().withMessage("Category Parent is required"), body("active").isBoolean().withMessage("Active must be a boolean value")];
 
 exports.validateSubCategoryFormUpdate = [body("subCategory_name").notEmpty().withMessage("Subcategory name is required"), body("category_id").notEmpty().withMessage("Category Parent is required"), body("active").isBoolean().withMessage("Active must be a boolean value")];
 
 const validateOptions = (value) => {
-    if(!value){
+    if (!value) {
         return true;
     }
 
@@ -77,7 +105,7 @@ const validateOptions = (value) => {
 exports.validateProductForm = [
     body("sku").notEmpty().withMessage("SKU is required"),
     body("productName").notEmpty().withMessage("Product Name is required"),
-    body("subcategoryId").notEmpty().withMessage("Subcategory ID is required"),
+    body("categories").isArray({ min: 1 }).withMessage("Categories is required"),
     body("shortDescription").notEmpty().withMessage("Short Description is required"),
     body("longDescription").notEmpty().withMessage("Long Description is required"),
     body("price").isNumeric().withMessage("Price must be a numeric value"),
@@ -112,7 +140,7 @@ exports.validateProductForm = [
 exports.validateProductFormUpdate = [
     body("sku").notEmpty().withMessage("SKU is required"),
     body("productName").notEmpty().withMessage("Product Name is required"),
-    body("subcategoryId").notEmpty().withMessage("Subcategory ID is required"),
+    body("categories").isArray({ min: 1 }).withMessage("Categories is required"),
     body("shortDescription").notEmpty().withMessage("Short Description is required"),
     body("longDescription").notEmpty().withMessage("Long Description is required"),
     body("price").isNumeric().withMessage("Price must be a numeric value"),
@@ -121,5 +149,3 @@ exports.validateProductFormUpdate = [
     body("options").custom(validateOptions),
     body("active").isBoolean().withMessage("Active must be a boolean value"),
 ];
-
-

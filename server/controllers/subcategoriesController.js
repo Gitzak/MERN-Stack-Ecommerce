@@ -1,7 +1,7 @@
 const { subCategoriesService } = require("../services/subCategoriesService");
 const { subCategoryRepository } = require("../repositories/subCategoryRepository");
 const subCategories = require("../models/subCategories.js");
-const Category = require("../models/Categories.js"); // Adjust the path if needed
+const Category = require("../models/Category"); // Adjust the path if needed
 const CONSTANTS = require("../constants/index");
 
 const subCategoriesRepo = new subCategoryRepository(subCategories, Category);

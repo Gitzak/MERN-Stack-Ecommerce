@@ -7,10 +7,7 @@ class CategoryRepository {
 
     async CreateCategory(category) {
         const { category_name, active } = category;
-        const createCategory = await this.categoryModel.create({
-            category_name,
-            active,
-        });
+        const createCategory = await this.categoryModel.create(category);
         return createCategory;
     }
 
@@ -50,6 +47,11 @@ class CategoryRepository {
     async findCategoryByNameExcludingId(category_name, excludeId) {
         const category = await this.categoryModel.findOne({ category_name: category_name, _id: { $ne: excludeId } });
         return category;
+    }
+
+    async hasChildCategories(categoryId) {
+        const childCategories = await this.categoryModel.find({ parentId: categoryId });
+        return childCategories.length > 0;
     }
 
     async UpdateCategory(id, category) {
