@@ -62,4 +62,4 @@ async function runSeedsProducts() {
         console.error('Error during seeding:', error);
     }
 }
-runSeedsProducts();
+// runSeedsProducts();

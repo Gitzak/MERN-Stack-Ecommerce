@@ -1,51 +1,56 @@
 const { UserService } = require("../services/userService");
 const { UserRepository } = require("../repositories/userRepository");
 const User = require("../models/User");
+const CONSTANTS = require("../constants/index");
 
 const userRepo = new UserRepository(User);
 const userServ = new UserService(userRepo);
 
-const addNewUser = async (req, res) => {
-  const newUser = await userServ.AddUser(req);
-  res.json(newUser);
+exports.addNewUser = async (req, res) => {
+    try {
+        const newUser = await userServ.AddUser(req);
+        res.status(newUser.status).json(newUser);
+    } catch (error) {
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
+    }
 };
 
 //update user data
-const updateUserData = async (req, res) => {
-  const updatedUser = await userServ.UpdateUser(req);
-  console.log(updatedUser);
-  res.json(updatedUser);
+exports.updateUserData = async (req, res) => {
+    try {
+        const updatedUser = await userServ.UpdateUser(req);
+        res.status(updatedUser.status).json(updatedUser);
+    } catch (error) {
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
+    }
 };
 
 // Get user by ID
-const getUserById = async (req, res) => {
-  try {
-    const userId = req.params.id;
-    const user = await userServ.getUserById(userId);
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
+exports.getUserById = async (req, res) => {
+    try {
+        const user = await userServ.getUserById(req);
+        res.status(user.status).json(user);
+    } catch (error) {
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
-    return res.status(200).json({ status: 200, data: [user] });
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
-  }
 };
 
 //Get all users
-const getUsers = async (req, res) => {
-  const users = await userServ.getUsers(req);
-  res.json(users)
-}
-
-const searchUsers = async (req, res) => {
-  const results = await userServ.searchUsers(req);
-  res.json(results);
-}
-// delete user 
-const deleteUser = async (req, res) => {
-  const userId = req.params.id;
-  const result = await userServ.Delete(userId);
-  res.json(result);
+exports.getUsers = async (req, res) => {
+    try {
+        const users = await userServ.getUsers(req);
+        res.status(users.status).json(users);
+    } catch (error) {
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
+    }
 };
 
-module.exports = { getUserById, addNewUser, updateUserData, getUsers, searchUsers, deleteUser };
+// delete user
+exports.deleteUser = async (req, res) => {
+    try {
+        const result = await userServ.Delete(req);
+        res.status(result.status).json(result);
+    } catch (error) {
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
+    }
+};

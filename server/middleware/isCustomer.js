@@ -1,7 +1,7 @@
 const CONSTANTS = require("../constants/index");
 const { verify } = require("../utils/JWT");
 
-exports.isAdmin = (req, res, next) => {
+exports.isCustomer = (req, res, next) => {
     const authHeader = req.headers.authorization || null;
 
     const token = authHeader && authHeader.split(" ")[1];
@@ -14,9 +14,14 @@ exports.isAdmin = (req, res, next) => {
     }
 
     const userData = verify(token);
-    req.userRole = userData.userRole;
 
-    if (req.userRole !== "ADMIN") {
+    req.userRole          = userData.userRole;
+    req.id                = userData.customerId;
+    req.customerFirstName = userData.customerFirstName;
+    req.customerLastName  = userData.customerLastName;
+    req.customerEmail     = userData.customerEmail;
+
+    if (req.userRole !== "CUSTOMER") {
         return res.status(CONSTANTS.SERVER_FORBIDDEN_HTTP_CODE).json({
             message: CONSTANTS.INSUFFICIENT_PRIVILEGE,
             status: CONSTANTS.SERVER_FORBIDDEN_HTTP_CODE,

@@ -1,64 +1,68 @@
 const CONSTANTS = require("../constants/index");
 
 class CategoryRepository {
-  constructor(categoryModel) {
-    this.categoryModel = categoryModel;
-  }
+    constructor(categoryModel) {
+        this.categoryModel = categoryModel;
+    }
 
+    async CreateCategory(category) {
+        const { category_name, active } = category;
+        const createCategory = await this.categoryModel.create(category);
+        return createCategory;
+    }
 
-  async CreateCategory(category) {
-    const { category_name, active } = category;
-    const createCategory = await this.categoryModel.create({
-      category_name,
-      active
-    });
+    async getCategories(skip, limit, sort) {
+        const foundedCategories = await this.categoryModel
+            .aggregate([{ $sort: { category_name: -1 } }])
+            .skip(skip)
+            .limit(limit)
+            .exec();
+        return foundedCategories;
+    }
 
-    return createCategory;
-  }
+    async searchCategories(query, skip, limit, sort) {
+        const queryOptions = {
+            $or: [{ category_name: { $regex: query, $options: "i" } }],
+        };
 
+        const searchedCategories = await this.categoryModel
+            .find(queryOptions)
+            .sort({ category_name: sort === "ASC" ? 1 : -1 })
+            .skip(skip)
+            .limit(limit);
 
-  async searchCategories(query) {
-    const searchedCategories = await this.categoryModel.find({
-      $or: [
-        { category_name: { $regex: query, $options: "i" } },
-      ],
-    });
+        return searchedCategories;
+    }
 
-    return searchedCategories;
-  }
+    async findCategoryById(categoryId) {
+        const category = await this.categoryModel.findById(categoryId);
+        return category;
+    }
 
-  async getCategories(skip, limit, sort) {
-    const categorys = await this.categoryModel
-      .aggregate([{ $sort: { category_name: -1 } }])
-    const foundedCategories = await this.categoryModel
-      .aggregate([{ $sort: { creationDate: -1 } }])
-      .skip(skip)
-      .limit(limit)
-      .exec();
-    return foundedCategories;
-  }
+    async findCategoryByName(category_name) {
+        const category = await this.categoryModel.findOne({ category_name: category_name });
+        return category;
+    }
 
+    async findCategoryByNameExcludingId(category_name, excludeId) {
+        const category = await this.categoryModel.findOne({ category_name: category_name, _id: { $ne: excludeId } });
+        return category;
+    }
 
-  async findCategoryById(categoryId) {
-    const category = await this.categoryModel.findById(categoryId);
-    return category;
-    const foundedCategory = await this.categoryModel.findById(categoryId).select("-password");
-    return foundedCategory;
-  }
+    async hasChildCategories(categoryId) {
+        const childCategories = await this.categoryModel.find({ parentId: categoryId });
+        return childCategories.length > 0;
+    }
 
+    async UpdateCategory(id, category) {
+        const updatedCategory = await this.categoryModel.findOneAndUpdate({ _id: id }, category, { upsert: false, new: true });
+        return updatedCategory;
+    }
 
-  async UpdateCategory(id, category) {
-    const updatedCategory = await this.categoryModel.findOneAndUpdate({ _id: id }, category, { upsert: true, new: true });
-    return updatedCategory
-  }
-
-
-  async DeleteCategory(categoryId) {
-    console.log("repo",categoryId)
-    const deletedCategory = await this.categoryModel.findByIdAndDelete(categoryId);
-    return deletedCategory;
-  }
- 
+    async DeleteCategory(categoryId) {
+        const deletedCategory = await this.categoryModel.findByIdAndDelete(categoryId);
+        return deletedCategory;
+    }
 }
 
 module.exports = { CategoryRepository };

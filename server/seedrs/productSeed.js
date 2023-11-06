@@ -39,7 +39,7 @@ const seedProducts = async (count) => {
                 ...productData,
             });
             await product.save();
-            console.log(`Product ${productData.product_name} seeded successfully.`);
+            // console.log(`Product ${productData.product_name} seeded successfully.`);
         }
 
         mongoose.connection.close();

@@ -1,61 +1,71 @@
 const { ProductService } = require("../services/productService");
 const { ProductRepository } = require("../repositories/productRepository");
 const Product = require("../models/Product");
+const CONSTANTS = require("../constants/index");
+
+const { getsubCategoryNameById } = require("../controllers/subcategoriesController");
 
 const ProductRepo = new ProductRepository(Product);
 const ProductServ = new ProductService(ProductRepo);
 
 // Create a new product
 exports.createProduct = async (req, res) => {
-  try {
-    const newProduct = await ProductServ.createProduct(req);
-    res.json(newProduct);
-  } catch (error) {
-    if (error.code === 11000) {
-      res.status(400).json({ error: 'Duplicate product. Please use a different SKU.' });
-    } else {
-      console.error(error);
-      res.status(500).json({ error: 'An error occurred while creating the product.' });
+    try {
+        const newProduct = await ProductServ.createProduct(req);
+        res.status(newProduct.status).json(newProduct);
+    } catch (error) {
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
-  }
 };
 
 // List all products
 exports.listProducts = async (req, res) => {
-  try {
-    const products = await ProductServ.getProducts(req);
-    res.json(products);
-  } catch (error) {
-    throw error
-  }
+    try {
+        const products = await ProductServ.getProducts(req);
+        res.status(products.status).json(products);
+    } catch (error) {
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
+    }
 };
 
 // Get a product by ID
 exports.getProductById = async (req, res) => {
-  try {
-    const product = await ProductServ.getProductById(req);
-    res.json(product);
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
-  }
+    try {
+        const product = await ProductServ.getProductById(req);
+        res.status(product.status).json(product);
+        // if (product.status !== 200) {
+        //     res.status(product.status).json(product);
+        //     return;
+        // }
+        // const subCaId = product.data.subcategoryId._id;
+        // const subcategoryName = await getsubCategoryNameById(subCaId);
+        // if (subcategoryName.status !== 200) {
+        //     res.status(subcategoryName.status).json(subcategoryName);
+        //     return;
+        // }
+        // const updatedProduct = { ...product, subcategoryName: subcategoryName.data };
+        // res.status(updatedProduct.status).json(updatedProduct);
+    } catch (error) {
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
+    }
 };
 
 // Update product data
 exports.updateProductData = async (req, res) => {
-  try {
-    const updatedProduct = await ProductServ.updateProduct(req);
-    res.json(updatedProduct);
-  } catch (error) {
-    throw error
-  }
+    try {
+        const updatedProduct = await ProductServ.updateProduct(req);
+        res.status(updatedProduct.status).json(updatedProduct);
+    } catch (error) {
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
+    }
 };
 
 // Delete a product
 exports.deleteProduct = async (req, res) => {
-  try {
-    const result = await ProductServ.deleteProduct(req);
-    res.json(result);
-  } catch (error) {
-    throw error
-  }
+    try {
+        const result = await ProductServ.deleteProduct(req);
+        res.status(result.status).json(result);
+    } catch (error) {
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
+    }
 };

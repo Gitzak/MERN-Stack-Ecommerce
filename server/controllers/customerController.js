@@ -1,80 +1,97 @@
 const { CustomerService } = require("../services/customerService");
 const { CustomerRepository } = require("../repositories/customerRepository");
 const Customer = require("../models/Customer");
+const CONSTANTS = require("../constants/index");
 
 const CustomerRepo = new CustomerRepository(Customer);
 const CustomerServ = new CustomerService(CustomerRepo);
 
-// login a customer 
+// login a customer
 exports.loginCustomer = async (req, res) => {
-  const user = await CustomerServ.loginCustomer(req)
-  res.json(user)
-}
+    try {
+        const customer = await CustomerServ.loginCustomer(req);
+        res.status(customer.status).json(customer);
+    } catch (error) {
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
+    }
+};
 
 // register a customer (is customer)
 exports.registerCustomer = async (req, res) => {
-  const newCustomer = await CustomerServ.RegisterCustomer(req);
-  res.json(newCustomer);
+    try {
+        const newCustomer = await CustomerServ.RegisterCustomer(req);
+        res.status(newCustomer.status).json(newCustomer);
+    } catch (error) {
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
+    }
 };
 
-//update Customer data (only for admin and manager)
+// update Customer data (only for admin and manager)
 exports.updateCustomerDataByAdmins = async (req, res) => {
-  console.log(req.body);
-  console.log(req.params);
-  try {
-    const updatedCustomer = await CustomerServ.UpdateCustomerByAdmins(req);
-    res.json(updatedCustomer);
-  } catch (error) {
-    res.status(500).json({ message: "Server error 2" });
-  }
+    try {
+        const updatedCustomer = await CustomerServ.UpdateCustomerByAdmins(req);
+        res.status(updatedCustomer.status).json(updatedCustomer);
+    } catch (error) {
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
+    }
 };
 
-//update Customer data (only for Customer)
+// update Customer data (only for Customer)
 exports.updateCustomerData = async (req, res) => {
-  const updatedCustomer = await CustomerServ.UpdateCustomer(req);
-  console.log(updatedCustomer);
-  res.json(updatedCustomer);
+    try {
+        const updatedCustomer = await CustomerServ.UpdateCustomer(req);
+        res.status(updatedCustomer.status).json(updatedCustomer);
+    } catch (error) {
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
+    }
 };
-
 
 // Get Customer by ID (only for admin and manager)
 exports.getCustomerById = async (req, res) => {
-  try {
-    const Customer = await CustomerServ.getCustomerById(req);
-    if (!Customer) {
-      return res.status(404).json({ message: "Customer not found" });
+    try {
+        const customer = await CustomerServ.getCustomerById(req);
+        res.status(customer.status).json(customer);
+    } catch (error) {
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
-    return res.status(200).json({ status: 200, data: [Customer] });
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
-  }
 };
 
-//Get all Customers (only for admin and manager)
+// Get all Customers (only for admin and manager)
 exports.getCustomers = async (req, res) => {
-  //   const Customers = await CustomerServ.getCustomers(req);
-  const results = await CustomerServ.getCustomers(req);
-  res.json(results)
-}
+    try {
+        const results = await CustomerServ.getCustomers(req);
+        res.status(results.status).json(results);
+    } catch (error) {
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
+    }
+};
 
-// delete Customer  (is customer)
+// delete Customer (is customer)
 exports.deleteCustomer = async (req, res) => {
-  const result = await CustomerServ.Delete(req);
-  res.json(result);
+    try {
+        const result = await CustomerServ.Delete(req);
+        res.status(result.status).json(result);
+    } catch (error) {
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
+    }
 };
 
 // get customer profile (is customer)
 exports.getProfileCustomer = async (req, res) => {
-  const profile = await CustomerServ.getProfileCustomer(req);
-  res.json(profile);
+    try {
+        const profile = await CustomerServ.getProfileCustomer(req);
+        res.status(profile.status).json(profile);
+    } catch (error) {
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
+    }
 };
 
-//validate customer account (is customer)
+// validate customer account (is customer)
 exports.validateAccCustomer = async (req, res) => {
-  try {
-    const validation = await CustomerServ.validateAccCustomer(req);
-    res.json(validation);
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
-  }
+    try {
+        const validation = await CustomerServ.validateAccCustomer(req);
+        res.status(validation.status).json(validation);
+    } catch (error) {
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
+    }
 };
