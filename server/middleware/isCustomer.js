@@ -7,7 +7,7 @@ exports.isCustomer = (req, res, next) => {
     const token = authHeader && authHeader.split(" ")[1];
 
     if (!token) {
-        return res.json({
+        return res.status(CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE).json({
             message: CONSTANTS.ROUTE_NOT_FOUND,
             status: CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE,
         });
@@ -22,7 +22,7 @@ exports.isCustomer = (req, res, next) => {
     req.customerEmail     = userData.customerEmail;
 
     if (req.userRole !== "CUSTOMER") {
-        return res.json({
+        return res.status(CONSTANTS.SERVER_FORBIDDEN_HTTP_CODE).json({
             message: CONSTANTS.INSUFFICIENT_PRIVILEGE,
             status: CONSTANTS.SERVER_FORBIDDEN_HTTP_CODE,
         });

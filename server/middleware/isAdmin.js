@@ -7,7 +7,7 @@ exports.isAdmin = (req, res, next) => {
     const token = authHeader && authHeader.split(" ")[1];
 
     if (!token) {
-        return res.json({
+        return res.status(CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE).json({
             message: CONSTANTS.ROUTE_NOT_FOUND,
             status: CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE,
         });
@@ -17,7 +17,7 @@ exports.isAdmin = (req, res, next) => {
     req.userRole = userData.userRole;
 
     if (req.userRole !== "ADMIN") {
-        return res.json({
+        return res.status(CONSTANTS.SERVER_FORBIDDEN_HTTP_CODE).json({
             message: CONSTANTS.INSUFFICIENT_PRIVILEGE,
             status: CONSTANTS.SERVER_FORBIDDEN_HTTP_CODE,
         });
