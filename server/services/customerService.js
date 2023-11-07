@@ -21,7 +21,7 @@ class CustomerService {
             }
             if (!customer.active) {
                 response.message = CONSTANTS.CUSTOMER_NOT_ACTIVE;
-                response.status = CONSTANTS.SERVER_IFORBIDDEN_HTTP_CODE;
+                response.status = CONSTANTS.SERVER_FORBIDDEN_HTTP_CODE;
                 return response;
             }
             if (!customer.validatAccount) {
@@ -29,10 +29,7 @@ class CustomerService {
                 response.status = CONSTANTS.SERVER_FORBIDDEN_HTTP_CODE;
                 return response;
             }
-            const passwordMatch = await VerifyPassword(
-                password,
-                customer.password
-            );
+            const passwordMatch = await VerifyPassword(password, customer.password);
             if (!passwordMatch) {
                 response.message = CONSTANTS.INVALID_CREDENTIALS;
                 response.status = CONSTANTS.SERVER_INVALID_CREDENTIALS;
@@ -65,9 +62,7 @@ class CustomerService {
                 lastName: customer.lastName,
                 email: customer.email,
                 creationDate: customer.creationDate,
-                lastLogin: customer.lastLogin
-                    ? new Date(customer.lastLogin).toLocaleString()
-                    : null, // Format the timestamp
+                lastLogin: customer.lastLogin ? new Date(customer.lastLogin).toLocaleString() : null, // Format the timestamp
                 validatAccount: customer.validatAccount,
                 active: customer.active,
             };
@@ -84,10 +79,9 @@ class CustomerService {
     async RegisterCustomer(req) {
         const response = {};
         try {
-            const { firstName, lastName, email, password } = req.body;
+            const { firstName, lastName, email, password, phoneNumber } = req.body;
 
-            const existingCustomerByEmail =
-                await this.customerRepo.findCustomerByEmail(email);
+            const existingCustomerByEmail = await this.customerRepo.findCustomerByEmail(email);
 
             if (existingCustomerByEmail) {
                 response.message = "Email already exists.";
@@ -103,13 +97,10 @@ class CustomerService {
                 email,
                 hashedPass,
                 password,
+                phoneNumber,
             };
 
-            const customer = await this.customerRepo.RegisterCustomer(
-                newCustomer
-            );
-
-            // console.log(customer._id);
+            const customer = await this.customerRepo.RegisterCustomer(newCustomer);
 
             if (!customer) {
                 response.message = CONSTANTS.SERVER_ERROR;
@@ -147,11 +138,7 @@ class CustomerService {
 
             const { firstName, lastName, email, active } = req.body;
 
-            const existingCustomerByEmail =
-                await this.customerRepo.findCustomerByEmailExcludingId(
-                    email,
-                    id
-                );
+            const existingCustomerByEmail = await this.customerRepo.findCustomerByEmailExcludingId(email, id);
 
             if (existingCustomerByEmail) {
                 response.message = "Email already exists.";
@@ -166,10 +153,7 @@ class CustomerService {
                 active,
             };
 
-            const result = await this.customerRepo.UpdateCustomer(
-                id,
-                updatedCustomer
-            );
+            const result = await this.customerRepo.UpdateCustomer(id, updatedCustomer);
             response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
             response.message = CONSTANTS.CUSTOMER_PROFILE_UPDATED;
             return response;
@@ -186,11 +170,7 @@ class CustomerService {
         try {
             const id = req.id;
             const { firstName, lastName, email, password } = req.body;
-            const existingCustomerByEmail =
-                await this.customerRepo.findCustomerByEmailExcludingId(
-                    email,
-                    id
-                );
+            const existingCustomerByEmail = await this.customerRepo.findCustomerByEmailExcludingId(email, id);
 
             if (existingCustomerByEmail) {
                 response.message = "Email already exists.";
@@ -207,10 +187,7 @@ class CustomerService {
                 password: hashedPass,
             };
 
-            const updatedcustomer = await this.customerRepo.UpdateCustomer(
-                id,
-                updatedCustomer
-            );
+            const updatedcustomer = await this.customerRepo.UpdateCustomer(id, updatedCustomer);
 
             if (updatedcustomer) {
                 response.message = CONSTANTS.USER_UPDATED;
@@ -232,9 +209,7 @@ class CustomerService {
         const response = {};
         try {
             const customerId = req.params.id;
-            const customer = await this.customerRepo.findCustomerById(
-                customerId
-            );
+            const customer = await this.customerRepo.findCustomerById(customerId);
             if (!customer) {
                 response.message = CONSTANTS.INVALID_CUSTOMER_ID;
                 response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
@@ -260,12 +235,7 @@ class CustomerService {
         const response = {};
         if (query) {
             try {
-                const searchCustomers = await this.customerRepo.searchCustomers(
-                    query,
-                    skip,
-                    limit,
-                    sort
-                );
+                const searchCustomers = await this.customerRepo.searchCustomers(query, skip, limit, sort);
                 response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
                 response.data = searchCustomers;
                 return response;
@@ -274,11 +244,7 @@ class CustomerService {
             }
         } else {
             response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
-            const customers = await this.customerRepo.getCustomers(
-                skip,
-                limit,
-                sort
-            );
+            const customers = await this.customerRepo.getCustomers(skip, limit, sort);
             response.data = customers;
             return response;
         }
@@ -311,9 +277,7 @@ class CustomerService {
         const response = {};
         try {
             const customerId = req.id;
-            const customer = await this.customerRepo.findCustomerById(
-                customerId
-            );
+            const customer = await this.customerRepo.findCustomerById(customerId);
             response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
             response.data = customer;
             return response;
@@ -328,9 +292,7 @@ class CustomerService {
         const response = {};
         try {
             const customerId = req.params.id;
-            const customer = await this.customerRepo.findCustomerById(
-                customerId
-            );
+            const customer = await this.customerRepo.findCustomerById(customerId);
 
             if (!customer) {
                 response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
@@ -344,8 +306,7 @@ class CustomerService {
                 return response;
             }
 
-            const validatedCustomer =
-                await this.customerRepo.validateAccCustomer(customerId);
+            const validatedCustomer = await this.customerRepo.validateAccCustomer(customerId);
 
             response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
             response.message = CONSTANTS.CUSTOMER_UPDATED;
