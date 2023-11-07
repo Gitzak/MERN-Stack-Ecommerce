@@ -26,13 +26,14 @@ class CustomerRepository {
     }
 
     async RegisterCustomer(customer) {
-        const { firstName, lastName, email, hashedPass } = customer;
+        const { firstName, lastName, email, hashedPass, phoneNumber } = customer;
 
         const createCustomer = await this.customerModel.create({
             firstName,
             lastName,
             email,
             password: hashedPass,
+            phoneNumber
         });
 
         const customerWithoutPassword = createCustomer.toObject();
