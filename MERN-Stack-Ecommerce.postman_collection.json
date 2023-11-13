@@ -928,28 +928,28 @@
 	"variable": [
 		{
 			"key": "baseCustomersUrl",
-			"value": "http://localhost:6000/customers"
+			"value": "http://localhost:7500/customers"
 		},
 		{
 			"key": "baseUsersUrl",
-			"value": "http://localhost:6000/users"
+			"value": "http://localhost:7500/users"
 		},
 		{
 			"key": "BaseCategoriesUrl",
-			"value": "http://localhost:6000/categories"
+			"value": "http://localhost:7500/categories"
 		},
 		{
 			"key": "baseOrdersUrl",
-			"value": "http://localhost:6000/orders"
+			"value": "http://localhost:7500/orders"
 		},
 		{
 			"key": "baseSubCategoriesUrl",
-			"value": "http://localhost:6000/subcategories",
+			"value": "http://localhost:7500/subcategories",
 			"type": "string"
 		},
 		{
 			"key": "baseProductsUrl",
-			"value": "http://localhost:6000/products"
+			"value": "http://localhost:7500/products"
 		}
 	]
 }
