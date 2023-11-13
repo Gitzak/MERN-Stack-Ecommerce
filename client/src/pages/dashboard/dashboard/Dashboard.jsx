@@ -7,6 +7,7 @@ import { SalesChart } from "../../../components/dashboard/charts/SalesChart";
 import CardSales from "../../../components/dashboard/cards/CardSales";
 import LatestOrders from "../../../components/dashboard/tables/LatestOrders";
 import Top5Products from "../../../components/dashboard/tables/Top5Products";
+import { UserContext } from "../../../context/AuthContext";
 
 export default function Dashboard() {
     return (

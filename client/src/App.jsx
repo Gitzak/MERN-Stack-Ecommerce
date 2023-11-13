@@ -11,22 +11,25 @@ import { Update } from "./pages/dashboard/product/Update";
 import Customers from "./pages/dashboard/customer/Customers";
 import Categories from "./pages/dashboard/category/Categories";
 import { Users } from "./pages/dashboard/user/Users";
+import AdminRoutes from "./utils/AdminRoutes";
 
 function App() {
     return (
         <Router>
             <Routes>
                 <Route path="/login" element={<Login />} />
-                <Route path="/dashboard" element={<MainLayout />}>
-                    <Route index element={<Dashboard />} />
-                    <Route path="users" element={<Users />} />
-                    <Route path="orders" element={<Orders />} />
-                    <Route path="orders/:id" element={<OrderDetails />} />
-                    <Route path="customers" element={<Customers />} />
-                    <Route path="products" element={<Products />} />
-                    <Route path="products/create" element={<Create />} />
-                    <Route path="products/update/:id" element={<Update />} />
-                    <Route path="categories" element={<Categories />} />
+                <Route element={<AdminRoutes/>}>
+                    <Route path="/dashboard" element={<MainLayout />}>
+                        <Route index element={<Dashboard />} />
+                        <Route path="users" element={<Users />} />
+                        <Route path="orders" element={<Orders />} />
+                        <Route path="orders/:id" element={<OrderDetails />} />
+                        <Route path="customers" element={<Customers />} />
+                        <Route path="products" element={<Products />} />
+                        <Route path="products/create" element={<Create />} />
+                        <Route path="products/update/:id" element={<Update />} />
+                        <Route path="categories" element={<Categories />} />
+                    </Route>
                 </Route>
             </Routes>
         </Router>

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useContext } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -12,6 +13,9 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { LoginUser } from "../../../api/userApi";
+import { UserC } from "../../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function Copyright(props) {
     return (
@@ -29,13 +33,25 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export const Login = () => {
-    const handleSubmit = (event) => {
+    const navigate=useNavigate()
+    const { setCurrentUser } = UserC()
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
+        let body = {
             email: data.get("email"),
             password: data.get("password"),
-        });
+        }
+        try {
+            const response = await LoginUser(body);
+            const logedUser = response.data
+            setCurrentUser(logedUser)
+            navigate('/dashboard')
+
+        } catch (error){
+            console.log(error.response.data)
+        }             
     };
 
     return (
@@ -91,6 +107,7 @@ export const Login = () => {
                             </Grid>
                             <Copyright sx={{ mt: 5 }} />
                         </Box>
+                        
                     </Box>
                 </Grid>
             </Grid>

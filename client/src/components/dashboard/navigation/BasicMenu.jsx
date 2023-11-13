@@ -1,11 +1,17 @@
 import * as React from "react";
+import { useContext } from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { UserC } from "../../../context/AuthContext";
 
 export default function BasicMenu() {
+    const { currentUser } = UserC()
+
+    console.log('this is nav', currentUser)
+
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -18,7 +24,7 @@ export default function BasicMenu() {
     return (
         <div>
             <Button color="inherit" id="basic-button" aria-controls={open ? "basic-menu" : undefined} aria-haspopup="true" aria-expanded={open ? "true" : undefined} onClick={handleClick}>
-                Hey Admin
+                Hey {currentUser.user.firstName}
             </Button>
             {/* <IconButton color="inherit" id="basic-button" aria-controls={open ? "basic-menu" : undefined} aria-haspopup="true" aria-expanded={open ? "true" : undefined} onClick={handleClick}>
                 <AccountCircleIcon />
