@@ -12,9 +12,13 @@ const { addNewUser, deleteUser, getUserById, getUsers, searchUsers, updateUserDa
 
 // login route
 router.post("/login", validateUserLogin, handleValidationErrors, loginUser);
-// router.post("/login", (req,res)=>{
-//     console.log(req.body)
-// });
+router.get("/profile",isAdminManager, (req,res)=>{
+    console.log(req.profile)
+    console.log(req.userRole)
+    res.status(200).json({
+        data:req.profile
+    })
+});
 //Add new user route
 router.post("/", isAdmin, validateUserForm, handleValidationErrors, addNewUser);
 //Route for getting all users

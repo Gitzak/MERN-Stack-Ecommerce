@@ -12,16 +12,16 @@ exports.isAdminManager = (req, res, next) => {
             status: CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE,
         });
     }
-
     const userData = verify(token);
+    req.profile = userData;
     req.userRole = userData.userRole;
-
-    if (req.userRole !== "ADMIN" && req.userRole !== "MANAGER") {
+    if (userData.userRole !== "ADMIN" && userData.userRole !== "MANAGER") {
         return res.status(CONSTANTS.SERVER_FORBIDDEN_HTTP_CODE).json({
             message: CONSTANTS.INSUFFICIENT_PRIVILEGE,
             status: CONSTANTS.SERVER_FORBIDDEN_HTTP_CODE,
         });
     }
+
 
     next();
 };
