@@ -4,13 +4,12 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { UserC } from "../../../context/AuthContext";
+import { Navigate } from "react-router-dom";
 
 export default function BasicMenu() {
-    const { currentUser } = UserC()
-
-    console.log('this is nav', currentUser)
+    const { currentUser, setCurrentUser } = UserC();
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -21,10 +20,17 @@ export default function BasicMenu() {
         setAnchorEl(null);
     };
 
+    const handleLogout = () => {
+        setCurrentUser(null);
+        localStorage.removeItem("userId");
+        localStorage.removeItem("token");
+        return <Navigate to="/login" />;
+    };
+
     return (
         <div>
             <Button color="inherit" id="basic-button" aria-controls={open ? "basic-menu" : undefined} aria-haspopup="true" aria-expanded={open ? "true" : undefined} onClick={handleClick}>
-                Hey {currentUser.user.firstName}
+                Hey {currentUser && (currentUser.user?.userName || currentUser?.userName)}
             </Button>
             {/* <IconButton color="inherit" id="basic-button" aria-controls={open ? "basic-menu" : undefined} aria-haspopup="true" aria-expanded={open ? "true" : undefined} onClick={handleClick}>
                 <AccountCircleIcon />
@@ -39,7 +45,7 @@ export default function BasicMenu() {
                 }}>
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
-                <MenuItem onClick={handleClose}>Logout</MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>
         </div>
     );

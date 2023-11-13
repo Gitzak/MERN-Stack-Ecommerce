@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -33,8 +33,10 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export const Login = () => {
-    const navigate=useNavigate()
-    const { setCurrentUser } = UserC()
+    const navigate = useNavigate();
+    const { setCurrentUser } = UserC();
+
+    const [error, setError] = useState(null);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -42,16 +44,17 @@ export const Login = () => {
         let body = {
             email: data.get("email"),
             password: data.get("password"),
-        }
+        };
         try {
             const response = await LoginUser(body);
-            const logedUser = response.data
-            setCurrentUser(logedUser)
-            navigate('/dashboard')
-
-        } catch (error){
-            console.log(error.response.data)
-        }             
+            const loggedUser = response.data;
+            localStorage.setItem("userId", loggedUser.user._id);
+            localStorage.setItem("token", JSON.stringify(loggedUser.token));
+            setCurrentUser(loggedUser);
+            navigate("/dashboard");
+        } catch (error) {
+            setError(error.response.data.message);
+        }
     };
 
     return (
@@ -90,6 +93,7 @@ export const Login = () => {
                             <TextField margin="normal" required fullWidth id="email" label="Email Address" name="email" autoComplete="email" autoFocus />
                             <TextField margin="normal" required fullWidth name="password" label="Password" type="password" id="password" autoComplete="current-password" />
                             <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
+                            {error && <div style={{ color: "red" }}>{error}</div>}
                             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                                 Sign In
                             </Button>
@@ -107,7 +111,6 @@ export const Login = () => {
                             </Grid>
                             <Copyright sx={{ mt: 5 }} />
                         </Box>
-                        
                     </Box>
                 </Grid>
             </Grid>

@@ -11,14 +11,19 @@ import { Update } from "./pages/dashboard/product/Update";
 import Customers from "./pages/dashboard/customer/Customers";
 import Categories from "./pages/dashboard/category/Categories";
 import { Users } from "./pages/dashboard/user/Users";
-import AdminRoutes from "./utils/AdminRoutes";
+import AdminRoutes,{Publicroutes} from "./utils/AdminRoutes";
 
 function App() {
     return (
         <Router>
             <Routes>
-                <Route path="/login" element={<Login />} />
+
+                <Route element={<Publicroutes/>}>
+                    <Route path="/login" element={<Login />} />
+                </Route>
+
                 <Route element={<AdminRoutes/>}>
+
                     <Route path="/dashboard" element={<MainLayout />}>
                         <Route index element={<Dashboard />} />
                         <Route path="users" element={<Users />} />
@@ -30,7 +35,9 @@ function App() {
                         <Route path="products/update/:id" element={<Update />} />
                         <Route path="categories" element={<Categories />} />
                     </Route>
+                    
                 </Route>
+
             </Routes>
         </Router>
     );

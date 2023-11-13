@@ -11,3 +11,9 @@ const AdminRoutes = () => {
     )
   }
   export default AdminRoutes
+  
+  export const Publicroutes = () => {
+    return (
+      isAuth() ?  <> <Navigate to='/dashboard' />  </> : <Outlet />
+    )
+  }

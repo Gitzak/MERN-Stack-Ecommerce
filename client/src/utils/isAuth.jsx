@@ -1,14 +1,15 @@
-import { UserC } from "../context/AuthContext"
+import { UserC } from "../context/AuthContext";
+import { jwtDecode } from "jwt-decode";
 
-export const isAuth = ()=>{
-    const {currentUser} = UserC()
-    // console.log('current ',currentUser)
-    // const jwt = localStorage.jwt_info
-    const jwt = true
+export const isAuth = () => {
+    const { currentUser } = UserC();
 
-    if(currentUser){
-        return true
+    const storedToken = localStorage.getItem("token");
+
+    if (storedToken) {
+            return true
     }
 
-    return false
-}
+    return false;   
+};
+
