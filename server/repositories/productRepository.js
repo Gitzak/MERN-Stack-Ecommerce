@@ -48,7 +48,7 @@ class ProductRepository {
             .sort({ creationDate: sort === "ASC" ? 1 : -1 })
             .populate("categories") // Populate the subcategory data
             .skip(skip)
-            .limit(limit)
+            // .limit(limit)
             .exec();
         return products;
     }

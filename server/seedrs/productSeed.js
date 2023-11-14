@@ -8,14 +8,14 @@ const generateDynamicProductData = (count) => {
     for (let i = 1; i <= count; i++) {
         const productData = {
             sku: `SKU-${i}`,
-            product_image: `image-${i}.jpg`,
-            product_name: `Product ${i}`,
-            subcategory_id: `Subcategory-${i}`,
-            short_description: `Short description for product ${i}`,
-            long_description: `Long description for product ${i}`,
+            productImages: [],
+            productName: `Product ${i}`,
+            categories: ["6549358275789dcb780a925c", "654933838937e7b1f0687109"],
+            shortDescription: `Short description for product ${i}`,
+            longDescription: `Long description for product ${i}`,
             price: Math.floor(Math.random() * 100) + 1, // Random price
-            discount_price: Math.floor(Math.random() * 50), // Random discount price
-            options: Buffer.from(`Options for product ${i}`),
+            discountPrice: Math.floor(Math.random() * 50), // Random discount price
+            options: [],
             active: i % 2 === 0, // Alternate between true and false for 'active'
         };
 
