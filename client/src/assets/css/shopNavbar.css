@@ -1,0 +1,80 @@
+/* NavBar.css */
+
+.layout {
+    min-height: 100vh;
+}
+
+.layout .ant-layout-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5f5; 
+    height: 20vh;
+}
+
+.demo-logo {
+    background-image: url("../images/Moroccan_Handmade.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 19vh;
+    height: 20vh;
+    margin-right: 0vh;
+    margin-left: -4vh;
+}
+
+.ant-menu-horizontal {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    background: #f5f5f5; /* Set the background color to #f5f5f5 */
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+.ant-breadcrumb {
+    margin: 16px 0;
+}
+
+.site-layout-content {
+    padding: 0 50px;
+    /* background: #f5f5f5;  */
+}
+
+.ant-layout-footer {
+    text-align: center;
+}
+
+/* Menu.css */
+
+.ant-menu-horizontal .ant-menu-item {
+    margin: 0;
+    /* color: black; */
+
+}
+
+/* Breadcrumb.css (No Changes) */
+
+.ant-breadcrumb {
+    margin: 16px 0;
+}
+
+/* Content.css (No Changes) */
+
+.site-layout-content {
+    padding: 0 50px;
+    background: #f5f5f5; /* Set the background color to #f5f5f5 */
+}
+
+/* Footer.css (No Changes) */
+
+.ant-layout-footer {
+    text-align: center;
+}
+
+/* ShopHeader.css */
+/* .wishlist-style{
+
+}
+.cart-style{
+
+} */
