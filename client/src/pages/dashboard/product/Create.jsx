@@ -5,13 +5,15 @@ import Typography from "@mui/material/Typography";
 import { Box, Button, Container, FormControl, FormControlLabel, Grid, IconButton, InputLabel, MenuItem, Paper, Switch, TextField } from "@mui/material";
 import { Link } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
-import { useDropzone } from 'react-dropzone';
+import FileUploader from "../../../components/dashboard/FileUploader/FileUploader";
+import { getAllCategories } from "../../../api/categoriesApi";
+import { createProduct } from "../../../api/productsApi";
 
 const animatedComponents = makeAnimated();
 
@@ -19,17 +21,53 @@ const validationSchema = yup.object({
     sku: yup.string("Enter SKU").required("SKU is required"),
 });
 
-const dataCategories = [
-    { value: "1", label: "Category 1" },
-    { value: "2", label: "Category 2" },
-    { value: "3", label: "Category 3" },
-];
+// const dataCategories = [
+//     { value: "1", label: "Category 1" },
+//     { value: "2", label: "Category 2" },
+//     { value: "3", label: "Category 3" },
+// ];
 
 export const Create = () => {
+    const [dataCategories, setDataCategories] = useState([]);
+    const [uploadedFiles, setUploadedFiles] = useState([]);
+
+    const handleFileUpload = (files) => {
+        setUploadedFiles([...uploadedFiles, ...files]);
+        const currentImages = formik.values.images;
+        const updatedImages = [...currentImages, ...files];
+        formik.setFieldValue("images", updatedImages);
+    };
+
+    const handleFileDelete = (deletedFile) => {
+        const updatedUploadedFiles = uploadedFiles.filter((file) => file.name !== deletedFile.name);
+        setUploadedFiles(updatedUploadedFiles);
+        const currentImages = formik.values.images;
+        const updatedImages = currentImages.filter((file) => file.name !== deletedFile.name);
+        formik.setFieldValue("images", updatedImages);
+    };
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await getAllCategories();
+                const categoriesData = response.data.data;
+                const transformedCategories = categoriesData.map((category) => ({
+                    value: category._id,
+                    label: category.category_name,
+                }));
+                setDataCategories(transformedCategories);
+            } catch (error) {
+                console.error("Error fetching products:", error);
+            }
+        };
+
+        fetchCategories();
+    }, []);
+
     const formik = useFormik({
         initialValues: {
             sku: "",
-            productImages: [],
+            images: [],
             productName: "",
             categories: [],
             shortDescription: "",
@@ -41,8 +79,25 @@ export const Create = () => {
             active: false,
         },
         validationSchema: validationSchema,
-        onSubmit: (values) => {
-            console.log(JSON.stringify(values, null, 2));
+        onSubmit: async (values) => {
+            const categoryIds = values.categories.map((category) => category.value);
+
+            const body = {
+                ...values,
+                categories: categoryIds,
+                images: values.images[0],
+            };
+
+            console.log(body);
+            // return;
+
+            createProduct(body)
+                .then((response) => {
+                    console.log("Herrr : " + response.data);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
         },
     });
 
@@ -96,8 +151,6 @@ export const Create = () => {
         formik.setFieldValue("options", newOptions);
     };
 
-    
-
     return (
         <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
@@ -118,7 +171,7 @@ export const Create = () => {
                                 display: "flex",
                                 flexDirection: "column",
                             }}>
-                            <form onSubmit={formik.handleSubmit}>
+                            <form onSubmit={formik.handleSubmit} encType="multipart/form-data">
                                 <Grid container spacing={2}>
                                     <Grid item xs={12}>
                                         <TextField
@@ -245,6 +298,10 @@ export const Create = () => {
                                         <Button variant="outlined" color="primary" onClick={handleOptionAdd} sx={{ mt: 2, pt: 1 }}>
                                             + Add Option
                                         </Button>
+                                    </Grid>
+
+                                    <Grid item sx={{ margin: 3, width: "100%" }}>
+                                        <FileUploader onFileUpload={handleFileUpload} onFileDelete={handleFileDelete} />
                                     </Grid>
                                 </Grid>
                                 <Button type="submit" variant="contained" color="primary" sx={{ mt: 2, pt: 1 }}>

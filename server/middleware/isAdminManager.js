@@ -22,6 +22,5 @@ exports.isAdminManager = (req, res, next) => {
         });
     }
 
-
     next();
 };

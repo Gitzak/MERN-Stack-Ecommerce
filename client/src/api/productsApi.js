@@ -12,4 +12,8 @@ export function getAllProducts() {
     return productApi.get("/");
 }
 
+export function createProduct(data) {
+    return productApi.post("/", data, { headers: { "Content-Type":"multipart/form-data" } });
+}
+
 export default productApi;

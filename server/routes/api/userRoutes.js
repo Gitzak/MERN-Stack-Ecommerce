@@ -13,8 +13,6 @@ const { addNewUser, deleteUser, getUserById, getUsers, searchUsers, updateUserDa
 // login route
 router.post("/login", validateUserLogin, handleValidationErrors, loginUser);
 router.get("/profile",isAdminManager, (req,res)=>{
-    console.log(req.profile)
-    console.log(req.userRole)
     res.status(200).json({
         data:req.profile
     })
