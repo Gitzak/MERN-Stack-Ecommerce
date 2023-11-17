@@ -57,7 +57,12 @@ const productSchema = new mongoose.Schema(
             required: true,
             default: 0,
         },
-        options: [productOptionSchema],
+        options: [
+            {
+                label: { type: String, required: true },
+                option: [String],
+            },
+        ],
         active: {
             type: Boolean,
             default: false,

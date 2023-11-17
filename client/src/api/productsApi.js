@@ -13,7 +13,11 @@ export function getAllProducts() {
 }
 
 export function createProduct(data) {
-    return productApi.post("/", data, { headers: { "Content-Type":"multipart/form-data" } });
+    return productApi.post("/", data, { headers: { "Content-Type": "multipart/form-data" } });
+}
+
+export function getProduct(id) {
+    return productApi.get(`/${id}`);
 }
 
 export default productApi;

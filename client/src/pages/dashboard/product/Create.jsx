@@ -2,8 +2,8 @@ import * as React from "react";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
-import { Box, Button, Container, FormControl, FormControlLabel, Grid, IconButton, InputLabel, MenuItem, Paper, Switch, TextField } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Box, Button, CircularProgress, Container, FormControl, FormControlLabel, Grid, IconButton, InputLabel, MenuItem, Paper, Switch, TextField } from "@mui/material";
+import { Link, generatePath, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useState, useEffect } from "react";
 import { useFormik } from "formik";
@@ -14,6 +14,7 @@ import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import FileUploader from "../../../components/dashboard/FileUploader/FileUploader";
 import { getAllCategories } from "../../../api/categoriesApi";
 import { createProduct } from "../../../api/productsApi";
+import Swal from "sweetalert2";
 
 const animatedComponents = makeAnimated();
 
@@ -21,15 +22,11 @@ const validationSchema = yup.object({
     sku: yup.string("Enter SKU").required("SKU is required"),
 });
 
-// const dataCategories = [
-//     { value: "1", label: "Category 1" },
-//     { value: "2", label: "Category 2" },
-//     { value: "3", label: "Category 3" },
-// ];
-
 export const Create = () => {
+    const navigate = useNavigate();
     const [dataCategories, setDataCategories] = useState([]);
     const [uploadedFiles, setUploadedFiles] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const handleFileUpload = (files) => {
         setUploadedFiles([...uploadedFiles, ...files]);
@@ -80,23 +77,78 @@ export const Create = () => {
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
-            const categoryIds = values.categories.map((category) => category.value);
+            setLoading(true);
+            const formData = new FormData();
 
-            const body = {
-                ...values,
-                categories: categoryIds,
-                images: values.images[0],
-            };
+            const transformedOptions = values.options.map((item) => {
+                return {
+                    label: item.label,
+                    option: item.values.map((optionItem) => optionItem.value),
+                };
+            });
 
-            console.log(body);
-            // return;
+            formData.append("sku", values.sku);
+            formData.append("productName", values.productName);
+            formData.append("active", values.active);
+            formData.append("shortDescription", values.shortDescription);
+            formData.append("longDescription", values.longDescription);
+            formData.append("price", values.price);
+            formData.append("discountPrice", values.discountPrice);
+            formData.append("quantity", values.quantity);
+            formData.append("options", JSON.stringify(transformedOptions));
+            formData.append(
+                "categories",
+                values.categories.map((category) => category.value)
+            );
 
-            createProduct(body)
+            // Append images to FormData
+            for (let i = 0; i < values.images.length; i++) {
+                formData.append("images", values.images[i]);
+            }
+
+            createProduct(formData)
                 .then((response) => {
-                    console.log("Herrr : " + response.data);
+                    console.log(response);
+                    setLoading(false);
+                    if (response.data.status === 201) {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Success",
+                            text: "Product added successfully",
+                            confirmButtonText: "OK",
+                            customClass: {
+                                container: "swal2-container", // Add a custom class for the container
+                            },
+                            didOpen: () => {
+                                // Set a higher zIndex for the modal
+                                document.querySelector(".swal2-container").style.zIndex = 10000;
+                            },
+                        }).then(() => {
+                            navigate(`/dashboard/products/update/${response.data.data._id}`);
+                        });
+                    }
                 })
-                .catch((err) => {
-                    console.log(err);
+                .catch((error) => {
+                    console.log(error.request.responseText);
+                    setLoading(false);
+                    if (error.response && error.response.data && error.response.data.message) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: error.response.data.message,
+                            confirmButtonText: "OK",
+                        }).then(() => {
+                            navigate(`/dashboard/products/update/65574b7d77e6de3c95c6e32f`);
+                        });
+                    } else {
+                        // If error doesn't contain a specific message
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: "Failed to add product",
+                            confirmButtonText: "OK",
+                        });
+                    }
                 });
         },
     });
@@ -303,10 +355,12 @@ export const Create = () => {
                                     <Grid item sx={{ margin: 3, width: "100%" }}>
                                         <FileUploader onFileUpload={handleFileUpload} onFileDelete={handleFileDelete} />
                                     </Grid>
+                                    <Grid item xs={12} sx={{ display: "flex", justifyContent: "end" }}>
+                                        <Button type="submit" size="large" variant="contained" color="primary" disabled={loading} sx={{ mt: 2, pt: 1 }}>
+                                            {loading ? "Adding..." : "Add Product"}
+                                        </Button>
+                                    </Grid>
                                 </Grid>
-                                <Button type="submit" variant="contained" color="primary" sx={{ mt: 2, pt: 1 }}>
-                                    Add Product
-                                </Button>
                             </form>
                         </Paper>
                     </Box>

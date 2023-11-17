@@ -14,17 +14,19 @@ class ProductService {
             // Extract data from the request
             const { sku, productName, categories, shortDescription, longDescription, price, discountPrice, quantity, options, active } = req.body;
 
+            const categoriesArray = categories.split(',');
+            // console.log(categoriesArray);
+            
             // Check if any of the categories don't exist
-            for (const categoryId of categories) {
-                const category = await checkCategoryById(categoryId);
-
+            for (const categoryId of categoriesArray) {
+                const category = await checkCategoryById(categoryId);                
                 if (category?.status === 404) {
                     response.message = "You cannot create this product because one or more categories were not found.";
                     response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
                     return response;
                 }
             }
-
+            
             // Check if a product with the same name or SKU already exists
             const existingProductByName = await this.productRepo.findProductByName(productName);
 
@@ -42,6 +44,9 @@ class ProductService {
                 return response;
             }
 
+            // console.log(JSON.parse(`${options}`));
+            // return;
+
             // Continue with the image uploading logic
             const imagesUrlPromises = req.files.map((file) => {
                 return new Promise((resolve, reject) => {
@@ -57,23 +62,26 @@ class ProductService {
 
             const imagesUrls = await Promise.all(imagesUrlPromises);
 
+
             // Create a new product object
             const newProduct = {
                 sku,
                 productImages: imagesUrls,
                 productName,
-                categories,
+                categories: categoriesArray,
                 shortDescription,
                 longDescription,
                 price,
                 discountPrice,
                 quantity,
-                options,
+                options: options ? JSON.parse(`${options}`) : [],
                 active,
             };
 
             // Create the product
             const product = await this.productRepo.createProduct(newProduct);
+
+            // console.log(product);
 
             if (!product) {
                 response.message = CONSTANTS.SERVER_ERROR;
@@ -86,6 +94,7 @@ class ProductService {
             response.data = product;
             return response;
         } catch (error) {
+            // console.log(error);
             response.message = CONSTANTS.SERVER_ERROR;
             response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
             return response;

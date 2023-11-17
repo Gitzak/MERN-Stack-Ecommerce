@@ -36,7 +36,7 @@ const FileUploader = ({ onFileUpload, onFileDelete }) => {
     return (
         <div>
             <div {...getRootProps()} style={dropzoneStyles}>
-                <input {...getInputProps()} />
+                <input name="images" {...getInputProps()} />
                 <p>{isDragActive ? "Drop the files here..." : "Drag and drop files here, or click to select files"}</p>
             </div>
             <div style={previewsContainerStyles}>

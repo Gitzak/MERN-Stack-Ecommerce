@@ -73,10 +73,7 @@ export const Products = () => {
                         variant="contained"
                         color="success"
                         startIcon={<EditIcon />}
-                        onClick={() => {
-                            // Handle edit action
-                            console.log(`Edit clicked for ID: ${params.id}`);
-                        }}>
+                        component={Link} to={`/dashboard/products/update/${params.id}`} >
                         Edit
                     </Button>
                     <Button sx={{ margin: 1 }} variant="contained" color="error" startIcon={<DeleteIcon />} onClick={() => handleDelete(params.id)}>

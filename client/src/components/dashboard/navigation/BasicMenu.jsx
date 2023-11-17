@@ -25,6 +25,7 @@ export default function BasicMenu() {
         localStorage.removeItem("userId");
         localStorage.removeItem("token");
         return <Navigate to="/login" />;
+        // return <Navigate to="/dashboard/products/update/65574b7d77e6de3c95c6e32f" replace={true}/>;
     };
 
     return (
