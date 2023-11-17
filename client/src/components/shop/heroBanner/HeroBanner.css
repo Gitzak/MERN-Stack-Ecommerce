@@ -1,0 +1,8 @@
+.hero-banner-img {
+    position: absolute;
+    right: 26px;
+    border-radius: 50px;
+    top: -15px;
+    width: 730px;
+    height: auto;  
+}

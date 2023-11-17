@@ -1,0 +1,20 @@
+.product-card {
+  transform: scale(1, 1);
+  transition: 0.3s all ease-in-out;
+  background-color: rgb(230, 230, 230);
+  border-radius: 10px;
+}
+.product-card {
+  transform: scale(1,1);
+  transition: 0.3s all ease-in-out;
+}
+
+.product-card img {
+  width: 300px;
+  height: 300px;
+}
+
+.exercise-card:hover,
+.product-card:hover {
+  transform: scale(1.1, 1.1);
+}

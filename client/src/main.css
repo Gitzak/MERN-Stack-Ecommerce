@@ -1,0 +1,25 @@
+:root {
+  --mainFont: 'Raleway', sans-serif;
+  --subFont: 'Montserrat', sans-serif;
+}
+
+/* Color Scheme */
+:root {
+  --primaryColor: #f95959;
+  --secondaryColor: #f7edd5;
+  --inputColor: #bbbbbb;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+/* General Style */
+body {
+  font-family: var(--subFont);
+  background: var(--secondaryColor);
+}
+  
+a {
+  text-decoration: none;
+  color: black;
+}

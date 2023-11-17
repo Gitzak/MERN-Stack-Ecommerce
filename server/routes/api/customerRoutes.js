@@ -13,6 +13,10 @@ router.post("/login", validateCustomerLogin, handleValidationErrors, loginCustom
 router.post("/", validateCustomerForm, handleValidationErrors, registerCustomer);
 //customer account or email validation
 router.put("/validate/:id",validateIdFormat, validateAccCustomer);
+//customer verification token route 
+router.get("/profile",isCustomer, (req,res)=>{
+    res.status(200).json({data:req.profile})
+});
 //get customer by id
 router.get("/customer/:id", isAdminManager, validateIdFormat, getCustomerById);
 // enter customer profil

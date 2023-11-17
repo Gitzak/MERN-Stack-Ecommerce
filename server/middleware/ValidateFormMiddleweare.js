@@ -26,16 +26,16 @@ exports.validateCustomerLogin = [body("email", "Email is required").notEmpty(), 
 exports.validateCustomerForm = [
     body("firstName").notEmpty().withMessage("First name is required"),
     body("lastName").notEmpty().withMessage("Last name is required"),
-    body("phoneNumber")
-        .notEmpty()
-        .withMessage("Phone number is required")
-        .custom((value) => {
-            const phoneRegex = /^[+][0-9]+$/;
-            if (!phoneRegex.test(value) || value.includes("-")) {
-                throw new Error("Invalid phone number format");
-            }
-            return true;
-        }),
+    // body("phoneNumber")
+    //     .notEmpty()
+    //     .withMessage("Phone number is required")
+    //     .custom((value) => {
+    //         const phoneRegex = /^[+][0-9]+$/;
+    //         if (!phoneRegex.test(value) || value.includes("-")) {
+    //             throw new Error("Invalid phone number format");
+    //         }
+    //         return true;
+    //     }),
     body("email").notEmpty().withMessage("Email is required").isEmail().withMessage("Invalid email format"),
     body("password").notEmpty().withMessage("Password is required"),
 ];

@@ -15,6 +15,7 @@ exports.isCustomer = (req, res, next) => {
 
     const userData = verify(token);
 
+    req.profile          = userData;
     req.userRole          = userData.userRole;
     req.id                = userData.customerId;
     req.customerFirstName = userData.customerFirstName;

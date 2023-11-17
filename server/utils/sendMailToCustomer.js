@@ -82,7 +82,7 @@ const SendMailToUser = async ({ customerId, customerEmail, customerPassword }) =
                                        <table border="0" cellspacing="0" cellpadding="0">
                                           <tr>
                                              <td align="left" style="border-radius: 3px;" bgcolor="#426899">
-                                                <a href="http://${config.app.baseUrl}validate/${customerId}" target="_blank" style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 11px 22px; border-radius: 2px; border: 1px solid #0055c5; display: inline-block;">Validate your Account</a>
+                                                <a href="http://${config.app.frontBaseUrl}validate/${customerId}" target="_blank" style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 11px 22px; border-radius: 2px; border: 1px solid #0055c5; display: inline-block;">Validate your Account</a>
                                              </td>
                                           </tr>
                                        </table>
