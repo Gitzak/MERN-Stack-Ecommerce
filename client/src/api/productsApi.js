@@ -12,12 +12,20 @@ export function getAllProducts() {
     return productApi.get("/");
 }
 
+export function getProduct(id) {
+    return productApi.get(`/${id}`);
+}
+
 export function createProduct(data) {
     return productApi.post("/", data, { headers: { "Content-Type": "multipart/form-data" } });
 }
 
-export function getProduct(id) {
-    return productApi.get(`/${id}`);
+export function updateProduct(id, data) {
+    return productApi.patch(`/${id}`, data);
+}
+
+export function deleteProduct(id) {
+    return productApi.delete(`/delete/${id}`);
 }
 
 export default productApi;

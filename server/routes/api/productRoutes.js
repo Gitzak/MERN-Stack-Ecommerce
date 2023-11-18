@@ -16,7 +16,8 @@ router.get("/", listProducts);
 //get product by id
 router.get("/:id", validateIdFormat, getProductById);
 //update product data
-router.patch("/:id", isAdminManager, validateIdFormat, validateProductFormUpdate, handleValidationErrors, updateProductData);
+// router.patch("/:id", isAdminManager, validateIdFormat, validateProductFormUpdate, handleValidationErrors, updateProductData);
+router.patch("/:id", isAdminManager, validateIdFormat, updateProductData);
 //delete product
 router.delete("/delete/:id", isAdminManager, validateIdFormat, deleteProduct);
 

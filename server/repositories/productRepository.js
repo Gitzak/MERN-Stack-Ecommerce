@@ -45,7 +45,7 @@ class ProductRepository {
     async listProducts(skip, limit, sort) {
         const products = await this.productModel
             .find()
-            .sort({ creationDate: sort === "ASC" ? 1 : -1 })
+            .sort({ createdAt: sort === "ASC" ? 1 : -1 })
             .populate("categories") // Populate the subcategory data
             .skip(skip)
             // .limit(limit)

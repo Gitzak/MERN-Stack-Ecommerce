@@ -20,6 +20,13 @@ const animatedComponents = makeAnimated();
 
 const validationSchema = yup.object({
     sku: yup.string("Enter SKU").required("SKU is required"),
+    productName: yup.string("Enter product name").required("Product name is required"),
+    // categories: yup.array().min(1, "At least one category is required"),
+    shortDescription: yup.string().required("Short description is required"),
+    longDescription: yup.string().required("Long description is required"),
+    price: yup.number().typeError("Price must be a number").min(0, "Price cannot be negative").required("Price is required"),
+    discountPrice: yup.number().typeError("Discount price must be a number").min(0, "Discount price cannot be negative").required("Discount price is required"),
+    quantity: yup.number().typeError("Quantity must be a number").min(0, "Quantity cannot be negative").required("Quantity is required"),
 });
 
 export const Create = () => {
@@ -77,6 +84,22 @@ export const Create = () => {
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
+            if (values.categories.length === 0) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "At least one category is required",
+                    confirmButtonText: "OK",
+                    customClass: {
+                        container: "swal2-container",
+                    },
+                    didOpen: () => {
+                        document.querySelector(".swal2-container").style.zIndex = 10000;
+                    },
+                });
+                return;
+            }
+
             setLoading(true);
             const formData = new FormData();
 
@@ -108,7 +131,7 @@ export const Create = () => {
 
             createProduct(formData)
                 .then((response) => {
-                    console.log(response);
+                    // console.log(response);
                     setLoading(false);
                     if (response.data.status === 201) {
                         Swal.fire({
@@ -117,10 +140,9 @@ export const Create = () => {
                             text: "Product added successfully",
                             confirmButtonText: "OK",
                             customClass: {
-                                container: "swal2-container", // Add a custom class for the container
+                                container: "swal2-container",
                             },
                             didOpen: () => {
-                                // Set a higher zIndex for the modal
                                 document.querySelector(".swal2-container").style.zIndex = 10000;
                             },
                         }).then(() => {
@@ -129,7 +151,7 @@ export const Create = () => {
                     }
                 })
                 .catch((error) => {
-                    console.log(error.request.responseText);
+                    // console.log(error.request.responseText);
                     setLoading(false);
                     if (error.response && error.response.data && error.response.data.message) {
                         Swal.fire({
@@ -137,8 +159,12 @@ export const Create = () => {
                             title: "Error",
                             text: error.response.data.message,
                             confirmButtonText: "OK",
-                        }).then(() => {
-                            navigate(`/dashboard/products/update/65574b7d77e6de3c95c6e32f`);
+                            customClass: {
+                                container: "swal2-container",
+                            },
+                            didOpen: () => {
+                                document.querySelector(".swal2-container").style.zIndex = 10000;
+                            },
                         });
                     } else {
                         // If error doesn't contain a specific message
@@ -147,6 +173,12 @@ export const Create = () => {
                             title: "Error",
                             text: "Failed to add product",
                             confirmButtonText: "OK",
+                            customClass: {
+                                container: "swal2-container",
+                            },
+                            didOpen: () => {
+                                document.querySelector(".swal2-container").style.zIndex = 10000;
+                            },
                         });
                     }
                 });
@@ -294,7 +326,7 @@ export const Create = () => {
                                         />
                                     </Grid>
                                     <Grid item xs={6}>
-                                        <FormControlLabel control={<Switch defaultChecked />} label="Active" sx={{ mt: 2, pt: 1 }} />
+                                        <FormControlLabel control={<Switch defaultChecked name="active" onChange={formik.handleChange} />} label="Active" sx={{ mt: 2, pt: 1 }} />
                                     </Grid>
                                     <Grid item xs={12}>
                                         <TextField

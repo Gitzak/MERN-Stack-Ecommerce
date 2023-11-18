@@ -1,11 +1,20 @@
-// FileUploader.js
 import { Button, IconButton } from "@mui/material";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 
-const FileUploader = ({ onFileUpload, onFileDelete }) => {
+const FileUploader = ({ onFileUpload, onFileDelete, existingImages }) => {
     const [filePreviews, setFilePreviews] = useState([]);
+
+    useEffect(() => {
+        // Update file previews with existing images
+        if (existingImages && existingImages.length > 0) {
+            const previews = existingImages.map((imageUrl) => ({
+                previewUrl: imageUrl,
+            }));
+            setFilePreviews(previews);
+        }
+    }, [existingImages]);
 
     const onDrop = useCallback(
         (acceptedFiles) => {
@@ -27,7 +36,15 @@ const FileUploader = ({ onFileUpload, onFileDelete }) => {
     const handleDelete = (index) => {
         const updatedPreviews = [...filePreviews];
         const deletedFile = updatedPreviews.splice(index, 1)[0];
-        onFileDelete(deletedFile.file);
+
+        // If the file is null (existing image), pass the image data for deletion
+        if (!deletedFile.file) {
+            onFileDelete(deletedFile.previewUrl);
+        } else {
+            // If the file is a new upload, pass the file for deletion
+            onFileDelete(deletedFile.file);
+        }
+
         setFilePreviews(updatedPreviews);
     };
 

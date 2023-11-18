@@ -21,6 +21,6 @@ exports.isAdminManager = (req, res, next) => {
             status: CONSTANTS.SERVER_FORBIDDEN_HTTP_CODE,
         });
     }
-
+    
     next();
 };

@@ -14,19 +14,19 @@ class ProductService {
             // Extract data from the request
             const { sku, productName, categories, shortDescription, longDescription, price, discountPrice, quantity, options, active } = req.body;
 
-            const categoriesArray = categories.split(',');
+            const categoriesArray = categories.split(",");
             // console.log(categoriesArray);
-            
+
             // Check if any of the categories don't exist
             for (const categoryId of categoriesArray) {
-                const category = await checkCategoryById(categoryId);                
+                const category = await checkCategoryById(categoryId);
                 if (category?.status === 404) {
                     response.message = "You cannot create this product because one or more categories were not found.";
                     response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
                     return response;
                 }
             }
-            
+
             // Check if a product with the same name or SKU already exists
             const existingProductByName = await this.productRepo.findProductByName(productName);
 
@@ -61,7 +61,6 @@ class ProductService {
             });
 
             const imagesUrls = await Promise.all(imagesUrlPromises);
-
 
             // Create a new product object
             const newProduct = {
@@ -108,21 +107,23 @@ class ProductService {
 
             const { sku, productName, categories, shortDescription, longDescription, price, discountPrice, quantity, options, active } = req.body;
 
+            const categoriesArray = categories.split(",");
+
             const updatedProduct = {
                 sku,
                 productName,
-                categories,
+                categories : categoriesArray,
                 shortDescription,
                 longDescription,
                 price,
                 discountPrice,
                 quantity,
-                options,
+                options: options ? JSON.parse(`${options}`) : [],
                 active,
             };
 
             // Check if any of the categories don't exist
-            for (const categoryId of categories) {
+            for (const categoryId of categoriesArray) {
                 const category = await checkCategoryById(categoryId);
 
                 if (category?.status === 404) {
@@ -149,6 +150,7 @@ class ProductService {
                 return response;
             }
         } catch (error) {
+            console.log(error);
             if (error.code === 11000) {
                 const field = Object.keys(error.keyPattern)[0];
                 response.message = CONSTANTS.PRODUCT_DUPLICATE_KEY(field);
@@ -186,7 +188,7 @@ class ProductService {
         const query = req.query.query;
         const response = {};
         const page = parseInt(req.query.page) || 1;
-        const sort = req.query.sort || "ASC";
+        const sort = req.query.sort || "DESC";
         const pageSize = 10;
         const skip = (page - 1) * pageSize;
         const limit = pageSize;

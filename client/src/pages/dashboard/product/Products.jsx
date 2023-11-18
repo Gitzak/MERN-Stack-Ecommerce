@@ -7,7 +7,7 @@ import { Button, Container, Grid, Paper } from "@mui/material";
 import Box from "@mui/material/Box";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import axios from "axios";
-import { getAllProducts } from "../../../api/productsApi";
+import { deleteProduct, getAllProducts } from "../../../api/productsApi";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Swal from "sweetalert2";
@@ -17,19 +17,38 @@ import { Link, Navigate } from "react-router-dom";
 export const Products = () => {
     const [products, setProducts] = useState([]);
 
+    const fetchProducts = async () => {
+        try {
+            const response = await getAllProducts();
+            setProducts(response.data.products); // Assuming the API returns an array of products
+        } catch (error) {
+            console.error("Error fetching products:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchProducts();
+    }, []);
+
     const columns = [
         {
             field: "productImages",
             headerName: "Image",
-            flex: 1,
             editable: false,
             sortable: false,
-            renderCell: (params) => <img src={params.value[0]} alt={`Product Image`} style={{ width: 150, height: 150 }} />,
+            renderCell: (params) => {
+                if (params.value[0]) {
+                    const link_src = params.value[0];
+                    const link_src_square = link_src.replace("upload", "upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai");
+                    return <img src={link_src_square} alt={`Product Image`} style={{ width: 50, height: 50 }} />;
+                }
+            },
         },
         {
             field: "productName",
             headerName: "Product name",
-            width: 150,
+            // width: 150,
+            flex: 1,
             editable: false,
         },
         {
@@ -68,12 +87,7 @@ export const Products = () => {
             flex: 1,
             renderCell: (params) => (
                 <Box>
-                    <Button
-                        sx={{ margin: 1 }}
-                        variant="contained"
-                        color="success"
-                        startIcon={<EditIcon />}
-                        component={Link} to={`/dashboard/products/update/${params.id}`} >
+                    <Button sx={{ margin: 1 }} variant="contained" color="success" startIcon={<EditIcon />} component={Link} to={`/dashboard/products/update/${params.id}`}>
                         Edit
                     </Button>
                     <Button sx={{ margin: 1 }} variant="contained" color="error" startIcon={<DeleteIcon />} onClick={() => handleDelete(params.id)}>
@@ -103,25 +117,32 @@ export const Products = () => {
             },
         }).then((result) => {
             if (result.isConfirmed) {
-                // Perform the delete action
-                console.log(`Deleting ID: ${id}`);
-                Swal.fire("Deleted!", "Your file has been deleted.", "success");
+                deleteProduct(id)
+                    .then((response) => {
+                        if (response.data.status === 200) {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Deleted!",
+                                text: response.data.message,
+                                confirmButtonText: "OK",
+                                customClass: {
+                                    container: "swal2-container",
+                                },
+                                didOpen: () => {
+                                    document.querySelector(".swal2-container").style.zIndex = 10000;
+                                },
+                            }).then(() => {
+                                // refresh
+                                fetchProducts();
+                            });
+                        }
+                    })
+                    .catch((error) => {
+                        Swal.fire("Error!", "Failed to delete the product.", "error");
+                    });
             }
         });
     };
-
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const response = await getAllProducts();
-                setProducts(response.data.products); // Assuming the API returns an array of products
-            } catch (error) {
-                console.error("Error fetching products:", error);
-            }
-        };
-
-        fetchProducts();
-    }, []);
 
     return (
         <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
