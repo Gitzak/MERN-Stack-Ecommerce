@@ -1,0 +1,28 @@
+.cart-dropdown-container {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.cart-dropdown-container .cart-items {
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+}
+
+.shop-icon-container {
+  position: relative;
+}
+
+.selected-product-count {
+  position: absolute;
+  top: 13px;
+  left: 90%; 
+  transform: translateX(-50%); 
+  background-color: rgb(0, 0, 0);
+  color: white;
+  border-radius: 50%;
+  padding: 4px 8px; 
+  font-size: 10px;
+}

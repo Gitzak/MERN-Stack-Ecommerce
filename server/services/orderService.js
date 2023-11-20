@@ -12,13 +12,17 @@ class OrdersService {
 
     // Create new order
     async createOrders(req) {
+        console.log('service',req.body)
+
         const response = {};
         try {
             const customerID = req.id;
             const customerFirstName = req.customerFirstName;
             const customerLastName = req.customerLastName;
             const customerEmail = req.customerEmail;
-            const { cartItems } = req.body;
+            const cartItems  = req.body;
+
+            console.log('cart items',cartItems) 
 
             if (cartItems.length == 0) {
                 response.message = `cart is empty`;
@@ -102,7 +106,8 @@ class OrdersService {
             response.message = CONSTANTS.ORDER_CREATED_SUCCESS
             response.status = CONSTANTS.SERVER_CREATED_HTTP_CODE
             return response;
-        } catch {
+        } catch (error) {
+            console.log(error)
             response.message = CONSTANTS.SERVER_ERROR;
             response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
             return response;      

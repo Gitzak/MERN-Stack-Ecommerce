@@ -15,10 +15,11 @@ import AdminRoutes,{Publicroutes} from "./utils/AdminRoutes";
 import Shop from "./pages/shop/shop/Shop";
 import Home from "./pages/shop/home/Home";
 import Checkout from "./pages/shop/checkout/Checkout";
-import MainShopLayout from "./pages/shop/mainShopLayout/MainShopLayout";
+import MainShopLayout from "./layouts/MainShopLayout";
 import ValidatedAccount from "./components/shop/validateAccount/ValidatedAccount";
 import SignUpForm from "./components/shop/customerAuth/SignUpForm/SignUpForm";
 import SignInForm from "./components/shop/customerAuth/SignInForm/SignInForm";
+import ProductDetails from "./pages/shop/productDetails/ProductDetails";
 
 function App() {
     return (
@@ -27,6 +28,7 @@ function App() {
                 <Route path="/shop" element={ <MainShopLayout /> } >
                     <Route index element={<Home />}/>
                     <Route path="products" element={<Shop />}/>
+                    <Route path="products/:id" element={<ProductDetails />}/>
                     <Route path="signIn" element={<SignInForm />}/>
                     <Route path="signUp" element={<SignUpForm />}/>
                     <Route path="checkout" element={<Checkout />} />

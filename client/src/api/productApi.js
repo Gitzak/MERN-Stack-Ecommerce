@@ -9,10 +9,11 @@ const api = axios.create({
 })
 
 export function GetAllProducts() {
-    return api.get('/', )
+    return api.get('/' )
 }
 
-
-
+export function GetOneProduct(id) {
+    return api.get(`/${id}` )
+}
 
 export default api

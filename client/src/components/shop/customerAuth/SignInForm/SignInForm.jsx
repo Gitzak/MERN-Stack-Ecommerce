@@ -1,13 +1,11 @@
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { useState } from "react";
-import { Button, TextField } from "@mui/material";
+import { Button, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 import { CustomerC } from "../../../../context/shopContext/CustomerContext";
 import { LoginCustomer } from "../../../../api/customerApi";
-
-import "./SignInForm.css";
 
 const SignInForm = () => {
   const { setCurrentCustomer } = CustomerC();
@@ -15,14 +13,8 @@ const SignInForm = () => {
   const [error, setError] = useState(null);
 
   const validationSchema = yup.object({
-    email: yup
-      .string()
-      .email("Invalid email format")
-      .required("Email is required"),
-    password: yup
-      .string()
-      .min(6, "Password must be at least 6 characters")
-      .required("Password is required"),
+    email: yup.string().email("Invalid email format").required("Email is required"),
+    password: yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
   });
 
   const formik = useFormik({
@@ -32,9 +24,8 @@ const SignInForm = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      console.log(values);
       try {
-        const {data} = await LoginCustomer(values);
+        const { data } = await LoginCustomer(values);
         const loggedCustomer = data;
         localStorage.setItem("CustomerId", loggedCustomer.customer._id);
         localStorage.setItem("token", JSON.stringify(loggedCustomer.token));
@@ -47,10 +38,14 @@ const SignInForm = () => {
   });
 
   return (
-    <div className="sign-in-container">
-      <h2>I already Have an account </h2>
-      <span>Sign In with your email and Password</span>
-      <form onSubmit={formik.handleSubmit}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '70vh' }}>
+      <Typography variant="h5" fontWeight="bold" mb={1}>
+        I already have an account
+      </Typography>
+      <Typography mb={3} color="textSecondary">
+        Sign in with your email and password
+      </Typography>
+      <form onSubmit={formik.handleSubmit} style={{ width: '100%', maxWidth: '400px' }}>
         <TextField
           fullWidth
           label="Email"
@@ -65,6 +60,7 @@ const SignInForm = () => {
 
         <TextField
           fullWidth
+          type="password"
           label="Password"
           name="password"
           margin="normal"
@@ -74,12 +70,12 @@ const SignInForm = () => {
           error={formik.touched.password && Boolean(formik.errors.password)}
           helperText={formik.touched.password && formik.errors.password}
         />
-        {error && <div style={{ color: "red" }}>{error}</div>}
+        {error && <Typography style={{ color: "red" }}>{error}</Typography>}
 
         <Button
           variant="contained"
           color="error"
-          sx={{ backgroundColor: "#e3a346", padding: "5px 20px" }}
+          sx={{ backgroundColor: "#e3a346", padding: "5px 20px", marginTop: 2 }}
           type="submit"
         >
           Sign In

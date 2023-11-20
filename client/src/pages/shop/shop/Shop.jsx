@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+// Shop component
+import React, { useState } from "react";
 import Pagination from "@mui/material/Pagination";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Grid, Stack, Typography } from "@mui/material";
 import { ProductsC } from "../../../context/shopContext/productContext";
 import ShopProductCard from "../../../components/shop/product/ShopProductCard";
 import Loader from "../../../components/shop/loader/Loader";
@@ -9,9 +10,10 @@ const Shop = () => {
   const { currentProducts } = ProductsC();
   const [currentPage, setCurrrentPage] = useState(1);
 
-  const productsPerpage = 10;
-  const indexOfLastProducts = currentPage * productsPerpage;
-  const indexOfFirstProducts = indexOfLastProducts - productsPerpage;
+  const productsPerRow = 3;
+  const productsPerPage = 10;
+  const indexOfLastProducts = currentPage * productsPerPage;
+  const indexOfFirstProducts = indexOfLastProducts - productsPerPage;
 
   const paginate = (e, value) => {
     setCurrrentPage(value);
@@ -24,34 +26,26 @@ const Shop = () => {
         All Products
       </Typography>
 
-      <Stack
-        direction="row"
-        sx={{
-          gap: { lg: "50px", xs: "50px" },
-          flexWrap: "wrap",
-          justifyContent: "center",
-          "& > *": {
-            flexBasis: { lg: "25%", xs: "50%" },
-          },
-        }}
-      >
+      <Grid container spacing={2}>
         {currentProducts ? (
           currentProducts
             .slice(indexOfFirstProducts, indexOfLastProducts)
             .map((product, index) => (
-              <ShopProductCard key={index} product={product} />
+              <Grid item key={index} xs={12} sm={6} md={4} lg={4}>
+                <ShopProductCard product={product} />
+              </Grid>
             ))
         ) : (
           <Loader />
         )}
-      </Stack>
+      </Grid>
 
       <Stack mt="100px" alignItems="center">
-        {currentProducts && currentProducts.length > 3 && (
+        {currentProducts && currentProducts.length > productsPerPage && (
           <Pagination
             color="primary"
             shape="rounded"
-            count={Math.ceil(currentProducts.length / productsPerpage)}
+            count={Math.ceil(currentProducts.length / productsPerPage)}
             defaultPage={1}
             page={currentPage}
             onChange={paginate}

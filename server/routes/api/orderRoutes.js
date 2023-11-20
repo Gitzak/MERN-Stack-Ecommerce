@@ -15,3 +15,14 @@ router.get("/:id", isAdminManager,validateIdFormat, getOrderById);
 router.put("/:id", isAdminManager, validateIdFormat, updateOrder);
 
 module.exports = router;
+
+
+
+
+// router.post("/", (req, res) => {
+//     console.log(req.body)
+//     const authHeader = req.headers.authorization || null;
+//     const token = authHeader && authHeader.split(" ")[1];
+//     console.log(req.headers.authorization.split(" ")[0])
+//     res.json("hiii")
+// });

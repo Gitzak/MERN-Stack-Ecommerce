@@ -178,7 +178,7 @@ class ProductService {
         const response = {};
         const page = parseInt(req.query.page) || 1;
         const sort = req.query.sort || "ASC";
-        const pageSize = 10;
+        const pageSize = 20;
         const skip = (page - 1) * pageSize;
         const limit = pageSize;
 

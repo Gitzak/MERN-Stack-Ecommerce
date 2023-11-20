@@ -1,29 +1,17 @@
+import React from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { RegisterCustomer } from "../../../../api/customerApi";
-import "./SignUpForm.css";
-import { Button, TextField } from "@mui/material";
+import { Button, TextField, Typography } from "@mui/material";
 
 const SignUpForm = () => {
   const validationSchema = yup.object({
     firstName: yup.string().required("First Name is required"),
     lastName: yup.string().required("Last Name is required"),
-    email: yup
-      .string()
-      .email("Invalid email format")
-      .required("Email is required"),
-    password: yup
-      .string()
-      .min(6, "Password must be at least 6 characters")
-      .required("Password is required"),
-    confirmPassword: yup
-      .string()
-      .oneOf([yup.ref("password"), null], "Passwords must match")
-      .required("Confirm Password is required"),
-    // phoneNumber: yup
-    //   .string()
-    //   .matches(/^[0-9]+$/, "Invalid phone number")
-    //   .required("Phone Number is required"),
+    email: yup.string().email("Invalid email format").required("Email is required"),
+    password: yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
+    confirmPassword: yup.string().oneOf([yup.ref("password"), null], "Passwords must match").required("Confirm Password is required"),
+    phoneNumber: yup.string().matches(/^[0-9]+$/, "Invalid phone number").required("Phone Number is required"),
   });
 
   const formik = useFormik({
@@ -37,24 +25,24 @@ const SignUpForm = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      console.log(values);
-
-    try {
-        const newCustomer = await RegisterCustomer(values)
-
-        console.log(newCustomer)
-
-    } catch (error) {
-        console.log(error.message)
-    }
+      try {
+        const newCustomer = await RegisterCustomer(values);
+        console.log(newCustomer);
+      } catch (error) {
+        console.log(error.message);
+      }
     },
   });
 
   return (
-    <div className="sign-up-container">
-      <h2>Dont't Have an account</h2>
-      <span>Sign Up with your email and Password</span>
-      <form onSubmit={formik.handleSubmit}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', alignContent: 'center', width: '50%', height: '70vh', margin: '30px auto' }}>
+      <Typography variant="h5" fontWeight="bold" mb={1}>
+        Don't have an account
+      </Typography>
+      <Typography mb={3} color="textSecondary">
+        Sign Up with your email and password
+      </Typography>
+      <form onSubmit={formik.handleSubmit} style={{ width: '100%', maxWidth: '400px' }}>
         <TextField
           fullWidth
           label="First Name"
@@ -90,6 +78,7 @@ const SignUpForm = () => {
         />
         <TextField
           fullWidth
+          type="password"
           label="Password"
           name="password"
           margin="normal"
@@ -101,19 +90,15 @@ const SignUpForm = () => {
         />
         <TextField
           fullWidth
+          type="password"
           label="Confirmed Password"
           name="confirmPassword"
           margin="normal"
           value={formik.values.confirmPassword}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={
-            formik.touched.confirmPassword &&
-            Boolean(formik.errors.confirmPassword)
-          }
-          helperText={
-            formik.touched.confirmPassword && formik.errors.confirmPassword
-          }
+          error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
+          helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
         />
         <TextField
           fullWidth
@@ -123,16 +108,14 @@ const SignUpForm = () => {
           value={formik.values.phoneNumber}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={
-            formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)
-          }
+          error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
           helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
         />
 
         <Button
           variant="contained"
           color="error"
-          sx={{ backgroundColor: "#e3a346", padding: "5px 20px" }}
+          sx={{ backgroundColor: "#e3a346", padding: "5px 20px", marginTop: 2 }}
           type="submit"
         >
           Sign Up
