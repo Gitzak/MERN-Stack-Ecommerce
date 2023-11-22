@@ -1,19 +1,23 @@
-import axios from 'axios'
+import axios from "axios";
 
-const api = axios.create({
-    baseURL:'http://localhost:7500/api/users',
-    headers:{
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('jwt_info')===null?null:JSON.parse(localStorage.getItem('jwt_info'))}`
-
-    }
-})
+const userApi = axios.create({
+    baseURL: "http://localhost:7500/api/users",
+    headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token") === null ? null : JSON.parse(localStorage.getItem("token"))}`,
+    },
+});
 
 export function LoginUser(body) {
-    return api.post('/login', body)
+    return userApi.post("/login", body);
 }
 
+export function getDataProfile() {
+    return userApi.get("/profileData");
+}
 
+export function updateDataProfile(id, data) {
+    return userApi.put(id, data);
+}
 
-
-export default api
+export default userApi;

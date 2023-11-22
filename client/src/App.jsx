@@ -12,6 +12,7 @@ import Customers from "./pages/dashboard/customer/Customers";
 import Categories from "./pages/dashboard/category/Categories";
 import { Users } from "./pages/dashboard/user/Users";
 import AdminRoutes,{Publicroutes} from "./utils/AdminRoutes";
+import { Profile } from "./pages/dashboard/auth/Profile";
 
 function App() {
     return (
@@ -34,6 +35,7 @@ function App() {
                         <Route path="products/create" element={<Create />} />
                         <Route path="products/update/:id" element={<Update />} />
                         <Route path="categories" element={<Categories />} />
+                        <Route path="profile" element={<Profile />} />
                     </Route>
                     
                 </Route>

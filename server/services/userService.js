@@ -172,12 +172,13 @@ class UserService {
         }
 
         response.message = CONSTANTS.USER_UPDATED;
-        response.status = CONSTANTS.SERVER_UPDATED_HTTP_CODE;
+        response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
         return response;
     }
 
     async getUserById(req) {
-        const userId = req.params.id;
+        const userId = req.profile.userId;
+
         const response = {};
         try {
             const user = await this.userRepo.FindById(userId);

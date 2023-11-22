@@ -6,9 +6,10 @@ import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { UserC } from "../../../context/AuthContext";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export default function BasicMenu() {
+    const navigate = useNavigate();
     const { currentUser, setCurrentUser } = UserC();
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -25,7 +26,10 @@ export default function BasicMenu() {
         localStorage.removeItem("userId");
         localStorage.removeItem("token");
         return <Navigate to="/login" />;
-        // return <Navigate to="/dashboard/products/update/65574b7d77e6de3c95c6e32f" replace={true}/>;
+    };
+
+    const handleProfileRoute = () => {
+        navigate(`/dashboard/profile`);
     };
 
     return (
@@ -44,7 +48,7 @@ export default function BasicMenu() {
                 MenuListProps={{
                     "aria-labelledby": "basic-button",
                 }}>
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
+                <MenuItem onClick={handleProfileRoute}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>
