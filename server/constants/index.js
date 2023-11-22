@@ -8,7 +8,7 @@ exports.ORDERS_STATUS = {
     Shipped: "Shipped",
     Paid   : "Paid",
     Closed : "Closed",
-    Cancled: "Cancled",
+    Cancelled: "Cancelled",
 };
 exports.ORDERS_STATUS_MSG = {
     Shipped  : "We're excited to inform you that your order has been shipped. You can expect it to arrive at your doorstep soon!",

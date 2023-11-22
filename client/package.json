@@ -16,6 +16,7 @@
     "@mui/lab": "^5.0.0-alpha.153",
     "@mui/material": "^5.14.17",
     "@mui/x-data-grid": "^6.18.1",
+    "@react-pdf/renderer": "^3.1.14",
     "axios": "^1.6.1",
     "formik": "^2.4.5",
     "jwt-decode": "^4.0.0",

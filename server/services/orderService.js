@@ -131,14 +131,9 @@ class OrdersService {
     async getOrders(req) {
         try {
             const response = {};
-            // Todo: We can add search query later
-            const page = parseInt(req.query.page) || 1;
-            const sort = req.query.sort || "ASC";
-            const skip = (page - 1) * pageSize;
-            const limit = pageSize;
-            response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
-            const orders = await this.orderRepo.getOrders(skip, limit, sort);
+            const orders = await this.orderRepo.getOrders();
             response.orders = orders;
+            response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
             return response;
         } catch (error) {
             response.message = CONSTANTS.SERVER_ERROR;
@@ -239,7 +234,7 @@ class OrdersService {
                             response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
                         });
                     break;
-                case CONSTANTS.ORDERS_STATUS.Cancled: // Note: Correct spelling is 'Cancelled'
+                case CONSTANTS.ORDERS_STATUS.Cancelled: // Note: Correct spelling is 'Cancelled'
                     // Handle Cancelled status (if needed)
                     mailService
                         .sendMailByStatus(order,CONSTANTS.ORDERS_STATUS_MSG.Cancelled)

@@ -54,7 +54,7 @@ const orderSchema = new mongoose.Schema(
         },
         status: {
             type: String,
-            enum: [ORDERS_STATUS.Open, ORDERS_STATUS.Shipped, ORDERS_STATUS.Paid, ORDERS_STATUS.Closed, ORDERS_STATUS.Cancled],
+            enum: [ORDERS_STATUS.Open, ORDERS_STATUS.Shipped, ORDERS_STATUS.Paid, ORDERS_STATUS.Closed, ORDERS_STATUS.Cancelled],
             default: ORDERS_STATUS.Open,
         },
     },
