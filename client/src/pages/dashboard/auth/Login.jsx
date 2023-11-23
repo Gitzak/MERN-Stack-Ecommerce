@@ -48,6 +48,7 @@ export const Login = () => {
         try {
             const response = await LoginUser(body);
             const loggedUser = response.data;
+            console.log(loggedUser);
             localStorage.setItem("userId", loggedUser.user._id);
             localStorage.setItem("token", JSON.stringify(loggedUser.token));
             setCurrentUser(loggedUser);

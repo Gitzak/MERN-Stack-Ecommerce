@@ -25,7 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // Enable CORS with specific origin
 const corsOptions = {
-  origin: "http://localhost:3000", // replace with the actual origin of your frontend
+  origin: config.app.origin_front, // replace with the actual origin of your frontend
   credentials: true,
 };
 

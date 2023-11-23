@@ -1,23 +1,34 @@
 import axios from "axios";
 
-const oerderApi = axios.create({
+const orderApi = axios.create({
     baseURL: "http://localhost:7500/api/orders",
     headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token") === null ? null : JSON.parse(localStorage.getItem("token"))}`,
     },
 });
 
+const setAuthHeader = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+        orderApi.defaults.headers.common["Authorization"] = `Bearer ${JSON.parse(token)}`;
+    } else {
+        delete orderApi.defaults.headers.common["Authorization"];
+    }
+};
+
 export function getAllOrders() {
-    return oerderApi.get("/");
+    setAuthHeader();
+    return orderApi.get("/");
 }
 
 export function getOrder(id) {
-    return oerderApi.get(`/${id}`);
+    setAuthHeader();
+    return orderApi.get(`/${id}`);
 }
 
 export function updateOrders(id, data) {
-    return oerderApi.put(`/${id}`, data);
+    setAuthHeader();
+    return orderApi.put(`/${id}`, data);
 }
 
-export default oerderApi;
+export default orderApi;

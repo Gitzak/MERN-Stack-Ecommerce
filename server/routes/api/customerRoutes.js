@@ -20,7 +20,7 @@ router.get("/profile", isCustomer, getProfileCustomer);
 //get all customers list
 router.get("/", isAdminManager, getCustomers);
 //update customer data (for admin and manager only)
-router.put("/:id", isAdminManager,validateIdFormat, validateCustomerFormUpdatePut, handleValidationErrors, updateCustomerDataByAdmins);
+router.put("/:id", isAdminManager, validateIdFormat, validateCustomerFormUpdatePut, handleValidationErrors, updateCustomerDataByAdmins);
 // customer update himself
 router.patch("/profile/update", isCustomer, validateCustomerFormUpdatePatch, handleValidationErrors, updateCustomerData);
 //delete account for customer
