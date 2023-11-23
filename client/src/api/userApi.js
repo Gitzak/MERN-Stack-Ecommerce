@@ -20,4 +20,8 @@ export function updateDataProfile(id, data) {
     return userApi.put(id, data);
 }
 
+export function updatePassword(id, data) {
+    return userApi.put("/updatePassword", data);
+}
+
 export default userApi;

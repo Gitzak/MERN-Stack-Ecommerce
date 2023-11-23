@@ -8,7 +8,7 @@ const { isAdminManager } = require("../../middleware/isAdminManager");
 const { validateIdFormat } = require("../../middleware/validateIdFormat");
 const checkUserRole = require("../../middleware/checkUserRole");
 
-const { addNewUser, deleteUser, getUserById, getUsers, searchUsers, updateUserData, getUserProfile } = require("../../controllers/userController");
+const { addNewUser, deleteUser, getUserById, getUsers, searchUsers, updateUserData, getUserProfile, updatePassword } = require("../../controllers/userController");
 
 // login route
 router.post("/login", validateUserLogin, handleValidationErrors, loginUser);
@@ -17,7 +17,10 @@ router.get("/profile", isAdminManager, (req, res) => {
         data: req.profile,
     });
 });
+// get user profile
 router.get("/profileData", isAdminManager, getUserProfile);
+// update user password
+router.put("/updatePassword", isAdminManager, updatePassword);
 //Add new user route
 router.post("/", isAdmin, validateUserForm, handleValidationErrors, addNewUser);
 //Route for getting all users

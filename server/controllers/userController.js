@@ -44,6 +44,15 @@ exports.getUserProfile = async (req, res) => {
     }
 };
 
+exports.updatePassword = async (req, res) => {
+    try {
+        const user = await userServ.updatePassword(req);
+        res.status(user.status).json(user);
+    } catch (error) {
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
+    }
+};
+
 //Get all users
 exports.getUsers = async (req, res) => {
     try {

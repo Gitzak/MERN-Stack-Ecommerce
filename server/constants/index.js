@@ -41,6 +41,7 @@ module.exports.USER_LOGIN_FAILED        = "User not found.";
 module.exports.USER_FOUND               = "Users founds.";
 module.exports.USER_CREATED             = "User Created successfully.";
 module.exports.USER_UPDATED             = "User Updated successfully.";
+module.exports.USER_UPDATED_PASSWORD    = "Password Updated successfully.";
 module.exports.USER_DELETED             = "User Deleted successfully.";
 module.exports.ALREADY_USER_DELETED     = "No User Deleted";
 module.exports.USER_NOT_ACTIVE          = "Your account is not active";

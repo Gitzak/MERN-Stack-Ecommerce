@@ -205,6 +205,94 @@ class UserService {
         }
     }
 
+    async UpdateUser(req) {
+        const id = req.params.id;
+        const response = {};
+
+        const { role, userName, firstName, lastName, email, active } = req.body;
+
+        const user = await this.userRepo.FindById(id);
+        if (!user) {
+            response.message = CONSTANTS.INVALID_USER_ID;
+            response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+            return response;
+        }
+
+        const existingUserByUserName = await this.userRepo.findUserByNameExcludingId(userName, id);
+        const existingUserByEmail = await this.userRepo.findUserByEmailExcludingId(email, id);
+
+        if (existingUserByUserName) {
+            response.message = "UserName already exists.";
+            response.status = CONSTANTS.SERVER_BAD_REQUEST_HTTP_CODE;
+            return response;
+        }
+
+        if (existingUserByEmail) {
+            response.message = "Email already exists.";
+            response.status = CONSTANTS.SERVER_BAD_REQUEST_HTTP_CODE;
+            return response;
+        }
+
+        const currentTimestamp = Date.now();
+
+        const updatedUser = {
+            role,
+            userName,
+            firstName,
+            lastName,
+            email,
+            active,
+            lastUpdate: currentTimestamp,
+        };
+
+        const updateduser = await this.userRepo.UpdateUser(id, updatedUser);
+
+        if (!updateduser) {
+            response.message = CONSTANTS.USER_NOT_ACTIVE;
+            response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+            return response;
+        }
+
+        response.message = CONSTANTS.USER_UPDATED;
+        response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+        return response;
+    }
+
+    async updatePassword(req) {
+        const id = req.profile.userId;
+        const response = {};
+
+        const { password } = req.body;
+
+        const user = await this.userRepo.FindById(id);
+        if (!user) {
+            response.message = CONSTANTS.INVALID_USER_ID;
+            response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+            return response;
+        }
+
+        const currentTimestamp = Date.now();
+
+        const hashedPass = await HashPassword(password);
+
+        const updatedUser = {
+            password: hashedPass,
+            lastUpdate: currentTimestamp,
+        };
+
+        const userU = await this.userRepo.UpdateUser(id, updatedUser);
+
+        if (!userU) {
+            response.message = CONSTANTS.USER_NOT_ACTIVE;
+            response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+            return response;
+        }
+
+        response.message = CONSTANTS.USER_UPDATED_PASSWORD;
+        response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+        return response;
+    }
+
     async getUsers(req) {
         const query = req.query.query;
         const page = parseInt(req.query.page) || 1;
