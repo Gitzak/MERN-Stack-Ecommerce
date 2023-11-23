@@ -13,6 +13,7 @@ import Categories from "./pages/dashboard/category/Categories";
 import { Users } from "./pages/dashboard/user/Users";
 import AdminRoutes, { Publicroutes } from "./utils/AdminRoutes";
 import { UpdateCustomer } from "./pages/dashboard/customer/Update";
+import { Profile } from "./pages/dashboard/auth/Profile";
 
 function App() {
   return (
@@ -29,14 +30,12 @@ function App() {
             <Route path="orders" element={<Orders />} />
             <Route path="orders/:id" element={<OrderDetails />} />
             <Route path="customers" element={<Customers />} />
-            <Route
-              path="customers/update/:customerId"
-              element={<UpdateCustomer />}
-            />
+            <Route path="customers/update/:id" element={<UpdateCustomer />} />
             <Route path="products" element={<Products />} />
             <Route path="products/create" element={<Create />} />
             <Route path="products/update/:id" element={<Update />} />
             <Route path="categories" element={<Categories />} />
+            <Route path="profile" element={<Profile />} />
           </Route>
         </Route>
       </Routes>

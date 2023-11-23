@@ -10,13 +10,9 @@ class OrderRepository {
         return newOrder;
     }
 
-    async getOrders(skip, limit, sort) {
-        const foundedOrders = await this.orderModel
-            .aggregate([{ $sort: { orderDate: -1 } }])
-            .skip(skip)
-            .limit(limit)
-            .exec();
-        return foundedOrders;
+    async getOrders() {
+        const data = await this.orderModel.aggregate([{ $sort: { orderDate: -1 } }]).exec();
+        return data;
     }
 
     async findOrderById(orderId) {
