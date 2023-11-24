@@ -9,11 +9,13 @@ import { OrderDetails } from "./pages/dashboard/order/OrderDetails";
 import { Create } from "./pages/dashboard/product/Create";
 import { Update } from "./pages/dashboard/product/Update";
 import Customers from "./pages/dashboard/customer/Customers";
-import Categories from "./pages/dashboard/category/Categories";
 import { Users } from "./pages/dashboard/user/Users";
 import AdminRoutes, { Publicroutes } from "./utils/AdminRoutes";
 import { UpdateCustomer } from "./pages/dashboard/customer/Update";
 import { Profile } from "./pages/dashboard/auth/Profile";
+import { Categorie } from "./pages/dashboard/category/Categories";
+import { CreateCategory } from "./pages/dashboard/category/Create";
+import { UpdateCategory } from "./pages/dashboard/category/Update";
 
 function App() {
   return (
@@ -34,7 +36,9 @@ function App() {
             <Route path="products" element={<Products />} />
             <Route path="products/create" element={<Create />} />
             <Route path="products/update/:id" element={<Update />} />
-            <Route path="categories" element={<Categories />} />
+            <Route path="categories" element={<Categorie />} />
+            <Route path="categories/create" element={<CreateCategory />} />
+            <Route path="categories/update/:id" element={<UpdateCategory />} />
             <Route path="profile" element={<Profile />} />
           </Route>
         </Route>

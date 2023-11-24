@@ -17,7 +17,7 @@ const CategorySchema = new mongoose.Schema(
             ref: "Category",
             type: String,
             required: false,
-            default: null,
+            // default: null,
         },
         parentName: {
             type: String,

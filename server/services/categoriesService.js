@@ -14,24 +14,25 @@ class CategoriesService {
         try {
             const { category_name, active, description, parentId } = req.body;
 
-            let parentName = null;
+            let parentName = null
 
-            if (parentId) {
-                const foundedCategory =
-                    await this.categoryRepo.findCategoryById(parentId);
-                if (!foundedCategory) {
+            if (parentId != 'null') {
+                try{
+                    const foundedCategory = await this.categoryRepo.findCategoryById({_id:parentId});
+                    parentName = foundedCategory.category_name;
+                }
+                catch{
                     response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
-                    response.message = CONSTANTS.CATEGORY_PARENT_NOT_FOUND;
+                    response.message = CONSTANTS.SERVER_ERROR;
                     return response;
                 }
-                parentName = foundedCategory.category_name;
             }
 
             const newCategory = {
                 category_name,
                 active,
                 description,
-                parentId,
+                parentId: parentId != 'null' ? parentId : null,
                 parentName,
             };
 
@@ -47,6 +48,7 @@ class CategoriesService {
 
             response.message = CONSTANTS.CATEGORY_CREATED_SUCCESS;
             response.status = CONSTANTS.SERVER_CREATED_HTTP_CODE;
+            response.data = category;
             return response;
         } catch (error) {
             response.message = CONSTANTS.SERVER_ERROR;
