@@ -16,8 +16,34 @@ const setAuthHeader = () => {
     }
 };
 
+
 export function LoginUser(body) {
     return userApi.post("/login", body);
+}
+
+export function getAllUsers() {
+    setAuthHeader();
+    return userApi.get("/")
+}
+
+export function getUsers(id) {
+    setAuthHeader();
+    return userApi.get(`/${id}`);
+}
+
+export function createUsers(data) {
+    setAuthHeader();
+    return userApi.post("/", data);
+}
+
+export function updateUsers(id, data) {
+    setAuthHeader();
+    return userApi.put(`/${id}`, data);
+}
+
+export function deleteUsers(id) {
+    setAuthHeader();
+    return userApi.delete(`/${id}`);
 }
 
 export function getDataProfile() {
