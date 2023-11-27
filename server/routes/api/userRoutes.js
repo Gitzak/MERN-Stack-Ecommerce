@@ -24,7 +24,8 @@ router.get("/", isAdminManager, getUsers);
 // Route to get a user by ID
 router.get("/:id", isAdminManager, validateIdFormat, getUserById);
 //Update user's data
-router.put("/:id", isAdmin, validateIdFormat, validateUserFormUpdate, handleValidationErrors, updateUserData);
+router.put("/:id", isAdmin,  updateUserData);
+// router.put("/:id", isAdmin, validateIdFormat, validateUserFormUpdate, handleValidationErrors, updateUserData);
 // Route for deleting a user
 router.delete("/:id", isAdmin, validateIdFormat, deleteUser);
 

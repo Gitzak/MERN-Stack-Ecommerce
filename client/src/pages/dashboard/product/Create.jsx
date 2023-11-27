@@ -129,8 +129,7 @@ export const Create = () => {
                 formData.append("images", values.images[i]);
             }
 
-            createProduct(formData)
-                .then((response) => {
+            createProduct(formData).then((response) => {
                     // console.log(response);
                     setLoading(false);
                     if (response.data.status === 201) {

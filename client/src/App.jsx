@@ -12,6 +12,7 @@ import Customers from "./pages/dashboard/customer/Customers";
 import Categories from "./pages/dashboard/category/Categories";
 import { Users } from "./pages/dashboard/user/Users";
 import AdminRoutes,{Publicroutes} from "./utils/AdminRoutes";
+import UserCreate from "./pages/dashboard/user/userCreate";
 
 function App() {
     return (
@@ -27,6 +28,7 @@ function App() {
                     <Route path="/dashboard" element={<MainLayout />}>
                         <Route index element={<Dashboard />} />
                         <Route path="users" element={<Users />} />
+                        <Route path="users/create" element={<UserCreate />} />
                         <Route path="orders" element={<Orders />} />
                         <Route path="orders/:id" element={<OrderDetails />} />
                         <Route path="customers" element={<Customers />} />
