@@ -23,6 +23,10 @@ const validationSchema = yup.object({
 });
 
 export const Update = () => {
+    useEffect(() => {
+        document.title = `Edit product - ${import.meta.env.VITE_APP_TITLE}`;
+    }, []);
+
     const navigate = useNavigate();
     const [dataCategories, setDataCategories] = useState([]);
     const [uploadedFiles, setUploadedFiles] = useState([]);

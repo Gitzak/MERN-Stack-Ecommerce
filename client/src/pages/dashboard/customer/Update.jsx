@@ -28,6 +28,10 @@ const validationSchema = yup.object({
 });
 
 export const UpdateCustomer = () => {
+    useEffect(() => {
+        document.title = `Edit cutomer - ${import.meta.env.VITE_APP_TITLE}`;
+    }, []);
+
     const navigate = useNavigate();
 
     const { id } = useParams();

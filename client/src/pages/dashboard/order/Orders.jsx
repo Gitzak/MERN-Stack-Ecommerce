@@ -38,6 +38,10 @@ const style = {
 };
 
 export const Orders = () => {
+    useEffect(() => {
+        document.title = `Orders - ${import.meta.env.VITE_APP_TITLE}`;
+    }, []);
+
     const [orders, setOrders] = useState([]);
     const [selectedOrderId, setSelectedOrderId] = useState(null);
     const [selectedOrderData, setSelectedOrderData] = useState({});

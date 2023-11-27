@@ -60,6 +60,10 @@ const passwordValidationSchema = yup.object({
 });
 
 export const Profile = () => {
+    useEffect(() => {
+        document.title = `Profile - ${import.meta.env.VITE_APP_TITLE}`;
+    }, []);
+
     const [loadingPersonalInfo, setLoadingPersonalInfo] = useState(false);
     const [loadingPassword, setLoadingPassword] = useState(false);
 

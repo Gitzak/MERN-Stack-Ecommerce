@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -21,7 +21,7 @@ function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
             {"Copyright © "}
-            <Link color="inherit" href="https://creativestudios.ma/">
+            <Link target="_blank" color="inherit" href="https://creativestudios.ma/">
                 CREATIVE STUDIOS
             </Link>{" "}
             {new Date().getFullYear()}
@@ -33,6 +33,10 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export const Login = () => {
+    useEffect(() => {
+        document.title = `Login - ${import.meta.env.VITE_APP_TITLE}`;
+    }, []);
+
     const navigate = useNavigate();
     const { setCurrentUser } = UserC();
 

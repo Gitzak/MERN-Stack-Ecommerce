@@ -8,8 +8,13 @@ import CardSales from "../../../components/dashboard/cards/CardSales";
 import LatestOrders from "../../../components/dashboard/tables/LatestOrders";
 import Top5Products from "../../../components/dashboard/tables/Top5Products";
 import { UserContext } from "../../../context/AuthContext";
+import { useEffect } from "react";
 
 export default function Dashboard() {
+    useEffect(() => {
+        document.title = `Dashboard - ${import.meta.env.VITE_APP_TITLE}`;
+    }, []);
+
     return (
         <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>

@@ -15,6 +15,10 @@ import { NumericFormat } from "react-number-format";
 import { Link, Navigate } from "react-router-dom";
 
 export const Products = () => {
+    useEffect(() => {
+        document.title = `Products - ${import.meta.env.VITE_APP_TITLE}`;
+    }, []);
+
     const [products, setProducts] = useState([]);
 
     const fetchProducts = async () => {

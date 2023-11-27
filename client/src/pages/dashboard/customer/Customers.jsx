@@ -10,6 +10,10 @@ import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 
 const Customers = () => {
+    useEffect(() => {
+        document.title = `Customers - ${import.meta.env.VITE_APP_TITLE}`;
+    }, []);
+
     const [customers, setCustomers] = useState([]);
     const [gridLoading, setGridLoading] = useState(true);
     const navigate = useNavigate();

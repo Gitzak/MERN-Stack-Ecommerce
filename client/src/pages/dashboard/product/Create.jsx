@@ -30,6 +30,10 @@ const validationSchema = yup.object({
 });
 
 export const Create = () => {
+    useEffect(() => {
+        document.title = `Create new Prodoct - ${import.meta.env.VITE_APP_TITLE}`;
+    }, []);
+
     const navigate = useNavigate();
     const [dataCategories, setDataCategories] = useState([]);
     const [uploadedFiles, setUploadedFiles] = useState([]);

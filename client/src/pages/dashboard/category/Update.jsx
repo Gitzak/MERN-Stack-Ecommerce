@@ -20,6 +20,10 @@ const validationSchema = yup.object({
 });
 
 export const UpdateCategory = () => {
+    useEffect(() => {
+        document.title = `Edit Category - ${import.meta.env.VITE_APP_TITLE}`;
+    }, []);
+
     const { id } = useParams();
     const navigate = useNavigate();
     const [dataCategories, setDataCategories] = useState([]);
