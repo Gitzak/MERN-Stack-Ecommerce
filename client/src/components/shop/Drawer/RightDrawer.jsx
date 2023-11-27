@@ -4,7 +4,7 @@ import Drawer from '@mui/material/Drawer';
 import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
 import { Button, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { CartC } from '../../../context/shopContext/cartContext';
+import { CartC } from '../../../context/shopContext/cart/cart.context';
 import CartItem from '../cartItem/CartItem';
 
 import './RightDrawer.css'
@@ -12,7 +12,7 @@ import './RightDrawer.css'
 
 const RightDrawer = () => {
   const [open, setOpen] = React.useState(false);
-  const { cartItems, cartItemCount } = CartC();
+  const { cartItems, cartCount } = CartC();
 
 
   const toggleDrawer = (open) => (event) => {
@@ -68,7 +68,7 @@ const RightDrawer = () => {
     <div>
       <div className='shop-icon-container' onClick={toggleDrawer(true)}> 
           <LocalMallOutlinedIcon fontSize="large"/> 
-          <span className="selected-product-count">{cartItemCount}</span>
+          <span className="selected-product-count">{cartCount || 0}</span>
       </div>
       <Drawer
         anchor="right"

@@ -12,8 +12,6 @@ class OrdersService {
 
     // Create new order
     async createOrders(req) {
-        console.log('service',req.body)
-
         const response = {};
         try {
             const customerID = req.id;

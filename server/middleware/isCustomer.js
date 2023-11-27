@@ -3,11 +3,7 @@ const { verify } = require("../utils/JWT");
 
 exports.isCustomer = (req, res, next) => {
     const authHeader = req.headers.authorization || null;
-
     const token = authHeader && authHeader.split(" ")[1];
-    // console.log('kjnscd')
-
-    // console.log(token)
  
     if (!token) {
         return res.status(CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE).json({

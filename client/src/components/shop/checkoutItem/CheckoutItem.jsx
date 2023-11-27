@@ -9,13 +9,12 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-
-import { CartC } from "../../../context/shopContext/cartContext";
+import { CartC } from "../../../context/shopContext/cart/cart.context";
 
 const CheckoutItem = ({ cartItem }) => {
-  const { addItemToCart, decreaseItemQuantity, clearItemFromCart } = CartC();
+  const { increaseItemQuantity, decreaseItemQuantity, clearItemFromCart } = CartC();
 
-  const addHandler = () => addItemToCart(cartItem);
+  const addHandler = () => increaseItemQuantity(cartItem);
   const decreaseHandler = () => decreaseItemQuantity(cartItem);
   const clearHandler = () => clearItemFromCart(cartItem);
 
@@ -45,7 +44,12 @@ const CheckoutItem = ({ cartItem }) => {
       </Box>
 
       <Typography className='name' sx={{ width: "23%" }}>
-        {cartItem.productName}
+        {cartItem.productName} <br />
+        {/* {
+          cartItem.itemOptions?.each((option) => { 
+            console.log(option.label)
+          })
+        } */}
       </Typography>
 
       <Box

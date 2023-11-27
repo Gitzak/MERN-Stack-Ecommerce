@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Pagination from "@mui/material/Pagination";
 import { Box, Grid, Stack, Typography } from "@mui/material";
-import { ProductsC } from "../../../context/shopContext/productContext";
+import { ProductsC } from "../../../context/shopContext/product/productContext";
 import ShopProductCard from "../../../components/shop/product/ShopProductCard";
 import Loader from "../../../components/shop/loader/Loader";
 
@@ -21,7 +21,7 @@ const Shop = () => {
   };
 
   return (
-    <Box id="exercises" sx={{ mt: { lg: "110px" } }} mt="50px" p="20px">
+    <Box id="exercises" sx={{ mt: { lg: "110px" } }} mt="50px" p="20px 100px 20px 250px">
       <Typography variant="h4" fontWeight="bold" mb="50px">
         All Products
       </Typography>

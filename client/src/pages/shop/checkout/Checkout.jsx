@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Button, Container, Divider, Typography } from '@mui/material';
-import { CartC } from '../../../context/shopContext/cartContext';
+import { CartC } from '../../../context/shopContext/cart/cart.context';
 import CheckoutItem from '../../../components/shop/checkoutItem/CheckoutItem';
 import { createNewOrder } from '../../../api/orderApi';
 import Swal from "sweetalert2";

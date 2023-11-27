@@ -23,10 +23,27 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 20px;
+  gap: 50px;
 }
 
 .navigation .nav-links-container .nav-link {
-  padding: 10px 15px;
+  /* padding: 10px 15px; */
   cursor: pointer;
+
 }
+.navigation .nav-links-container button {
+  padding: 9px 20px;
+  border-radius: 20px;
+  border: none;
+  background-color: #e3a346;
+  cursor: pointer;
+  transition: 0.3s ease all;
+}
+.navigation .nav-links-container button:hover {
+  background-color: #d32f2f;
+  color: white;
+  cursor: pointer;
+  scale: 1.1;
+}
+ 
+ 

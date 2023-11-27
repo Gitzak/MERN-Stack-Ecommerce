@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { Button, TextField, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-import { CustomerC } from "../../../../context/shopContext/CustomerContext";
+import { CustomerC } from "../../../../context/shopContext/customer/CustomerContext";
 import { LoginCustomer } from "../../../../api/customerApi";
 
 const SignInForm = () => {
@@ -81,6 +81,10 @@ const SignInForm = () => {
           Sign In
         </Button>
       </form>
+      <Typography >
+        You Don't have an account 
+        <Link to={'/shop/signUp'}> <span>Sign Up </span></Link>
+      </Typography>
     </div>
   );
 };

@@ -3,6 +3,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { RegisterCustomer } from "../../../../api/customerApi";
 import { Button, TextField, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const SignUpForm = () => {
   const validationSchema = yup.object({
@@ -121,6 +122,10 @@ const SignUpForm = () => {
           Sign Up
         </Button>
       </form>
+      <Typography >
+        Already have an account 
+        <Link to={'/shop/signIn'}> <span>Sign In </span></Link>
+      </Typography>
     </div>
   );
 };

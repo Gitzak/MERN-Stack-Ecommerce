@@ -1,7 +1,7 @@
 import LogoShop from '../../../assets/logo.png';
 import { Link, useNavigate} from 'react-router-dom'
 import { Fragment } from 'react'
-import { CustomerC } from '../../../context/shopContext/CustomerContext';
+import { CustomerC } from '../../../context/shopContext/customer/CustomerContext';
 import LogoutIcon from '@mui/icons-material/Logout';
 import RightDrawer from '../../../components/shop/Drawer/RightDrawer';
 
@@ -32,8 +32,8 @@ const Navbar = () => {
                     currentCustomer ?  (<span className='nav-link' onClick={signOutCustomer}> <LogoutIcon/> </span>) 
                                     : (
                                         <>
-                                            <Link className='nav-link' to='/shop/signIn'> Sign In </Link>
-                                            <Link className='nav-link' to='/shop/signUp'> Sign Up </Link>
+                                            <Link className='nav-link' to='/shop/signIn'> <button> Sign In </button>  </Link>
+                                            {/* <Link className='nav-link' to='/shop/signUp'> Sign Up </Link> */}
                                         </>
                                     )          
                     }
