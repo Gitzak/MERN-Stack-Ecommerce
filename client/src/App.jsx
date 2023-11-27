@@ -15,6 +15,7 @@ import { Profile } from "./pages/dashboard/auth/Profile";
 import { Categorie } from "./pages/dashboard/category/Categories";
 import { CreateCategory } from "./pages/dashboard/category/Create";
 import { UpdateCategory } from "./pages/dashboard/category/Update";
+import UserCreate from "./pages/dashboard/user/userCreate";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/dashboard" element={<MainLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="users" element={<Users />} />
+            <Route path="users/create" element={<UserCreate />} />
             <Route path="orders" element={<Orders />} />
             <Route path="customers" element={<Customers />} />
             <Route path="customers/update/:id" element={<UpdateCustomer />} />

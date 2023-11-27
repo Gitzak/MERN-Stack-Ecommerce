@@ -74,7 +74,7 @@ class UserService {
     async AddUser(req) {
         const response = {};
 
-        const { role, userName, firstName, lastName, email, password } = req.body;
+        const { role, userName, firstName, lastName, email, password, active } = req.body;
 
         // Check if a product with the same name or SKU already exists
         const existingUserByUserName = await this.userRepo.findUserByName(userName);
@@ -102,8 +102,10 @@ class UserService {
             email,
             hashedPass,
             password,
+            active,
         };
-
+        // console.log('newUser', newUser.active);
+        // return
         const user = await this.userRepo.AddUser(newUser);
 
         if (!user) {
@@ -303,10 +305,11 @@ class UserService {
         const skip = (page - 1) * pageSize;
         const limit = pageSize;
         const response = {};
+        const userId = req.profile.userId;
 
         if (query) {
             try {
-                const searchUsers = await this.userRepo.searchUsers(query, skip, limit, sort);
+                const searchUsers = await this.userRepo.searchUsers(query, sort);
                 response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
                 response.data = searchUsers;
                 return response;
@@ -315,7 +318,7 @@ class UserService {
             }
         } else {
             response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
-            const users = await this.userRepo.getUsers(skip, limit, sort);
+            const users = await this.userRepo.getUsers( userId);
             response.data = users;
             return response;
         }
