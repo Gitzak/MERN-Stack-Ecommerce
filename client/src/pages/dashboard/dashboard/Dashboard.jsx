@@ -20,62 +20,59 @@ export default function Dashboard() {
         document.title = `Dashboard - ${import.meta.env.VITE_APP_TITLE}`;
     }, []);
 
-    const [value, setValue] = React.useState(moment("2022-04-17"));
+    const [value, setValue] = React.useState(moment("2023-11-27"));
+
+    
 
     return (
         <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
-            <Grid container sx={{ marginBottom: 5, display: "flex", justifyContent:"end" }}>
+            <Grid container sx={{ marginBottom: 5, display: "flex", justifyContent: "end" }}>
                 <LocalizationProvider dateAdapter={AdapterMoment}>
                     <DemoContainer components={["DatePicker", "DatePicker"]}>
-                        <DatePicker label="Uncontrolled picker" defaultValue={moment("2022-04-17")} />
-                        <DatePicker label="Controlled picker" value={value} onChange={(newValue) => setValue(newValue)} />
+                        <DatePicker label="Start" defaultValue={moment("2023-11-27")} />
+                        <DatePicker label="End" value={value} onChange={(newValue) => setValue(newValue)} />
                     </DemoContainer>
                 </LocalizationProvider>
             </Grid>
             <Grid container spacing={3}>
-                {/* Chart */}
                 <Grid item xs={12} md={3} lg={3}>
                     <Paper
                         sx={{
-                            p: 2,
                             display: "flex",
                             flexDirection: "column",
-                            height: 140,
+                            height: "auto",
                         }}>
-                        <CardSales />
+                        <CardSales color="#5d9eff" title="Sales" iconName="LocalMallIcon" />
                     </Paper>
                 </Grid>
                 <Grid item xs={12} md={3} lg={3}>
                     <Paper
                         sx={{
-                            p: 2,
                             display: "flex",
                             flexDirection: "column",
-                            height: 140,
+                            height: "auto",
                         }}>
-                        <CardSales />
+                        <CardSales color="#c5cef1" title="Orders" iconName="PeopleIcon" />
                     </Paper>
                 </Grid>
                 <Grid item xs={12} md={3} lg={3}>
                     <Paper
                         sx={{
-                            p: 2,
                             display: "flex",
                             flexDirection: "column",
-                            height: 140,
+                            height: "auto",
                         }}>
-                        <CardSales />
+                        <CardSales color="#c5f1e0" title="Total revenue" iconName="PeopleIcon" />
                     </Paper>
                 </Grid>
                 <Grid item xs={12} md={3} lg={3}>
                     <Paper
                         sx={{
-                            p: 2,
                             display: "flex",
                             flexDirection: "column",
-                            height: 140,
+                            height: "auto",
                         }}>
-                        <CardSales />
+                        <CardSales color="#f1e5c5" title="Customers" iconName="PeopleIcon" />
                     </Paper>
                 </Grid>
                 <Grid item xs={12} md={12} lg={12}>

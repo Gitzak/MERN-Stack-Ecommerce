@@ -19,15 +19,15 @@ import { Outlet } from "react-router-dom";
 const defaultTheme = createTheme({
     palette: {
         primary: {
-            main: "#009688", // Teal color
+            main: "#56c5d0",
         },
     },
     components: {
         MuiDrawer: {
             styleOverrides: {
                 paper: {
-                    // backgroundColor: "#f5f5f5", // Dark background color for the Drawer
-                    // color: "#222222", // Text color for the Drawer
+                    backgroundColor: "#272727", // Dark background color for the Drawer
+                    color: "#ffffff", // Text color for the Drawer
                 },
             },
         },

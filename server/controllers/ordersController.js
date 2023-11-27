@@ -4,6 +4,7 @@ const Orders = require("../models/Order.js");
 const { ProductRepository } = require("../repositories/productRepository");
 const Product = require("../models/Product");
 const CONSTANTS = require("../constants/index");
+const { sendOrder } = require("../middleware/websocket.js");
 
 const OrderRepo = new OrderRepository(Orders);
 const ProductRepo = new ProductRepository(Product);
@@ -14,8 +15,10 @@ const OrdersServ = new OrdersService(OrderRepo, ProductRepo);
 exports.createOrder = async (req, res) => {
     try {
         const newOrders = await OrdersServ.createOrders(req);
+        sendOrder(newOrders)
         res.status(newOrders.status).json(newOrders);
     } catch (error) {
+        console.log(error);
         res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };

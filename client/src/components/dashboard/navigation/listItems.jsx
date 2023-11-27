@@ -19,19 +19,19 @@ export const mainListItems = (
     <React.Fragment>
         <ListItemButton component={NavLink} to="/dashboard/">
             <ListItemIcon>
-                <DashboardIcon />
+                <DashboardIcon sx={{ color: "white"}} />
             </ListItemIcon>
             <ListItemText primary="Dashboard" />
         </ListItemButton>
         <ListItemButton component={NavLink} to="/dashboard/orders">
             <ListItemIcon>
-                <ShoppingCartIcon />
+                <ShoppingCartIcon sx={{ color: "white"}} />
             </ListItemIcon>
             <ListItemText primary="Orders" />
         </ListItemButton>
         <ListItemButton component={NavLink} to="/dashboard/customers">
             <ListItemIcon>
-                <PeopleIcon />
+                <PeopleIcon sx={{ color: "white"}} />
             </ListItemIcon>
             <ListItemText primary="Customers" />
         </ListItemButton>
@@ -40,18 +40,18 @@ export const mainListItems = (
 
 export const secondaryListItems = (
     <React.Fragment>
-        <ListSubheader component="div" inset>
+        <ListSubheader sx={{ backgroundColor: '#272727', color: '#fff' }} component="div" inset>
             Catalogue
         </ListSubheader>
         <ListItemButton component={NavLink} to="/dashboard/products">
             <ListItemIcon>
-                <Inventory2Icon />
+                <Inventory2Icon sx={{ color: "white"}} />
             </ListItemIcon>
             <ListItemText primary="Products" />
         </ListItemButton>
         <ListItemButton component={NavLink} to="/dashboard/categories">
             <ListItemIcon>
-                <AutoAwesomeMotionIcon />
+                <AutoAwesomeMotionIcon sx={{ color: "white"}} />
             </ListItemIcon>
             <ListItemText primary="Categories" />
         </ListItemButton>
@@ -60,12 +60,12 @@ export const secondaryListItems = (
 
 export const userManagerListItems = (
     <React.Fragment>
-        <ListSubheader component="div" inset>
+        <ListSubheader sx={{ backgroundColor: '#272727', color: '#fff' }} component="div" inset>
             Users Manager
         </ListSubheader>
         <ListItemButton component={NavLink} to="/dashboard/users">
             <ListItemIcon>
-                <GroupAddIcon />
+                <GroupAddIcon sx={{ color: "white"}} />
             </ListItemIcon>
             <ListItemText primary="Users" />
         </ListItemButton>

@@ -30,6 +30,7 @@
     "react-select": "^5.8.0",
     "recharts": "^2.9.3",
     "sweetalert2": "^11.9.0",
+    "websocket": "^1.0.34",
     "yup": "^1.3.2"
   },
   "devDependencies": {
