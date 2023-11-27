@@ -14,14 +14,13 @@ class CategoriesService {
         try {
             const { category_name, active, description, parentId } = req.body;
 
-            let parentName = null
+            let parentName = null;
 
-            if (parentId != 'null') {
-                try{
-                    const foundedCategory = await this.categoryRepo.findCategoryById({_id:parentId});
+            if (parentId != "null") {
+                try {
+                    const foundedCategory = await this.categoryRepo.findCategoryById({ _id: parentId });
                     parentName = foundedCategory.category_name;
-                }
-                catch{
+                } catch {
                     response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
                     response.message = CONSTANTS.SERVER_ERROR;
                     return response;
@@ -32,13 +31,11 @@ class CategoriesService {
                 category_name,
                 active,
                 description,
-                parentId: parentId != 'null' ? parentId : null,
+                parentId: parentId != "null" ? parentId : null,
                 parentName,
             };
 
-            const category = await this.categoryRepo.CreateCategory(
-                newCategory
-            );
+            const category = await this.categoryRepo.CreateCategory(newCategory);
 
             if (!category) {
                 response.message = CONSTANTS.SERVER_ERROR;
@@ -70,13 +67,7 @@ class CategoriesService {
         const limit = pageSize;
         if (query) {
             try {
-                const searchedCategories =
-                    await this.categoryRepo.searchCategories(
-                        query,
-                        skip,
-                        limit,
-                        sort
-                    );
+                const searchedCategories = await this.categoryRepo.searchCategories(query, skip, limit, sort);
                 if (!searchedCategories) {
                     response.message = CONSTANTS.CATEGORY_NOT_FOUND;
                     response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
@@ -91,11 +82,7 @@ class CategoriesService {
                 return response;
             }
         } else {
-            const categories = await this.categoryRepo.getCategories(
-                skip,
-                limit,
-                sort
-            );
+            const categories = await this.categoryRepo.getCategories(skip, limit, sort);
             response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
             response.data = categories;
             return response;
@@ -107,9 +94,7 @@ class CategoriesService {
         const response = {};
         try {
             const categoryId = req.params.id;
-            const foundedCategory = await this.categoryRepo.findCategoryById(
-                categoryId
-            );
+            const foundedCategory = await this.categoryRepo.findCategoryById(categoryId);
 
             if (!foundedCategory) {
                 response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
@@ -129,9 +114,7 @@ class CategoriesService {
     async findCategoryById(categoryId) {
         const response = {};
         try {
-            const foundedCategory = await this.categoryRepo.findCategoryById(
-                categoryId
-            );
+            const foundedCategory = await this.categoryRepo.findCategoryById(categoryId);
 
             if (!foundedCategory) {
                 response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
@@ -158,27 +141,26 @@ class CategoriesService {
 
             let parentName = null;
 
-            if (parentId) {
-                const foundedCategory =
-                    await this.categoryRepo.findCategoryById(parentId);
-                if (!foundedCategory) {
+            if (parentId != "null") {
+                try {
+                    const foundedCategory = await this.categoryRepo.findCategoryById({ _id: parentId });
+                    parentName = foundedCategory.category_name;
+                } catch {
                     response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
-                    response.message = CONSTANTS.CATEGORY_PARENT_NOT_FOUND;
+                    response.message = CONSTANTS.SERVER_ERROR;
                     return response;
                 }
-                parentName = foundedCategory.category_name;
             }
 
             const updatedCategory = {
                 category_name,
                 active,
                 description,
-                parentId: parentId ? parentId : null,
+                parentId: parentId != "null" ? parentId : null,
                 parentName,
             };
 
-            const updatedCategoryMessage =
-                await this.categoryRepo.UpdateCategory(id, updatedCategory);
+            const updatedCategoryMessage = await this.categoryRepo.UpdateCategory(id, updatedCategory);
 
             if (!updatedCategoryMessage) {
                 response.message = CONSTANTS.CATEGORY_NOT_FOUND;
@@ -204,13 +186,11 @@ class CategoriesService {
             const categoryId = req.params.id;
 
             // Check if the category has child categories
-            const hasChildCategories =
-                await this.categoryRepo.hasChildCategories(categoryId);
+            const hasChildCategories = await this.categoryRepo.hasChildCategories(categoryId);
 
             if (hasChildCategories) {
                 response.status = CONSTANTS.SERVER_BAD_REQUEST_HTTP_CODE;
-                response.message =
-                    "You cannot delete this category because it has child categories";
+                response.message = "You cannot delete this category because it has child categories";
                 return response;
             }
             // Check if the category has Products
@@ -218,14 +198,11 @@ class CategoriesService {
 
             if (hasProducts) {
                 response.status = CONSTANTS.SERVER_BAD_REQUEST_HTTP_CODE;
-                response.message =
-                    "You cannot delete this category because it has Products";
+                response.message = "You cannot delete this category because it has Products";
                 return response;
             }
 
-            const deletedCategory = await this.categoryRepo.DeleteCategory(
-                categoryId
-            );
+            const deletedCategory = await this.categoryRepo.DeleteCategory(categoryId);
 
             if (!deletedCategory) {
                 response.message = CONSTANTS.CATEGORY_NOT_FOUND;

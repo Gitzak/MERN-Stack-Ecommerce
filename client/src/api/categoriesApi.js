@@ -31,6 +31,11 @@ export function createCategory(data) {
   return CategoryApi.post("/", data);
 }
 
+export function updateCategory(id, data) {
+  setAuthHeader();
+  return CategoryApi.put(`/${id}`, data);
+}
+
 export function deleteCategory(id) {
   setAuthHeader();
   return CategoryApi.delete(`/${id}`);
