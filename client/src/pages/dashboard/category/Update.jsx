@@ -82,8 +82,6 @@ export const UpdateCategory = () => {
                             didOpen: () => {
                                 document.querySelector(".swal2-container").style.zIndex = 10000;
                             },
-                        }).then(() => {
-                            navigate(`/dashboard/products/update/${response.data.data._id}`);
                         });
                     }
                 })

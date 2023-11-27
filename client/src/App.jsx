@@ -5,7 +5,6 @@ import { Products } from "./pages/dashboard/product/Products";
 import Dashboard from "./pages/dashboard/dashboard/Dashboard";
 import { Orders } from "./pages/dashboard/order/Orders";
 import MainLayout from "./layouts/MainLayout";
-import { OrderDetails } from "./pages/dashboard/order/OrderDetails";
 import { Create } from "./pages/dashboard/product/Create";
 import { Update } from "./pages/dashboard/product/Update";
 import Customers from "./pages/dashboard/customer/Customers";
@@ -30,7 +29,6 @@ function App() {
             <Route index element={<Dashboard />} />
             <Route path="users" element={<Users />} />
             <Route path="orders" element={<Orders />} />
-            <Route path="orders/:id" element={<OrderDetails />} />
             <Route path="customers" element={<Customers />} />
             <Route path="customers/update/:id" element={<UpdateCustomer />} />
             <Route path="products" element={<Products />} />
