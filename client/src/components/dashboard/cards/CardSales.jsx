@@ -5,7 +5,8 @@ import Title from "../title/Title";
 import { Box, styled } from "@mui/material";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import PeopleIcon from "@mui/icons-material/People";
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import { FormattedNumber } from "../../../components/dashboard/FormattedNumber/FormattedNumber";
 
 // function preventDefault(event) {
 //     event.preventDefault();
@@ -14,7 +15,7 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 const BlackTitle = styled(Typography)({
     color: "#000",
     fontSize: 20,
-    fontWeight: 400
+    fontWeight: 400,
 });
 
 function renderIcon(iconName) {
@@ -38,7 +39,7 @@ export default function CardSales(props) {
             <Box>
                 <BlackTitle>{props.title}</BlackTitle>
                 <Typography component="p" variant="h4">
-                    $3,024.00
+                    {props.type === "amount" ? <FormattedNumber value={props.value} /> : props.value}
                 </Typography>
             </Box>
             <Box>{IconComponent}</Box>

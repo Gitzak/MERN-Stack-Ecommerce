@@ -16,7 +16,6 @@ const setAuthHeader = () => {
     }
 };
 
-
 export function LoginUser(body) {
     return userApi.post("/login", body);
 }

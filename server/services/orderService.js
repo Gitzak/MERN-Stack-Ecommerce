@@ -98,7 +98,7 @@ class OrdersService {
             response.message = CONSTANTS.ORDER_CREATED_SUCCESS;
             response.status = CONSTANTS.SERVER_CREATED_HTTP_CODE;
             response.notification_message = notificationMessage;
-            response.customerFirstName = customerFirstName
+            response.customerFirstName = customerFirstName;
             return response;
         } catch {
             response.message = CONSTANTS.SERVER_ERROR;
@@ -124,6 +124,21 @@ class OrdersService {
         try {
             const response = {};
             const orders = await this.orderRepo.getOrders();
+            response.orders = orders;
+            response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+            return response;
+        } catch (error) {
+            response.message = CONSTANTS.SERVER_ERROR;
+            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+            return response;
+        }
+    }
+
+    // Get all new Orders
+    async getNewOrders(req) {
+        try {
+            const response = {};
+            const orders = await this.orderRepo.getNewOrders();
             response.orders = orders;
             response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
             return response;

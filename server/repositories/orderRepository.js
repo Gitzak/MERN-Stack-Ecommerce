@@ -15,6 +15,11 @@ class OrderRepository {
         return data;
     }
 
+    async getNewOrders() {
+        const data = await this.orderModel.aggregate([{ $match: { status: "Open" } }, { $sort: { orderDate: -1 } }]).exec();
+        return data;
+    }
+
     async findOrderById(orderId) {
         const order = await this.orderModel.findById(orderId);
         return order;
