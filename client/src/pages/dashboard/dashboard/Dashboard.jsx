@@ -22,8 +22,6 @@ export default function Dashboard() {
 
     const [value, setValue] = React.useState(moment("2023-11-27"));
 
-    
-
     return (
         <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
             <Grid container sx={{ marginBottom: 5, display: "flex", justifyContent: "end" }}>
@@ -42,7 +40,7 @@ export default function Dashboard() {
                             flexDirection: "column",
                             height: "auto",
                         }}>
-                        <CardSales color="#5d9eff" title="Sales" iconName="LocalMallIcon" />
+                        <CardSales color="#29ADB2" title="New Orders" iconName="LocalMallIcon" />
                     </Paper>
                 </Grid>
                 <Grid item xs={12} md={3} lg={3}>
@@ -52,7 +50,7 @@ export default function Dashboard() {
                             flexDirection: "column",
                             height: "auto",
                         }}>
-                        <CardSales color="#c5cef1" title="Orders" iconName="PeopleIcon" />
+                        <CardSales color="#c5f1e0" title="Total revenues" iconName="AttachMoneyIcon" />
                     </Paper>
                 </Grid>
                 <Grid item xs={12} md={3} lg={3}>
@@ -62,7 +60,7 @@ export default function Dashboard() {
                             flexDirection: "column",
                             height: "auto",
                         }}>
-                        <CardSales color="#c5f1e0" title="Total revenue" iconName="PeopleIcon" />
+                        <CardSales color="#FECDA6" title="All orders" iconName="PeopleIcon" />
                     </Paper>
                 </Grid>
                 <Grid item xs={12} md={3} lg={3}>

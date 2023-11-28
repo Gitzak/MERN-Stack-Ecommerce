@@ -24,7 +24,7 @@ function initializeWebSocket(server) {
 function sendOrder(order) {
     wss.clients.forEach((client) => {
         if (client.readyState === WebSocket.OPEN) {
-            client.send(JSON.stringify({ data:order}));
+            client.send(JSON.stringify({ data:order.notification_message, userName: order.customerFirstName[0]}));
         }
     });
 }

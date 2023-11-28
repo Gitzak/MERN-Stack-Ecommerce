@@ -70,7 +70,6 @@ function generateRandomPassword() {
 //         .min(0, "Quantity cannot be negative")
 //         .required("Quantity is required"),
 // });
-console.log("hi");
 const validationSchema = yup.object({
     firstName: yup
         .string("Enter First Name")

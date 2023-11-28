@@ -168,6 +168,8 @@ export const Orders = () => {
             const response = await getOrder(id);
             setSelectedOrderData(response.data.data);
             if (selectedOrderData) {
+                console.log(response.data.data.orderNumber);
+                removeOrderNotification(response.data.data.orderNumber);
                 const date = new Date(response.data.data.orderDate);
                 setOrderDateFormatted(date.toLocaleString());
             }
@@ -188,13 +190,14 @@ export const Orders = () => {
             const response = await getOrder(id);
             setSelectedOrderData(response.data.data);
             if (selectedOrderData) {
+                console.log(response.data.data.orderNumber);
+                removeOrderNotification(response.data.data.orderNumber);
                 const date = new Date(response.data.data.orderDate);
                 setOrderDateFormatted(date.toLocaleString());
             }
 
             setOpenDialogEdit(true);
             setLoadingEdit(false);
-            console.log();
         } catch (error) {
             setLoadingEdit(true);
             console.error("Error fetching order details:", error);
@@ -203,6 +206,17 @@ export const Orders = () => {
 
     const handleCloseEdit = () => {
         setOpenDialogEdit(false);
+    };
+
+    const removeOrderNotification = (orderNumberToRemove) => {
+        const storedNotifications = JSON.parse(localStorage.getItem("notifications")) || [];
+
+        const updatedNotifications = storedNotifications.filter((notification) => {
+            const orderNumber = notification.data.match(/#(\d{6})/);
+            return orderNumber && orderNumber[1] !== String(orderNumberToRemove).padStart(6, "0");
+        });
+
+        localStorage.setItem("notifications", JSON.stringify(updatedNotifications));
     };
 
     const statusOptions = [
@@ -218,7 +232,6 @@ export const Orders = () => {
             formik.setValues({
                 status: selectedOrderData.status || "",
             });
-            console.log(formik.values.status);
         }
     }, [selectedOrderData]);
 
@@ -360,7 +373,7 @@ export const Orders = () => {
                         ) : (
                             <Box sx={style}>
                                 <Typography id="keep-mounted-modal-title" variant="h6" component="h2">
-                                    Details Order # {selectedOrderData.orderNumber?.toString().padStart(6, "0")}
+                                    Details Order #{selectedOrderData.orderNumber?.toString().padStart(6, "0")}
                                 </Typography>
                                 <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mt: 2 }}>
                                     <Box>

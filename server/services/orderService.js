@@ -30,14 +30,10 @@ class OrdersService {
 
             for (const item of cartItems) {
                 // Verify product existence and quantity
-                const product = await this.productRepo.getProductById(
-                    item.productId
-                );
+                const product = await this.productRepo.getProductById(item.productId);
 
                 if (!product || product.quantity < item.quantity) {
-                    response.message =
-                        product.productName +
-                        " not available in the required quantity";
+                    response.message = product.productName + " not available in the required quantity";
                     response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
                     return response;
                 }
@@ -59,9 +55,7 @@ class OrdersService {
                     quantity: product.quantity - item.quantity,
                 });
 
-                const formattedItemOptions = item.itemOptions
-                    .map((option) => `${option.label}: ${option.option}`)
-                    .join(", ");
+                const formattedItemOptions = item.itemOptions.map((option) => `${option.label}: ${option.option}`).join(", ");
 
                 // Create an orderItem object and add it to the orderItems array
                 orderItems.push({
@@ -99,33 +93,31 @@ class OrdersService {
 
             const sendedMail = await SendOrderMail(order);
 
-            response.message = CONSTANTS.ORDER_CREATED_SUCCESS
-            response.status = CONSTANTS.SERVER_CREATED_HTTP_CODE
+            const notificationMessage = `New Order (#${order.orderNumber?.toString().padStart(6, "0")}) received from ${order.customerFirstName} ${order.customerLastName}. Total Amount: ${order.cartTotalPrice} Dhs.`;
+
+            response.message = CONSTANTS.ORDER_CREATED_SUCCESS;
+            response.status = CONSTANTS.SERVER_CREATED_HTTP_CODE;
+            response.notification_message = notificationMessage;
+            response.customerFirstName = customerFirstName
             return response;
         } catch {
             response.message = CONSTANTS.SERVER_ERROR;
             response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
-            return response;      
+            return response;
         }
     }
 
     // Function to validate product options
     validateProductOptions(product, itemOptions) {
         for (const itemOption of itemOptions) {
-            const productOption = product.options.find(
-                (option) => option.label === itemOption.label
-            );
+            const productOption = product.options.find((option) => option.label === itemOption.label);
 
-            if (
-                !productOption ||
-                !productOption.option.includes(itemOption.option)
-            ) {
+            if (!productOption || !productOption.option.includes(itemOption.option)) {
                 return false;
             }
         }
         return true;
     }
-
 
     // Get and search for all Orders
     async getOrders(req) {
@@ -138,10 +130,9 @@ class OrdersService {
         } catch (error) {
             response.message = CONSTANTS.SERVER_ERROR;
             response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
-            return response;      
+            return response;
         }
     }
-
 
     // Get one Order by its ID
     async getOrderById(req) {
@@ -156,16 +147,15 @@ class OrdersService {
                 return response;
             }
 
-            response.status = CONSTANTS.SERVER_OK_HTTP_CODE
-            response.data = foundedOrder
+            response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+            response.data = foundedOrder;
             return response;
         } catch (error) {
             response.message = CONSTANTS.SERVER_ERROR;
             response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
-            return response;      
+            return response;
         }
     }
-    
 
     // Update Orders
     async updateOrders(req) {
@@ -179,13 +169,13 @@ class OrdersService {
                 return response;
             }
 
-            const updatedOrder = {status};
-            
+            const updatedOrder = { status };
+
             const updatedOrderMessage = await this.orderRepo.UpdateOrder(id, updatedOrder);
 
             if (!updatedOrderMessage) {
-                response.message = CONSTANTS.INVALID_ORDER_ID
-                response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE
+                response.message = CONSTANTS.INVALID_ORDER_ID;
+                response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
                 return response;
             }
 
@@ -198,52 +188,52 @@ class OrdersService {
             switch (order.status) {
                 case CONSTANTS.ORDERS_STATUS.Shipped:
                     mailService
-                        .sendMailByStatus(order,CONSTANTS.ORDERS_STATUS_MSG.Shipped)
+                        .sendMailByStatus(order, CONSTANTS.ORDERS_STATUS_MSG.Shipped)
                         .then((response) => {
-                            response.message =CONSTANTS.ORDER_STATUS_UPDATED_SUCCESS;
+                            response.message = CONSTANTS.ORDER_STATUS_UPDATED_SUCCESS;
                             response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
                         })
                         .catch((error) => {
-                            response.message =CONSTANTS.SERVER_ERROR;
+                            response.message = CONSTANTS.SERVER_ERROR;
                             response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
                         });
                     break;
                 case CONSTANTS.ORDERS_STATUS.Paid:
                     // Handle Paid status (if needed)
                     mailService
-                    .sendMailByStatus(order,CONSTANTS.ORDERS_STATUS_MSG.Paid)
-                    .then((response) => {
-                        response.message =CONSTANTS.ORDER_STATUS_UPDATED_SUCCESS;
-                        response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
-                    })
-                    .catch((error) => {
-                        response.message =CONSTANTS.SERVER_ERROR;
-                        response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
-                    });
+                        .sendMailByStatus(order, CONSTANTS.ORDERS_STATUS_MSG.Paid)
+                        .then((response) => {
+                            response.message = CONSTANTS.ORDER_STATUS_UPDATED_SUCCESS;
+                            response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+                        })
+                        .catch((error) => {
+                            response.message = CONSTANTS.SERVER_ERROR;
+                            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+                        });
                     break;
                 case CONSTANTS.ORDERS_STATUS.Closed:
                     // Handle Closed status (if needed)
                     mailService
-                        .sendMailByStatus(order,CONSTANTS.ORDERS_STATUS_MSG.Closed)
+                        .sendMailByStatus(order, CONSTANTS.ORDERS_STATUS_MSG.Closed)
                         .then((response) => {
-                            response.message =CONSTANTS.ORDER_STATUS_UPDATED_SUCCESS;
+                            response.message = CONSTANTS.ORDER_STATUS_UPDATED_SUCCESS;
                             response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
                         })
                         .catch((error) => {
-                            response.message =CONSTANTS.SERVER_ERROR;
+                            response.message = CONSTANTS.SERVER_ERROR;
                             response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
                         });
                     break;
                 case CONSTANTS.ORDERS_STATUS.Cancelled: // Note: Correct spelling is 'Cancelled'
                     // Handle Cancelled status (if needed)
                     mailService
-                        .sendMailByStatus(order,CONSTANTS.ORDERS_STATUS_MSG.Cancelled)
+                        .sendMailByStatus(order, CONSTANTS.ORDERS_STATUS_MSG.Cancelled)
                         .then((response) => {
-                            response.message =CONSTANTS.ORDER_STATUS_UPDATED_SUCCESS;
+                            response.message = CONSTANTS.ORDER_STATUS_UPDATED_SUCCESS;
                             response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
                         })
                         .catch((error) => {
-                            response.message =CONSTANTS.SERVER_ERROR;
+                            response.message = CONSTANTS.SERVER_ERROR;
                             response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
                         });
                     break;
@@ -259,7 +249,7 @@ class OrdersService {
         } catch (error) {
             response.message = CONSTANTS.SERVER_ERROR;
             response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
-            return response;      
+            return response;
         }
     }
 }

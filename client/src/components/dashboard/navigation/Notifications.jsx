@@ -1,38 +1,63 @@
 import React, { useEffect, useState } from "react";
-import { Badge, IconButton, Menu, MenuItem } from "@mui/material";
+import { Avatar, Badge, Button, Divider, IconButton, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Menu } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import BeachAccessIcon from "@mui/icons-material/BeachAccess";
+import { useNavigate } from "react-router-dom";
+import sound from "../../../assets/ding.mp3"
 
 export const Notifications = () => {
     const [webSocket, setWebSocket] = useState([]);
     const [notif, setNotif] = useState([]);
+    const navigate = useNavigate();
+    const [audio] = useState(new Audio(sound));
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
+    useEffect(() => {
+        const ws = new WebSocket("ws://localhost:7501/");
+
+        ws.onmessage = (e) => {
+            const newdata = JSON.parse(e.data);
+            console.log(e);
+            setNotif((prev) => {
+                const updatedNotifs = [newdata, ...prev];
+                localStorage.setItem("notifications", JSON.stringify(updatedNotifs));
+                playNotificationSound();
+                return updatedNotifs;
+            });
+        };
+
+        const storedNotifications = JSON.parse(localStorage.getItem("notifications"));
+        if (storedNotifications) {
+            setNotif(storedNotifications);
+        }
+
+        return () => {
+            ws.close();
+        };
+    }, []);
+
     const handleClose = () => {
         setAnchorEl(null);
     };
 
-    useEffect(() => {
-        const ws = new WebSocket("ws://localhost:7501/");
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
 
-        ws.onopen = (e) => {
-            console.log("connnect to sockets");
-        };
+    const handleNotificationClick = (notification) => {
+        navigate(`/dashboard/orders/`);
+    };
 
-        ws.onmessage = (e) => {
-            const newdata = JSON.parse(e.data);
-            setNotif((prev) => [...prev, newdata]);
+    const handleClearNotifications = () => {
+        setNotif([]);
+        localStorage.removeItem("notifications");
+    };
 
-            console.log("message received from socket", JSON.parse(e.data));
-        };
-        ws.onclose = () => {
-            console.log("close socket");
-        };
-    }, []);
+    const playNotificationSound = () => {
+        audio.play(); // Play the notification sound
+    };
 
     return (
         <div>
@@ -42,16 +67,34 @@ export const Notifications = () => {
                 </Badge>
             </IconButton>
 
-            <Menu
-                id="basic-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                MenuListProps={{
-                    "aria-labelledby": "notif-button",
-                }}>
-                <MenuItem>text text text text text text text text</MenuItem>
-            </Menu>
+            {notif.length > 0 && (
+                <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                        "aria-labelledby": "notif-button",
+                    }}>
+                    <nav aria-label="secondary mailbox folders">
+                        <List style={{ width: "450px", maxHeight: "360px", overflowY: "auto" }}>
+                            {notif.map((notification, index) => (
+                                <React.Fragment key={index}>
+                                    <ListItem disablePadding onClick={() => handleNotificationClick(notification)}>
+                                        <ListItemAvatar style={{ marginLeft: 20 }}>
+                                            <Avatar>{notification.userName}</Avatar>
+                                        </ListItemAvatar>
+                                        <ListItemButton>
+                                            <ListItemText primary={notification.data} />
+                                        </ListItemButton>
+                                    </ListItem>
+                                </React.Fragment>
+                            ))}
+                        </List>
+                    </nav>
+                    <Button onClick={handleClearNotifications}>Clear Notifications</Button>
+                </Menu>
+            )}
         </div>
     );
 };

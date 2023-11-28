@@ -5,6 +5,7 @@ import Title from "../title/Title";
 import { Box, styled } from "@mui/material";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import PeopleIcon from "@mui/icons-material/People";
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 
 // function preventDefault(event) {
 //     event.preventDefault();
@@ -22,8 +23,8 @@ function renderIcon(iconName) {
             return <LocalMallIcon sx={{ fontSize: 50 }} />;
         case "PeopleIcon":
             return <PeopleIcon sx={{ fontSize: 50 }} />;
-        case "StorefrontIcon":
-            return <StorefrontIcon sx={{ fontSize: 50 }} />;
+        case "AttachMoneyIcon":
+            return <AttachMoneyIcon sx={{ fontSize: 50 }} />;
         default:
             return null;
     }
