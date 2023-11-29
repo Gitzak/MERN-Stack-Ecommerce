@@ -138,7 +138,7 @@ export const UpdateCategory = () => {
             formik.setValues({
                 category_name: categoryData.category_name || "",
                 description: categoryData.description || "",
-                parentId: categoryData.parentId || "",
+                parentId: categoryData.parentId || null,
                 active: categoryData.active,
             });
         }

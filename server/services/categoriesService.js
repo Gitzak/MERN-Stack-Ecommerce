@@ -160,6 +160,9 @@ class CategoriesService {
                 parentName,
             };
 
+            // console.log(updatedCategory);
+            // return;
+
             const updatedCategoryMessage = await this.categoryRepo.UpdateCategory(id, updatedCategory);
 
             if (!updatedCategoryMessage) {

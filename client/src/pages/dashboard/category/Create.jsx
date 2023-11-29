@@ -54,10 +54,11 @@ export const CreateCategory = () => {
             category_name: "",
             description: "",
             parentId: null,
-            active: false,
+            active: true,
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
+
             setLoading(true);
             const formData = new FormData();
 

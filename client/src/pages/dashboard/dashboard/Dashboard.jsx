@@ -16,18 +16,27 @@ import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { getAllCustomers, getAllNewOrders, getAllOrders } from "../../../api/statisticsApi";
 import { useState } from "react";
+import { DateRange } from "../../../components/dashboard/DateRange/DateRange";
 
 export default function Dashboard() {
     const [allOrders, setAllOrders] = useState(0);
     const [allNewOrders, setAllNewOrders] = useState(0);
     const [totalRevenue, setTotalRevenue] = useState(0);
     const [allCustomers, setAllCustomers] = useState(0);
+    const [value, setValue] = useState({
+        allOrders: 0,
+        allNewOrders: 0,
+        totalRevenue: 0,
+        allCustomers: 0,
+    });
 
     useEffect(() => {
         document.title = `Dashboard - ${import.meta.env.VITE_APP_TITLE}`;
     }, []);
 
-    const [value, setValue] = useState(moment("2023-11-27"));
+    useEffect(() => {
+        fetchData();
+    }, []);
 
     const fetchData = async () => {
         try {
@@ -40,69 +49,87 @@ export default function Dashboard() {
             const response3 = await getAllCustomers();
             setAllCustomers(response3.data.data.length);
 
-            const totalRevenue = response.data.orders.reduce((total, order) => {
+            const totalRevenueValue = response.data.orders.reduce((total, order) => {
                 return total + parseFloat(order.cartTotalPrice);
             }, 0);
 
-            setTotalRevenue(totalRevenue);
+            setTotalRevenue(totalRevenueValue);
+
+            // Set initial value as 0 for animation
+            setValue({
+                allOrders: 0,
+                allNewOrders: 0,
+                totalRevenue: 0,
+                allCustomers: 0,
+            });
         } catch (error) {
             console.error("Error fetching orders:", error);
         }
     };
 
     useEffect(() => {
-        fetchData();
-    }, []);
+        const interval = setInterval(() => {
+            setValue((prevValue) => ({
+                allOrders: prevValue.allOrders < allOrders ? prevValue.allOrders + 10 : allOrders,
+                allNewOrders: prevValue.allNewOrders < allNewOrders ? prevValue.allNewOrders + 1 : allNewOrders,
+                totalRevenue: prevValue.totalRevenue < totalRevenue ? prevValue.totalRevenue + 10000 : totalRevenue,
+                allCustomers: prevValue.allCustomers < allCustomers ? prevValue.allCustomers + 1 : allCustomers,
+            }));
+        }, 1); // Adjust the interval duration as needed
+
+        return () => clearInterval(interval);
+    }, [allOrders, allNewOrders, totalRevenue, allCustomers]);
 
     return (
         <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
             <Grid container sx={{ marginBottom: 5, display: "flex", justifyContent: "end" }}>
-                <LocalizationProvider dateAdapter={AdapterMoment}>
+                {/* <LocalizationProvider dateAdapter={AdapterMoment}>
                     <DemoContainer components={["DatePicker", "DatePicker"]}>
                         <DatePicker label="Start" defaultValue={moment("2023-11-27")} />
                         <DatePicker label="End" value={value} onChange={(newValue) => setValue(newValue)} />
                     </DemoContainer>
-                </LocalizationProvider>
+                </LocalizationProvider> */}
+                <DateRange />
             </Grid>
             <Grid container spacing={3}>
-                <Grid item xs={12} md={3} lg={3}>
+                <Grid item xs={12} md={6} lg={3}>
                     <Paper
                         sx={{
                             display: "flex",
                             flexDirection: "column",
                             height: "auto",
                         }}>
-                        <CardSales color="#29ADB2" title="New Orders" value={allNewOrders} iconName="LocalMallIcon" />
+                        <CardSales color="#29ADB2" title="New Orders" value={value.allNewOrders} iconName="LocalMallIcon" />
                     </Paper>
                 </Grid>
-                <Grid item xs={12} md={3} lg={3}>
+                <Grid item xs={12} md={6} lg={3}>
                     <Paper
                         sx={{
                             display: "flex",
                             flexDirection: "column",
                             height: "auto",
                         }}>
-                        <CardSales color="#c5f1e0" title="Total revenues" value={totalRevenue} type="amount" />
+                        <CardSales color="#c5f1e0" title="Total revenues" value={value.totalRevenue} type="amount" />
                     </Paper>
                 </Grid>
-                <Grid item xs={12} md={3} lg={3}>
+                <Grid item xs={12} md={6} lg={3}>
                     <Paper
                         sx={{
                             display: "flex",
                             flexDirection: "column",
                             height: "auto",
                         }}>
-                        <CardSales color="#FECDA6" title="All orders" value={allOrders} type="count" iconName="PeopleIcon" />
+                        <CardSales color="#FECDA6" title="All orders" value={value.allOrders} type="count" iconName="PeopleIcon" />
                     </Paper>
                 </Grid>
-                <Grid item xs={12} md={3} lg={3}>
+                <Grid item xs={12} md={6} lg={3}>
                     <Paper
                         sx={{
                             display: "flex",
                             flexDirection: "column",
                             height: "auto",
                         }}>
-                        <CardSales color="#f1e5c5" title="Customers" value={allCustomers} iconName="PeopleIcon" />
+                        <CardSales color="#f1e5c5" title="Customers" value={value.allCustomers} iconName="PeopleIcon" />
                     </Paper>
                 </Grid>
                 <Grid item xs={12} md={12} lg={12}>
