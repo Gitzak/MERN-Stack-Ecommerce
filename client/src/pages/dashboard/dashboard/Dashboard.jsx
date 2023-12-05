@@ -40,6 +40,7 @@ export default function Dashboard() {
 
     const fetchData = async () => {
         try {
+            
             const response = await getAllOrders();
             setAllOrders(response.data.orders.length);
 

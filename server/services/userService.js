@@ -3,6 +3,7 @@ const config = require("./../config/keys");
 const { HashPassword, VerifyPassword } = require("../utils/Hashing.js");
 const jwt = require("jsonwebtoken");
 const SendMailToUser = require("../utils/sendMail");
+const { sign } = require("../utils/JWT.js");
 
 class UserService {
     constructor(userRepo) {
@@ -36,14 +37,14 @@ class UserService {
             user.lastLogin = currentTimestamp;
             await user.save();
 
-            const token = jwt.sign(
+            const token = sign(
                 {
                     userId: user._id,
                     userName: user.userName,
                     userRole: user.role,
                     active: user.active,
-                },
-                config.jwt.secret
+                }
+                // config.jwt.secret
             );
 
             response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
