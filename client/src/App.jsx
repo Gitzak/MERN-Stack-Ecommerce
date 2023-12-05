@@ -16,6 +16,7 @@ import { Categorie } from "./pages/dashboard/category/Categories";
 import { CreateCategory } from "./pages/dashboard/category/Create";
 import { UpdateCategory } from "./pages/dashboard/category/Update";
 import UserCreate from "./pages/dashboard/user/userCreate";
+import DashboardProvider from "./context/dashboardContext";
 
 function App() {
   return (
@@ -27,7 +28,7 @@ function App() {
 
         <Route element={<AdminRoutes />}>
           <Route path="/dashboard" element={<MainLayout />}>
-            <Route index element={<Dashboard />} />
+            <Route index element={<DashboardProvider><Dashboard /></DashboardProvider>} />
             <Route path="users" element={<Users />} />
             <Route path="users/create" element={<UserCreate />} />
             <Route path="orders" element={<Orders />} />

@@ -18,6 +18,10 @@ import { getAllCustomers, getAllNewOrders, getAllOrders } from "../../../api/sta
 import { useState } from "react";
 import { DateRange } from "../../../components/dashboard/DateRange/DateRange";
 
+import { useRef } from "react";
+import { useContext } from "react";
+import { DashboardC } from "../../../context/dashboardContext";
+
 export default function Dashboard() {
     const [allOrders, setAllOrders] = useState(0);
     const [allNewOrders, setAllNewOrders] = useState(0);
@@ -33,6 +37,8 @@ export default function Dashboard() {
     useEffect(() => {
         document.title = `Dashboard - ${import.meta.env.VITE_APP_TITLE}`;
     }, []);
+
+    const { handleDateRangeChange, setCurrWeek } = DashboardC(); 
 
     useEffect(() => {
         fetchData();
