@@ -1,8 +1,8 @@
 import { PRODUCT_ACTION_TYPES } from "./product.types";
 
 const PRODUCT_INITIAL_STATE = {
-  currentProducts: null,
-  productDetail: null,
+  currentProducts: [],
+  productDetail: null
 };
 
 export const productsReducer = (state = PRODUCT_INITIAL_STATE, action) => {

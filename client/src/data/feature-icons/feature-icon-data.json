@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "titleImage": "/assets/img/icon-img/support-10.png",
+    "title": "Free shipping on all order",
+    "iconImage": "/assets/Img/support-5.png",
+    "backgroundColor": "#ccfbe9"
+  },
+  {
+    "id": 2,
+    "titleImage": "/assets/img/icon-img/support-10.png",
+    "title": "Back guarantee under 5 days",
+    "iconImage": "/assets/Img/support-6.png",
+    "backgroundColor": "#f2fbcc"
+  },
+  {
+    "id": 3,
+    "titleImage": "/assets/img/icon-img/support-10.png",
+    "title": "On every order over $100",
+    "iconImage": "/assets/Img/support-7.png",
+    "backgroundColor": "#ddfbcc"
+  }
+]

@@ -4,7 +4,9 @@ const { verify } = require("../utils/JWT");
 exports.isCustomer = (req, res, next) => {
     const authHeader = req.headers.authorization || null;
     const token = authHeader && authHeader.split(" ")[1];
- 
+
+    console.log("token",token)
+
     if (!token) {
         return res.status(CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE).json({
             message: CONSTANTS.ROUTE_NOT_FOUND,
