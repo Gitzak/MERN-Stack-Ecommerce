@@ -20,7 +20,7 @@ export const customerReducer = (state = CUSTOMER_INITIAL_STATE, action) => {
       // Clear local storage on logout
       localStorage.removeItem("loggedCustomer");
       localStorage.removeItem("CustomerId");
-      localStorage.removeItem("token");
+      localStorage.removeItem("tokenC");
 
       return {
         ...state,
