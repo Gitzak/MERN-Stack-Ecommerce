@@ -17,6 +17,7 @@ import { CreateCategory } from "./pages/dashboard/category/Create";
 import { UpdateCategory } from "./pages/dashboard/category/Update";
 import UserCreate from "./pages/dashboard/user/userCreate";
 import DashboardProvider from "./context/dashboardContext";
+import { NotFound } from "./pages/dashboard/errors/NotFound";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
             <Route path="categories/update/:id" element={<UpdateCategory />} />
             <Route path="profile" element={<Profile />} />
           </Route>
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </Router>

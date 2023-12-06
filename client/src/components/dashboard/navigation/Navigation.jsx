@@ -1,5 +1,5 @@
 import React from "react";
-import { mainListItems, secondaryListItems, userManagerListItems } from "./listItems";
+import { goToShopListItems, mainListItems, secondaryListItems, userManagerListItems } from "./listItems";
 import MuiDrawer from "@mui/material/Drawer";
 import BasicMenu from "./BasicMenu";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
@@ -101,7 +101,7 @@ export const Navigation = () => {
                         Ecommerce App
                     </Typography>
                     <IconButton onClick={toggleDrawer}>
-                        <ChevronLeftIcon sx={{ color: '#fff' }} />
+                        <ChevronLeftIcon sx={{ color: "#fff" }} />
                     </IconButton>
                 </Toolbar>
                 <Divider />
@@ -111,6 +111,8 @@ export const Navigation = () => {
                     {secondaryListItems}
                     <Divider sx={{ my: 1 }} />
                     {userManagerListItems}
+                    <Divider sx={{ my: 1 }} />
+                    {goToShopListItems}
                 </List>
             </Drawer>
         </div>

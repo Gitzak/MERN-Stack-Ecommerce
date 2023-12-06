@@ -12,6 +12,7 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
 import AutoAwesomeMotionIcon from "@mui/icons-material/AutoAwesomeMotion";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
+import StoreIcon from '@mui/icons-material/Store';
 import { Link, NavLink, useLocation } from "react-router-dom";
 import "./style.css";
 
@@ -19,19 +20,19 @@ export const mainListItems = (
     <React.Fragment>
         <ListItemButton component={NavLink} to="/dashboard/">
             <ListItemIcon>
-                <DashboardIcon sx={{ color: "white"}} />
+                <DashboardIcon sx={{ color: "white" }} />
             </ListItemIcon>
             <ListItemText primary="Dashboard" />
         </ListItemButton>
         <ListItemButton component={NavLink} to="/dashboard/orders">
             <ListItemIcon>
-                <ShoppingCartIcon sx={{ color: "white"}} />
+                <ShoppingCartIcon sx={{ color: "white" }} />
             </ListItemIcon>
             <ListItemText primary="Orders" />
         </ListItemButton>
         <ListItemButton component={NavLink} to="/dashboard/customers">
             <ListItemIcon>
-                <PeopleIcon sx={{ color: "white"}} />
+                <PeopleIcon sx={{ color: "white" }} />
             </ListItemIcon>
             <ListItemText primary="Customers" />
         </ListItemButton>
@@ -40,18 +41,18 @@ export const mainListItems = (
 
 export const secondaryListItems = (
     <React.Fragment>
-        <ListSubheader sx={{ backgroundColor: '#272727', color: '#fff' }} component="div" inset>
+        <ListSubheader sx={{ backgroundColor: "#272727", color: "#fff" }} component="div" inset>
             Catalogue
         </ListSubheader>
         <ListItemButton component={NavLink} to="/dashboard/products">
             <ListItemIcon>
-                <Inventory2Icon sx={{ color: "white"}} />
+                <Inventory2Icon sx={{ color: "white" }} />
             </ListItemIcon>
             <ListItemText primary="Products" />
         </ListItemButton>
         <ListItemButton component={NavLink} to="/dashboard/categories">
             <ListItemIcon>
-                <AutoAwesomeMotionIcon sx={{ color: "white"}} />
+                <AutoAwesomeMotionIcon sx={{ color: "white" }} />
             </ListItemIcon>
             <ListItemText primary="Categories" />
         </ListItemButton>
@@ -60,14 +61,28 @@ export const secondaryListItems = (
 
 export const userManagerListItems = (
     <React.Fragment>
-        <ListSubheader sx={{ backgroundColor: '#272727', color: '#fff' }} component="div" inset>
+        <ListSubheader sx={{ backgroundColor: "#272727", color: "#fff" }} component="div" inset>
             Users Manager
         </ListSubheader>
         <ListItemButton component={NavLink} to="/dashboard/users">
             <ListItemIcon>
-                <GroupAddIcon sx={{ color: "white"}} />
+                <GroupAddIcon sx={{ color: "white" }} />
             </ListItemIcon>
             <ListItemText primary="Users" />
+        </ListItemButton>
+    </React.Fragment>
+);
+
+export const goToShopListItems = (
+    <React.Fragment>
+        <ListSubheader sx={{ backgroundColor: "#272727", color: "#fff" }} component="div" inset>
+            Shop
+        </ListSubheader>
+        <ListItemButton component={NavLink} to="/shop" target="_blank">
+            <ListItemIcon>
+                <StoreIcon sx={{ color: "white" }} />
+            </ListItemIcon>
+            <ListItemText primary="Go To Shop" />
         </ListItemButton>
     </React.Fragment>
 );
