@@ -1,5 +1,5 @@
 import React from "react";
-import { mainListItems, secondaryListItems, userManagerListItems } from "./listItems";
+import { goToShopListItems, mainListItems, secondaryListItems, userManagerListItems } from "./listItems";
 import MuiDrawer from "@mui/material/Drawer";
 import BasicMenu from "./BasicMenu";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
@@ -8,8 +8,8 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { Badge, Divider, IconButton, List, Toolbar, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { Notifications } from "./Notifications";
 
 const drawerWidth = 240;
 
@@ -41,6 +41,9 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== "open" 
             duration: theme.transitions.duration.enteringScreen,
         }),
         boxSizing: "border-box",
+        backgroundColor: "#272727", // Set background color
+        color: "#fff",
+        height: "100vh",
         ...(!open && {
             overflowX: "hidden",
             transition: theme.transitions.create("width", {
@@ -82,11 +85,7 @@ export const Navigation = () => {
                     <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
                         Dashboard
                     </Typography>
-                    <IconButton color="inherit">
-                        <Badge badgeContent={4} color="secondary">
-                            <NotificationsIcon />
-                        </Badge>
-                    </IconButton>
+                    <Notifications />
                     <BasicMenu />
                 </Toolbar>
             </AppBar>
@@ -102,7 +101,7 @@ export const Navigation = () => {
                         Ecommerce App
                     </Typography>
                     <IconButton onClick={toggleDrawer}>
-                        <ChevronLeftIcon />
+                        <ChevronLeftIcon sx={{ color: "#fff" }} />
                     </IconButton>
                 </Toolbar>
                 <Divider />
@@ -112,6 +111,8 @@ export const Navigation = () => {
                     {secondaryListItems}
                     <Divider sx={{ my: 1 }} />
                     {userManagerListItems}
+                    <Divider sx={{ my: 1 }} />
+                    {goToShopListItems}
                 </List>
             </Drawer>
         </div>

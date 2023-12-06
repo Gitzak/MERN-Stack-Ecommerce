@@ -11,11 +11,11 @@ import "./assets/scss/style.scss";
 // import "./main.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Provider store={store}>
       <UserProvider>
               <App />
       </UserProvider>
     </Provider>
-  </React.StrictMode>
+  // </React.StrictMode>
 );

@@ -4,7 +4,7 @@ const { seedCustomers, seedCustomer } = require('./seedrs/customerSeed');
 // Import the seedUser function from seed.js
 const { seedUser, seedUsers } = require('./seedrs/userSeed');
 
-const { productSeed } = require('./seedrs/productSeed');
+const { seedProducts } = require('./seedrs/productSeed');
 
 
 async function runSeeduser() {
@@ -62,4 +62,4 @@ async function runSeedsProducts() {
         console.error('Error during seeding:', error);
     }
 }
-// runSeedsProducts();
+runSeedsProducts();

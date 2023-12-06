@@ -6,6 +6,6 @@ const storage = multer.diskStorage({
     },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage: storage, defParamCharset: 'utf8', });
 
 module.exports = upload;

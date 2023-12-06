@@ -14,10 +14,12 @@ class ProductService {
             // Extract data from the request
             const { sku, productName, categories, shortDescription, longDescription, price, discountPrice, quantity, options, active } = req.body;
 
-            // Check if any of the categories don't exist
-            for (const categoryId of categories) {
-                const category = await checkCategoryById(categoryId);
+            const categoriesArray = categories.split(",");
+            // console.log(categoriesArray);
 
+            // Check if any of the categories don't exist
+            for (const categoryId of categoriesArray) {
+                const category = await checkCategoryById(categoryId);
                 if (category?.status === 404) {
                     response.message = "You cannot create this product because one or more categories were not found.";
                     response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
@@ -42,6 +44,9 @@ class ProductService {
                 return response;
             }
 
+            // console.log(JSON.parse(`${options}`));
+            // return;
+
             // Continue with the image uploading logic
             const imagesUrlPromises = req.files.map((file) => {
                 return new Promise((resolve, reject) => {
@@ -62,18 +67,20 @@ class ProductService {
                 sku,
                 productImages: imagesUrls,
                 productName,
-                categories,
+                categories: categoriesArray,
                 shortDescription,
                 longDescription,
                 price,
                 discountPrice,
                 quantity,
-                options,
+                options: options ? JSON.parse(`${options}`) : [],
                 active,
             };
 
             // Create the product
             const product = await this.productRepo.createProduct(newProduct);
+
+            // console.log(product);
 
             if (!product) {
                 response.message = CONSTANTS.SERVER_ERROR;
@@ -86,6 +93,7 @@ class ProductService {
             response.data = product;
             return response;
         } catch (error) {
+            // console.log(error);
             response.message = CONSTANTS.SERVER_ERROR;
             response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
             return response;
@@ -99,21 +107,23 @@ class ProductService {
 
             const { sku, productName, categories, shortDescription, longDescription, price, discountPrice, quantity, options, active } = req.body;
 
+            const categoriesArray = categories.split(",");
+
             const updatedProduct = {
                 sku,
                 productName,
-                categories,
+                categories : categoriesArray,
                 shortDescription,
                 longDescription,
                 price,
                 discountPrice,
                 quantity,
-                options,
+                options: options ? JSON.parse(`${options}`) : [],
                 active,
             };
 
             // Check if any of the categories don't exist
-            for (const categoryId of categories) {
+            for (const categoryId of categoriesArray) {
                 const category = await checkCategoryById(categoryId);
 
                 if (category?.status === 404) {
@@ -140,6 +150,7 @@ class ProductService {
                 return response;
             }
         } catch (error) {
+            console.log(error);
             if (error.code === 11000) {
                 const field = Object.keys(error.keyPattern)[0];
                 response.message = CONSTANTS.PRODUCT_DUPLICATE_KEY(field);
@@ -177,8 +188,8 @@ class ProductService {
         const query = req.query.query;
         const response = {};
         const page = parseInt(req.query.page) || 1;
-        const sort = req.query.sort || "ASC";
-        const pageSize = 20;
+        const sort = req.query.sort || "DESC";
+        const pageSize = 10;
         const skip = (page - 1) * pageSize;
         const limit = pageSize;
 

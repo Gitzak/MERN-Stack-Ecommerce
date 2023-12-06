@@ -3,6 +3,7 @@ const config = require("./../config/keys");
 const { HashPassword, VerifyPassword } = require("../utils/Hashing.js");
 const jwt = require("jsonwebtoken");
 const SendMailToUser = require("../utils/sendMail");
+const { sign } = require("../utils/JWT.js");
 
 class UserService {
     constructor(userRepo) {
@@ -36,14 +37,14 @@ class UserService {
             user.lastLogin = currentTimestamp;
             await user.save();
 
-            const token = jwt.sign(
+            const token = sign(
                 {
                     userId: user._id,
                     userName: user.userName,
                     userRole: user.role,
                     active: user.active,
-                },
-                config.jwt.secret
+                }
+                // config.jwt.secret
             );
 
             response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
@@ -74,7 +75,7 @@ class UserService {
     async AddUser(req) {
         const response = {};
 
-        const { role, userName, firstName, lastName, email, password } = req.body;
+        const { role, userName, firstName, lastName, email, password, active } = req.body;
 
         // Check if a product with the same name or SKU already exists
         const existingUserByUserName = await this.userRepo.findUserByName(userName);
@@ -102,8 +103,10 @@ class UserService {
             email,
             hashedPass,
             password,
+            active,
         };
-
+        // console.log('newUser', newUser.active);
+        // return
         const user = await this.userRepo.AddUser(newUser);
 
         if (!user) {
@@ -172,12 +175,13 @@ class UserService {
         }
 
         response.message = CONSTANTS.USER_UPDATED;
-        response.status = CONSTANTS.SERVER_UPDATED_HTTP_CODE;
+        response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
         return response;
     }
 
     async getUserById(req) {
-        const userId = req.params.id;
+        const userId = req.profile.userId;
+
         const response = {};
         try {
             const user = await this.userRepo.FindById(userId);
@@ -204,6 +208,94 @@ class UserService {
         }
     }
 
+    async UpdateUser(req) {
+        const id = req.params.id;
+        const response = {};
+
+        const { role, userName, firstName, lastName, email, active } = req.body;
+
+        const user = await this.userRepo.FindById(id);
+        if (!user) {
+            response.message = CONSTANTS.INVALID_USER_ID;
+            response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+            return response;
+        }
+
+        const existingUserByUserName = await this.userRepo.findUserByNameExcludingId(userName, id);
+        const existingUserByEmail = await this.userRepo.findUserByEmailExcludingId(email, id);
+
+        if (existingUserByUserName) {
+            response.message = "UserName already exists.";
+            response.status = CONSTANTS.SERVER_BAD_REQUEST_HTTP_CODE;
+            return response;
+        }
+
+        if (existingUserByEmail) {
+            response.message = "Email already exists.";
+            response.status = CONSTANTS.SERVER_BAD_REQUEST_HTTP_CODE;
+            return response;
+        }
+
+        const currentTimestamp = Date.now();
+
+        const updatedUser = {
+            role,
+            userName,
+            firstName,
+            lastName,
+            email,
+            active,
+            lastUpdate: currentTimestamp,
+        };
+
+        const updateduser = await this.userRepo.UpdateUser(id, updatedUser);
+
+        if (!updateduser) {
+            response.message = CONSTANTS.USER_NOT_ACTIVE;
+            response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+            return response;
+        }
+
+        response.message = CONSTANTS.USER_UPDATED;
+        response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+        return response;
+    }
+
+    async updatePassword(req) {
+        const id = req.profile.userId;
+        const response = {};
+
+        const { password } = req.body;
+
+        const user = await this.userRepo.FindById(id);
+        if (!user) {
+            response.message = CONSTANTS.INVALID_USER_ID;
+            response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+            return response;
+        }
+
+        const currentTimestamp = Date.now();
+
+        const hashedPass = await HashPassword(password);
+
+        const updatedUser = {
+            password: hashedPass,
+            lastUpdate: currentTimestamp,
+        };
+
+        const userU = await this.userRepo.UpdateUser(id, updatedUser);
+
+        if (!userU) {
+            response.message = CONSTANTS.USER_NOT_ACTIVE;
+            response.status = CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE;
+            return response;
+        }
+
+        response.message = CONSTANTS.USER_UPDATED_PASSWORD;
+        response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+        return response;
+    }
+
     async getUsers(req) {
         const query = req.query.query;
         const page = parseInt(req.query.page) || 1;
@@ -214,10 +306,11 @@ class UserService {
         const skip = (page - 1) * pageSize;
         const limit = pageSize;
         const response = {};
+        const userId = req.profile.userId;
 
         if (query) {
             try {
-                const searchUsers = await this.userRepo.searchUsers(query, skip, limit, sort);
+                const searchUsers = await this.userRepo.searchUsers(query, sort);
                 response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
                 response.data = searchUsers;
                 return response;
@@ -226,7 +319,7 @@ class UserService {
             }
         } else {
             response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
-            const users = await this.userRepo.getUsers(skip, limit, sort);
+            const users = await this.userRepo.getUsers( userId);
             response.data = users;
             return response;
         }

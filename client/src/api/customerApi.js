@@ -1,25 +1,45 @@
-import axios from 'axios'
+import axios from "axios";
 
-const api = axios.create({
-    baseURL:'http://localhost:7500/api/customers/',
-    headers:{
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem("token")===null?null:JSON.parse(localStorage.getItem("token"))}`
+const customerApi = axios.create({
+    baseURL: "http://localhost:7500/api/customers",
+    headers: {
+        "Content-Type": "application/json",
+    },
+});
 
+const setAuthHeader = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+        customerApi.defaults.headers.common["Authorization"] = `Bearer ${JSON.parse(token)}`;
+    } else {
+        delete customerApi.defaults.headers.common["Authorization"];
     }
-})
+};
+
+export function getAllCustomers() {
+    setAuthHeader();
+    return customerApi.get("/");
+}
+
+export function getCustomerById(id) {
+    setAuthHeader();
+    return customerApi.get(`customer/${id}`);
+}
+
+export function updateCustomer(id, data) {
+    setAuthHeader();
+    return customerApi.put(`${id}`, data);
+}
 
 export function RegisterCustomer(body) {
-    return api.post('/', body)
+    return customerApi.post('/', body)
 }
 export function ValidateCustomer(id) {
-    return api.put(`/validate/${id}`)
+    return customerApi.put(`/validate/${id}`)
 }
 
 export function LoginCustomer(body) {
-    return api.post('/login', body)
+    return customerApi.post('/login', body)
 }
 
-
-
-export default api
+export default customerApi;

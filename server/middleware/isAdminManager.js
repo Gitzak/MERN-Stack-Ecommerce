@@ -13,6 +13,9 @@ exports.isAdminManager = (req, res, next) => {
         });
     }
     const userData = verify(token);
+
+    // console.log("userData : ", userData);
+
     req.profile = userData;
     req.userRole = userData.userRole;
     if (userData.userRole !== "ADMIN" && userData.userRole !== "MANAGER") {
@@ -21,7 +24,6 @@ exports.isAdminManager = (req, res, next) => {
             status: CONSTANTS.SERVER_FORBIDDEN_HTTP_CODE,
         });
     }
-
-
+    
     next();
 };

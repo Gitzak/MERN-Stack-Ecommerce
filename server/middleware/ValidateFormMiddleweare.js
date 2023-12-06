@@ -66,13 +66,11 @@ exports.validateCustomerFormUpdatePatch = [
 
 exports.validateCategoryForm = [
     body("category_name").notEmpty().withMessage("Category name is required"),
-    body("parentId").optional().isMongoId().withMessage("Parent ID must be a valid MongoDB ID"),
     body("active").optional().isBoolean().withMessage("Active must be a boolean value"),
 ];
 
 exports.validateCategoryFormUpdate = [
     body("category_name").notEmpty().withMessage("Category name is required"),
-    body("parentId").optional().isMongoId().withMessage("Parent ID must be a valid MongoDB ID"),
     body("active").optional().isBoolean().withMessage("Active must be a boolean value"),
 ];
 
