@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import MenuCart from "./sub-components/MenuCart";
 import { selectCartItems } from "../../../store/cart/cart.selector";
 import { selectCurrentCustomer } from "../../../store/customer/customer.selector";
-import { setCurrentCustomer } from "../../../store/customer/customer.action";
+import { logoutCustomer, setCurrentCustomer } from "../../../store/customer/customer.action";
 
 const IconGroup = () => {
   const dispatch = useDispatch();
@@ -13,9 +13,7 @@ const IconGroup = () => {
   const navigate = useNavigate();
 
   const signOutCustomer = () => {
-    dispatch(setCurrentCustomer(null));
-    localStorage.removeItem("CustomerId");
-    localStorage.removeItem("token");
+    dispatch(logoutCustomer());
     navigate("/shop/login-register");
   };
 

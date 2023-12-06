@@ -21,6 +21,7 @@ import Checkout from "./pages/shop/checkout/Checkout";
 import LoginRegister from "./pages/shop/loginRegister/LoginRegister";
 import Validation from "./pages/shop/validation/Validation";
 import MyAccount from "./pages/shop/myAccount/MyAccount";
+import ShopProducts from "./pages/shop/allProducts/ShopProducts";
 
 function App() {
   return (
@@ -28,7 +29,7 @@ function App() {
       <Routes>
         <Route path="/shop" element={<ShopLayout />}>
           <Route path="home" element={<Home />} />
-          {/* <Route path="products" element={<AllProducts />}/> */}
+          <Route path="products" element={<ShopProducts />}/>
           <Route path="product/:id" element={<ProductDetails />} />
           <Route path="cart" element={<Cart />} />
           <Route path="checkout" element={<Checkout />} />

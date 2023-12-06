@@ -4,8 +4,7 @@ import React, { Fragment, useState, useEffect } from "react";
 import { Modal } from "react-bootstrap";
 import { connect } from "react-redux";
 
-function ProductModal(props) {
-  const { product } = props;
+function ProductModal({product}) {
 
   const [gallerySwiper, getGallerySwiper] = useState(null);
   const [thumbnailSwiper, getThumbnailSwiper] = useState(null);

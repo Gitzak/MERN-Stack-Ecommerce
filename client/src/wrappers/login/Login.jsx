@@ -26,11 +26,10 @@ const Login = () => {
       try {
         const response = await LoginCustomer(values);
         const loggedCustomer = response.data;
-        console.log('this is loggedCustomer', response.data);
         localStorage.setItem("CustomerId", loggedCustomer.customer._id);
         localStorage.setItem("token", JSON.stringify(loggedCustomer.token));
         dispatch(setCurrentCustomer(loggedCustomer));
-        navigate("/shop/my-account"); // You might need to handle navigation in your specific case
+        navigate("/shop/my-account");
       } catch (error) {
         setError(error.response.data.message);
       }

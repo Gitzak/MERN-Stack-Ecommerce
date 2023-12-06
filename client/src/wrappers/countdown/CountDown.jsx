@@ -5,7 +5,7 @@ import Countdown from "react-countdown";
 import Renderer from "../../components/shop/countdown/Renderer";
 
 const CountDown = () => {
-  const dateTime = new Date("December 6, 2023 12:12:00");
+  const dateTime = new Date("December 7, 2023 12:12:00");
 
   return (
     <div className="funfact-area pt-100 pb-100">
