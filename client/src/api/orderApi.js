@@ -1,19 +1,24 @@
-import axios from 'axios'
+import axios from "axios";
 
-const api = axios.create({
-    baseURL:'http://localhost:7500/api/orders/',
+const orderApi = axios.create({
+    baseURL: "http://localhost:7500/api/orders",
     headers: {
-        'Content-Type': 'application/json',
-        'Authorization': localStorage.getItem("token")
-          ? `Bearer ${JSON.parse(localStorage.getItem("token"))}`
-          : undefined,
+        "Content-Type": "application/json",
+    },
+});
+
+const setAuthHeader = () => {
+    const token = localStorage.getItem("tokenC");
+    if (token) {
+        orderApi.defaults.headers.common["Authorization"] = `Bearer ${JSON.parse(token)}`;
+    } else {
+        delete orderApi.defaults.headers.common["Authorization"];
     }
-})
+};
 
 export function createNewOrder(body) {
-    return api.post('/', body)
+    setAuthHeader();
+    return orderApi.post("/", body);
 }
 
-
-
-export default api
+export default orderApi;

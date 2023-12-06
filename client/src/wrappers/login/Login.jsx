@@ -27,7 +27,7 @@ const Login = () => {
         const response = await LoginCustomer(values);
         const loggedCustomer = response.data;
         localStorage.setItem("CustomerId", loggedCustomer.customer._id);
-        localStorage.setItem("token", JSON.stringify(loggedCustomer.token));
+        localStorage.setItem("tokenC", JSON.stringify(loggedCustomer.token));
         dispatch(setCurrentCustomer(loggedCustomer));
         navigate("/shop/my-account");
       } catch (error) {
