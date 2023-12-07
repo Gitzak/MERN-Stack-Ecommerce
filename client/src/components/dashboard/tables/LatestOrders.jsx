@@ -26,7 +26,6 @@ export default function LatestOrders() {
         try {
             const response = await getAllOrders();
             setOrders(response.data.orders);
-            console.log(orders);
         } catch (error) {
             console.error("Error fetching orders:", error);
         }

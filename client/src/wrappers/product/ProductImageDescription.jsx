@@ -6,7 +6,7 @@ import { selectProductDetail } from "../../store/products/product.selector";
 
 const ProductImageDescription = () => {
   const productDetail = useSelector(selectProductDetail);
-  console.log("pro from deatail page", productDetail);
+  // console.log("pro from deatail page", productDetail);
 
   if (!productDetail) {
     return (

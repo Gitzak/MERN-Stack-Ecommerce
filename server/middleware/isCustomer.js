@@ -4,8 +4,8 @@ const { verify } = require("../utils/JWT");
 exports.isCustomer = (req, res, next) => {
     const authHeader = req.headers.authorization || null;
     const token = authHeader && authHeader.split(" ")[1];
-
-    console.log("token",token)
+// 
+    // console.log("token",token)
 
     if (!token) {
         return res.status(CONSTANTS.SERVER_NOT_FOUND_HTTP_CODE).json({
@@ -16,7 +16,7 @@ exports.isCustomer = (req, res, next) => {
 
     const userData = verify(token);
 
-    console.log(userData)
+    // console.log(userData)
 
     req.profile          = userData;
     req.userRole          = userData.userRole;

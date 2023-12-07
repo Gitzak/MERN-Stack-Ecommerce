@@ -6,15 +6,15 @@ function initializeWebSocket(server) {
    wss = new WebSocket.Server({ port:7501 });
 
   wss.on('connection', (ws) => {
-    console.log('Connected to WebSocket server');
+    // console.log('Connected to WebSocket server');
 
     ws.on('message', (message) => {
-      console.log(`Received message: ${message}`);
+      // console.log(`Received message: ${message}`);
       // Handle incoming messages from clients
     });
 
     ws.on('close', () => {
-      console.log('Disconnected from WebSocket server');
+      // console.log('Disconnected from WebSocket server');
     });
   });
 

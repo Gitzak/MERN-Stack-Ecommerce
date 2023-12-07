@@ -168,7 +168,7 @@ export const Orders = () => {
             const response = await getOrder(id);
             setSelectedOrderData(response.data.data);
             if (selectedOrderData) {
-                console.log(response.data.data.orderNumber);
+                // console.log(response.data.data.orderNumber);
                 removeOrderNotification(response.data.data.orderNumber);
                 const date = new Date(response.data.data.orderDate);
                 setOrderDateFormatted(date.toLocaleString());
@@ -190,7 +190,7 @@ export const Orders = () => {
             const response = await getOrder(id);
             setSelectedOrderData(response.data.data);
             if (selectedOrderData) {
-                console.log(response.data.data.orderNumber);
+                // console.log(response.data.data.orderNumber);
                 removeOrderNotification(response.data.data.orderNumber);
                 const date = new Date(response.data.data.orderDate);
                 setOrderDateFormatted(date.toLocaleString());

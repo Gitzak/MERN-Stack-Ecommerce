@@ -120,7 +120,7 @@ export const Profile = () => {
                 }
             })
             .catch((error) => {
-                console.log(error);
+                // console.log(error);
                 setLoadingPersonalInfo(false);
                 if (error.response && error.response.data && error.response.data.message) {
                     Swal.fire({
@@ -182,7 +182,7 @@ export const Profile = () => {
                 }
             })
             .catch((error) => {
-                console.log(error);
+                // console.log(error);
                 setLoadingPassword(false);
                 if (error.response && error.response.data && error.response.data.message) {
                     Swal.fire({

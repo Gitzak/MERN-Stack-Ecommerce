@@ -14,7 +14,6 @@ const ProductDescriptionInfo = ({ product }) => {
 
 
   const AddToCartHandler = () => {
-    console.log('here xs')
     const cartProduct = {
       ...product,
       quantityCount: quantityCount,

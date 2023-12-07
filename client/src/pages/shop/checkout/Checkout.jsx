@@ -21,11 +21,11 @@ const Checkout = () => {
       itemOptions: [],
     }));
     try {
-      console.log("this is sended order",sendedOrder);
+      // console.log("this is sended order",sendedOrder);
       const newOrder = await createNewOrder(sendedOrder);
-      console.log("this is new order",newOrder);
+      // console.log("this is new order",newOrder);
     } catch (error) {
-      console.log(error.message);
+      // console.log(error.message);
     }
   };
 

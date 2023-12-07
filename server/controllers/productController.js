@@ -14,7 +14,7 @@ exports.createProduct = async (req, res) => {
         const newProduct = await ProductServ.createProduct(req);
         res.status(newProduct.status).json(newProduct);
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };

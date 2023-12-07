@@ -6,7 +6,6 @@ import Swiper from "react-id-swiper";
 const ProductImageGalleryLeftThumb = ({ product }) => {
   const [gallerySwiper, getGallerySwiper] = useState(null);
   const [thumbnailSwiper, getThumbnailSwiper] = useState(null);
-  console.log('from gal', product)
 
   // effect for swiper slider synchronize
   useEffect(() => {

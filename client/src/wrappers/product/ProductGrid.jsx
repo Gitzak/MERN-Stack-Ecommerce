@@ -15,7 +15,7 @@ const ProductGrid = ({ Number }) => {
           dispatch(setCurrentProducts(res.data.products));
         });
       } catch (error) {
-        console.log(error.message);
+        // console.log(error.message);
       }
     };
 

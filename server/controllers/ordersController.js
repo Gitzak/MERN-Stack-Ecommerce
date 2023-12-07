@@ -18,7 +18,7 @@ exports.createOrder = async (req, res) => {
         sendOrder(newOrders)
         res.status(newOrders.status).json(newOrders);
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };

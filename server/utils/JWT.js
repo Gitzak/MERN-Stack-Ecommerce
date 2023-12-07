@@ -4,10 +4,10 @@ const config = require("../config/keys");
 class JwtManager {
     // sign(payload, expiresIn = config.jwt.tokenLife) {
     sign(payload, expiresIn = config.jwt.tokenLife) {
-        console.log(expiresIn);
+        // console.log(expiresIn);
         try {
             const token = jwt.sign(payload, config.jwt.secret, { expiresIn });
-            console.log(token);
+            // console.log(token);
             return token;
         } catch (error) {
             throw error;

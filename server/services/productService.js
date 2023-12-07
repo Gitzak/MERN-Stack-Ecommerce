@@ -150,7 +150,7 @@ class ProductService {
                 return response;
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             if (error.code === 11000) {
                 const field = Object.keys(error.keyPattern)[0];
                 response.message = CONSTANTS.PRODUCT_DUPLICATE_KEY(field);
