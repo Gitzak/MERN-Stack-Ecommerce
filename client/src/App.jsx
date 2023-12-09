@@ -40,7 +40,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/shop" element={<ShopLayout />}>
-          <Route path="home" element={<Home />} />
+          <Route index element={<Home />} />
           <Route path="products" element={<ShopProducts />} />
           <Route path="product/:id" element={<ProductDetails />} />
           <Route path="cart" element={<Cart />} />

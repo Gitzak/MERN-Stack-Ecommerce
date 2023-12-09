@@ -23,7 +23,7 @@ const Checkout = () => {
     try {
       console.log("this is sended order",sendedOrder);
       const newOrder = await createNewOrder(sendedOrder);
-      console.log("this is new order",newOrder);
+      console.log("this is new order",newOrder.data);
     } catch (error) {
       console.log(error.message);
     }

@@ -1,6 +1,7 @@
 import { compose, createStore, applyMiddleware } from "redux";
 import { rootReducer } from "./root-reducer";
 import { CUSTOMER_ACTION_TYPES } from "./customer/customer.types";
+import { USER_ACTION_TYPES } from "./user/user.types";
 
 const loggedMiddleware = (store) => (next) => (action) => {
   if (!action.type) {
@@ -18,6 +19,11 @@ const loggedMiddleware = (store) => (next) => (action) => {
     const { customer } = store.getState();
     localStorage.setItem("loggedCustomer", JSON.stringify(customer));
   }
+  // / Save customer data to local storage on login action
+  if (action.type === USER_ACTION_TYPES.SET_CURRENT_USER) {
+    const { user } = store.getState();
+    localStorage.setItem("loggedUser", JSON.stringify(customer));
+  }
 };
 
 // Load customer data from local storage on store creation
@@ -33,6 +39,22 @@ const loadCustomerFromLocalStorage = () => {
   }
 };
 
+
+
+// Load customer data from local storage on store creation
+const loadUserFromLocalStorage = () => {
+  try {
+    const serializedUser = localStorage.getItem("loggedUser");
+    if (serializedUser === null) {
+      return undefined;
+    }
+    return JSON.parse(serializedUser);
+  } catch (err) {
+    return undefined;
+  }
+};
+
+
 const middlewares = [loggedMiddleware];
 
 const composedEnhancers = compose(applyMiddleware(...middlewares));
@@ -40,5 +62,6 @@ const composedEnhancers = compose(applyMiddleware(...middlewares));
 export const store = createStore(
   rootReducer,
   loadCustomerFromLocalStorage() ? { customer: { currentCustomer: loadCustomerFromLocalStorage() } } : undefined,  
+  loadUserFromLocalStorage() ? { user: { currentUser: loadUserFromLocalStorage() } } : undefined,  
   composedEnhancers
 );

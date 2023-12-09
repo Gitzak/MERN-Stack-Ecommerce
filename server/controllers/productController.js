@@ -11,6 +11,7 @@ const ProductServ = new ProductService(ProductRepo);
 // Create a new product
 exports.createProduct = async (req, res) => {
     try {
+        console.log(' reeeq' ,req)
         const newProduct = await ProductServ.createProduct(req);
         res.status(newProduct.status).json(newProduct);
     } catch (error) {
