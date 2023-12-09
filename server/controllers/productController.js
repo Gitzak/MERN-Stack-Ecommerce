@@ -11,6 +11,9 @@ const ProductServ = new ProductService(ProductRepo);
 // Create a new product
 exports.createProduct = async (req, res) => {
     try {
+        console.log(req.body);
+        console.log(req.file);
+        return
         const newProduct = await ProductServ.createProduct(req);
         res.status(newProduct.status).json(newProduct);
     } catch (error) {

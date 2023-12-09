@@ -202,7 +202,7 @@ const UserCreate = () => {
                             variant="h5"
                             sx={{ mb: 2, pt: 1 }}
                         >
-                            Add new product
+                            Add new user
                         </Typography>
                         <Button
                             variant="contained"

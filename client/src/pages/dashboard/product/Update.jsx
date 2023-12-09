@@ -97,6 +97,7 @@ export const Update = () => {
             quantity: 0,
             options: [],
             active: false,
+            recommended: false,
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
@@ -129,6 +130,7 @@ export const Update = () => {
             formData.append("sku", values.sku);
             formData.append("productName", values.productName);
             formData.append("active", values.active);
+            formData.append("recommended", values.recommended);
             formData.append("shortDescription", values.shortDescription);
             formData.append("longDescription", values.longDescription);
             formData.append("price", values.price);
@@ -211,6 +213,7 @@ export const Update = () => {
                 quantity: productData.quantity || 0,
                 options: productData.options || [],
                 active: productData.active || false,
+                recommended: productData.recommended || false,
                 images: productData.productImages || false,
             });
         }
@@ -365,8 +368,11 @@ export const Update = () => {
                                                 helperText={formik.touched.shortDescription && formik.errors.shortDescription}
                                             />
                                         </Grid>
-                                        <Grid item xs={6}>
+                                        <Grid item xs={3}>
                                             <FormControlLabel control={<Switch checked={formik.values.active} name="active" onChange={formik.handleChange} />} label="Active" sx={{ mt: 2, pt: 1 }} />
+                                        </Grid>
+                                        <Grid item xs={3}>
+                                            <FormControlLabel control={<Switch checked={formik.values.recommended} name="recommended" onChange={formik.handleChange} />} label="Recommended" sx={{ mt: 2, pt: 1 }} />
                                         </Grid>
                                         <Grid item xs={12}>
                                             <TextField
