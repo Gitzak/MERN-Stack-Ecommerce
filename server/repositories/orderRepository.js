@@ -60,22 +60,54 @@ class OrderRepository {
                 {
                     $group: {
                         _id: {
-                            $dateToString: { format: "%Y-%m-%d", date: { $toDate: "$orderDate" } }
+                            $dateToString: { format: "%Y-%m-%d", date: { $toDate: "$orderDate" } },
                         },
-                        totalSales: { $sum: "$cartTotalPrice" }
-                    }
+                        totalSales: { $sum: "$cartTotalPrice" },
+                    },
                 },
                 {
-                    $sort: { _id: 1 }
-                }
+                    $sort: { _id: 1 },
+                },
             ]);
-    
+
             return salesData;
         } catch (error) {
             console.error("Error fetching sales chart data:", error);
             throw error;
         }
-    }    
+    }
+
+    async getBestProducts(limit) {
+        const bestProducts = await this.orderModel.aggregate([
+            { $unwind: "$orderItems" },
+            {
+                $group: {
+                    _id: "$orderItems.itemID",
+                    totalQuantity: { $sum: "$orderItems.quantity" },
+                },
+            },
+            {
+                $lookup: {
+                    from: "products",
+                    localField: "_id",
+                    foreignField: "_id",
+                    as: "productData",
+                },
+            },
+            {
+                $project: {
+                    _id: 0,
+                    productId: "$_id",
+                    totalQuantity: 1,
+                    productData: { $arrayElemAt: ["$productData", 0] },
+                },
+            },
+            { $sort: { totalQuantity: -1 } },
+            { $limit: limit },
+        ]);
+
+        return bestProducts;
+    }
 
     async getNewOrders() {
         const data = await this.orderModel.aggregate([{ $match: { status: "Open" } }, { $sort: { orderDate: -1 } }]).exec();

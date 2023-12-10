@@ -1,12 +1,16 @@
 const { ProductService } = require("../services/productService");
 const { ProductRepository } = require("../repositories/productRepository");
 const Product = require("../models/Product");
+const Order = require("../models/Order");
 const CONSTANTS = require("../constants/index");
 
 const { getsubCategoryNameById } = require("../controllers/subcategoriesController");
+const { OrderRepository } = require("../repositories/orderRepository");
 
 const ProductRepo = new ProductRepository(Product);
-const ProductServ = new ProductService(ProductRepo);
+const OrderRepo = new OrderRepository(Order);
+
+const ProductServ = new ProductService(ProductRepo, OrderRepo);
 
 // Create a new product
 exports.createProduct = async (req, res) => {
@@ -35,7 +39,6 @@ exports.listProducts = async (req, res) => {
 
 //get newest Products:
 exports.getNewestProducts = async(req, res) => {
-    console.log('in controlNew')
     try {
         const products = await ProductServ.getNewestProducts(req);
         res.status(products.status).json(products);
@@ -47,9 +50,7 @@ exports.getNewestProducts = async(req, res) => {
 //get best selling products
 exports.getBestProducts = async(req, res) => {
     try {
-        console.log('bestbackendControl');
-
-        const products = await ProductServ.getBestProducts(req, res);
+        const products = await ProductServ.getBestProducts(req);
         res.status(products.status).json(products);
     } catch (err) {
         res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
@@ -57,6 +58,15 @@ exports.getBestProducts = async(req, res) => {
 };
 
 
+//get recommended Products:
+exports.getRecommendedProducts = async(req, res) => {
+    try {
+        const products = await ProductServ.getRecommendedProducts(req);
+        res.status(products.status).json(products);
+    } catch (err) {
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
+    }
+};
 
 // Get a product by ID
 exports.getProductById = async (req, res) => {
