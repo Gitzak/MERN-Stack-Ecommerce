@@ -68,6 +68,7 @@ const BestSeller = ({ Number, activeTab }) => {
                 bestSeller.slice(0, Number).map((product, index) => (
                     <ProductGridSingle product={product} key={index} />
                 ))}
+                {console.log('best seller',bestSeller)}
         </Fragment>
     );
 };

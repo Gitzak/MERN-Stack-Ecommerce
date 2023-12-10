@@ -2,8 +2,9 @@ import { Button, IconButton } from "@mui/material";
 import React, { useCallback, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
+import Swal from "sweetalert2";
 
-const FileUploader = ({ onFileUpload, onFileDelete, existingImages }) => {
+const FileUploader = ({ onFileUpload, onFileDelete, existingImages, maxFiles = 3 }) => {
     const [filePreviews, setFilePreviews] = useState([]);
 
     useEffect(() => {
@@ -24,13 +25,28 @@ const FileUploader = ({ onFileUpload, onFileDelete, existingImages }) => {
                 previewUrl: URL.createObjectURL(file),
             }));
 
-            // Update state with the file previews
-            setFilePreviews([...filePreviews, ...previews]);
+            // Update state with the file previews, considering the maximum allowed files
+            if (filePreviews.length + previews.length <= maxFiles) {
+                setFilePreviews([...filePreviews, ...previews]);
 
-            // Pass the files to the parent component
-            onFileUpload(acceptedFiles);
+                // Pass the files to the parent component
+                onFileUpload(acceptedFiles);
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: `Maximum files limit reached (${maxFiles} files allowed)`,
+                    confirmButtonText: "OK",
+                    customClass: {
+                        container: "swal2-container",
+                    },
+                    didOpen: () => {
+                        document.querySelector(".swal2-container").style.zIndex = 10000;
+                    },
+                });
+            }
         },
-        [filePreviews, onFileUpload]
+        [filePreviews, maxFiles, onFileUpload]
     );
 
     const handleDelete = (index) => {

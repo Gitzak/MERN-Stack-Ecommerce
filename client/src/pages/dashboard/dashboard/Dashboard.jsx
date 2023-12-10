@@ -3,7 +3,6 @@ import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import { Container, Grid, Paper } from "@mui/material";
-import { SalesChart } from "../../../components/dashboard/charts/SalesChart";
 import CardSales from "../../../components/dashboard/cards/CardSales";
 import LatestOrders from "../../../components/dashboard/tables/LatestOrders";
 import Top5Products from "../../../components/dashboard/tables/Top5Products";
@@ -11,7 +10,6 @@ import { UserContext } from "../../../context/AuthContext";
 import { useEffect } from "react";
 import moment from "moment";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { getAllCustomers, getAllNewOrders, getAllOrders } from "../../../api/statisticsApi";
@@ -21,6 +19,7 @@ import { DateRange } from "../../../components/dashboard/DateRange/DateRange";
 import { useRef } from "react";
 import { useContext } from "react";
 import { DashboardC } from "../../../context/dashboardContext";
+import SalesChart from "../../../components/dashboard/charts/SalesChart";
 
 export default function Dashboard() {
     const [allOrders, setAllOrders] = useState(0);
@@ -90,12 +89,6 @@ export default function Dashboard() {
     return (
         <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
             <Grid container sx={{ marginBottom: 5, display: "flex", justifyContent: "end" }}>
-                {/* <LocalizationProvider dateAdapter={AdapterMoment}>
-                    <DemoContainer components={["DatePicker", "DatePicker"]}>
-                        <DatePicker label="Start" defaultValue={moment("2023-11-27")} />
-                        <DatePicker label="End" value={value} onChange={(newValue) => setValue(newValue)} />
-                    </DemoContainer>
-                </LocalizationProvider> */}
                 <DateRange />
             </Grid>
             <Grid container spacing={3}>
@@ -116,7 +109,7 @@ export default function Dashboard() {
                             flexDirection: "column",
                             height: "auto",
                         }}>
-                        <CardSales color="#c5f1e0" title="Total revenues" value={value.totalRevenue} type="amount" />
+                        <CardSales color="#c5f1e0" title="Total revenues" value={value.totalRevenue} type="amount" iconName="AttachMoneyIcon" />
                     </Paper>
                 </Grid>
                 <Grid item xs={12} md={6} lg={3}>
@@ -147,7 +140,7 @@ export default function Dashboard() {
                             flexDirection: "column",
                             height: 440,
                         }}>
-                        <SalesChart />
+                            <SalesChart />
                     </Paper>
                 </Grid>
                 <Grid item xs={12} md={6} lg={6}>

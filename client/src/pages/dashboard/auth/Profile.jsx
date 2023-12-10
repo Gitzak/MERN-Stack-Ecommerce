@@ -11,7 +11,6 @@ import axios from "axios";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Swal from "sweetalert2";
-import { NumericFormat } from "react-number-format";
 import { Link, Navigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";

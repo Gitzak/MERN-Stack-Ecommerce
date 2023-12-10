@@ -77,6 +77,7 @@ const RecommendedProducts = ({ Number, activeTab }) => {
                 recommended.slice(0, Number).map((product, index) => (
                     <ProductGridSingle product={product} key={index} />
                 ))}
+                {console.log('recommended',recommended)}
         </Fragment>
     );
 };

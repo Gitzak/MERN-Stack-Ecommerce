@@ -32,6 +32,19 @@ export const Categorie = () => {
 
     const columns = [
         {
+            field: "image",
+            headerName: "Image",
+            editable: false,
+            sortable: false,
+            renderCell: (params) => {
+                if (params.value) {
+                    const link_src = params.value;
+                    const link_src_square = link_src.replace("upload", "upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai");
+                    return <img src={link_src_square} alt={`Category Image`} style={{ width: 50, height: 50 }} />;
+                }
+            },
+        },
+        {
             field: "category_name",
             headerName: "Category name",
             width: 150,
@@ -106,13 +119,25 @@ export const Categorie = () => {
                                     document.querySelector(".swal2-container").style.zIndex = 10000;
                                 },
                             }).then(() => {
-                                // refresh
                                 fetchProducts();
                             });
                         }
                     })
                     .catch((error) => {
-                        Swal.fire("Error!", "Failed to delete the category.", "error");
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: error.response.data.message,
+                            confirmButtonText: "OK",
+                            customClass: {
+                                container: "swal2-container",
+                            },
+                            didOpen: () => {
+                                document.querySelector(".swal2-container").style.zIndex = 10000;
+                            },
+                        }).then(() => {
+                            fetchProducts();
+                        });
                     });
             }
         });

@@ -1,5 +1,6 @@
 const CONSTANTS = require("../constants");
 const config = require("./../config/keys");
+const cloudinary = require("../utils/cloudinary");
 
 class CategoriesService {
     constructor(categoryRepo, productRepo) {
@@ -27,12 +28,28 @@ class CategoriesService {
                 }
             }
 
+            const file = req.file;
+            let imageUrl = null;
+
+            if (file) {
+                imageUrl = await new Promise((resolve, reject) => {
+                    cloudinary.uploader.upload(file.path, (err, result) => {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            resolve(result.secure_url);
+                        }
+                    });
+                });
+            }
+
             const newCategory = {
                 category_name,
                 active,
                 description,
                 parentId: parentId != "null" ? parentId : null,
                 parentName,
+                image: imageUrl ? imageUrl : null,
             };
 
             const category = await this.categoryRepo.CreateCategory(newCategory);
@@ -48,6 +65,7 @@ class CategoriesService {
             response.data = category;
             return response;
         } catch (error) {
+            console.log(error);
             response.message = CONSTANTS.SERVER_ERROR;
             response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
             return response;
@@ -137,7 +155,7 @@ class CategoriesService {
         try {
             const id = req.params.id;
 
-            const { category_name, active, description, parentId } = req.body;
+            const { category_name, active, description, parentId, image } = req.body;
 
             let parentName = null;
 
@@ -158,10 +176,24 @@ class CategoriesService {
                 description,
                 parentId: parentId != "null" ? parentId : null,
                 parentName,
+
             };
 
-            // console.log(updatedCategory);
-            // return;
+            const file = req.file;
+            let imageUrl = null;
+
+            if (file) {
+                imageUrl = await new Promise((resolve, reject) => {
+                    cloudinary.uploader.upload(file.path, (err, result) => {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            resolve(result.secure_url);
+                        }
+                    });
+                });
+                updatedCategory.image = imageUrl;
+            }
 
             const updatedCategoryMessage = await this.categoryRepo.UpdateCategory(id, updatedCategory);
 

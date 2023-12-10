@@ -38,7 +38,7 @@ export default function CardSales(props) {
         <Box sx={{ backgroundColor: props.color, padding: 2, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <Box>
                 <BlackTitle>{props.title}</BlackTitle>
-                <Typography component="p" variant="h4">
+                <Typography component="p" variant="h5">
                     {props.type === "amount" ? <FormattedNumber value={props.value} /> : props.value}
                 </Typography>
             </Box>

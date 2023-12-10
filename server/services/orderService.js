@@ -137,6 +137,37 @@ class OrdersService {
         }
     }
 
+    
+    // Get top 5 products
+    async getTopFiveProducts(req) {
+        try {
+            const response = {};
+            const orders = await this.orderRepo.getTopFiveProduct();
+            response.orders = orders;
+            response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+            return response;
+        } catch (error) {
+            response.message = CONSTANTS.SERVER_ERROR;
+            response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+            return response;
+        }
+    }
+
+        // Get sales chart data
+        async getSalesChartData(req) {
+            try {
+                const response = {};
+                const orders = await this.orderRepo.getSalesChartData();
+                response.orders = orders;
+                response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+                return response;
+            } catch (error) {
+                response.message = CONSTANTS.SERVER_ERROR;
+                response.status = CONSTANTS.SERVER_ERROR_HTTP_CODE;
+                return response;
+            }
+        }
+
     // Get all new Orders
     async getNewOrders(req) {
         try {

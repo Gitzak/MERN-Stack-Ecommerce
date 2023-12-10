@@ -12,6 +12,21 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { getAllCategories, getCategory, updateCategory } from "../../../api/categoriesApi";
 import Swal from "sweetalert2";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import NoImageFound from "../../../assets/img/Image_not_available.png";
+import { styled } from "@mui/material/styles";
+
+const VisuallyHiddenInput = styled("input")({
+    clip: "rect(0 0 0 0)",
+    clipPath: "inset(50%)",
+    height: 1,
+    overflow: "hidden",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    whiteSpace: "nowrap",
+    width: 1,
+});
 
 const animatedComponents = makeAnimated();
 
@@ -50,12 +65,30 @@ export const UpdateCategory = () => {
         fetchCategories();
     }, []);
 
+    const handleRemoveImage = () => {
+        formik.setFieldValue("image", NoImageFound);
+    };
+
+    const [imagePreview, setImagePreview] = useState(null);
+
+    const handleImageChange = (e) => {
+        const selectedFile = e.currentTarget.files[0];
+        formik.setFieldValue("image", selectedFile);
+
+        if (selectedFile) {
+            setImagePreview(URL.createObjectURL(selectedFile));
+        } else {
+            setImagePreview(null);
+        }
+    };
+
     const formik = useFormik({
         initialValues: {
             category_name: "",
             description: "",
             parentId: null,
             active: false,
+            image: null,
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
@@ -66,6 +99,7 @@ export const UpdateCategory = () => {
             formData.append("description", values.description);
             formData.append("parentId", values.parentId);
             formData.append("active", values.active);
+            formData.append("image", values.image);
 
             updateCategory(id, formData)
                 .then((response) => {
@@ -140,6 +174,7 @@ export const UpdateCategory = () => {
                 description: categoryData.description || "",
                 parentId: categoryData.parentId || null,
                 active: categoryData.active,
+                image: categoryData.image,
             });
         }
     }, [categoryData]);
@@ -213,7 +248,26 @@ export const UpdateCategory = () => {
                                                 onChange={(selectedOption) => formik.setFieldValue("parentId", selectedOption?.value || null)}
                                             />
                                         </Grid>
-
+                                        <Grid item xs={12}>
+                                            <Button component="label" variant="contained" startIcon={<CloudUploadIcon />} sx={{ mt: 1, pt: 1 }}>
+                                                Upload Image
+                                                <VisuallyHiddenInput name="image" onChange={handleImageChange} type="file" />
+                                            </Button>
+                                        </Grid>
+                                        <Grid item xs={10}>
+                                            <Box sx={{ width: "200px" }}>
+                                                <img
+                                                    style={{
+                                                        width: "100%",
+                                                        height: "100%",
+                                                        objectFit: "cover",
+                                                        border: "2px solid rgba(189, 189, 189, 1)",
+                                                    }}
+                                                    src={imagePreview || formik.values.image || NoImageFound}
+                                                    alt="Preview"
+                                                />
+                                            </Box>
+                                        </Grid>
                                         <Grid item xs={12} sx={{ display: "flex", justifyContent: "end" }}>
                                             <Button type="submit" size="large" variant="contained" color="primary" disabled={loading} sx={{ mt: 2, pt: 1 }}>
                                                 {loading ? "Editing..." : "Save"}

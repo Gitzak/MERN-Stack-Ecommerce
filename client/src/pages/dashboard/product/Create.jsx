@@ -85,6 +85,7 @@ export const Create = () => {
             quantity: 0,
             options: [],
             active: false,
+            recommended: false,
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
@@ -117,6 +118,7 @@ export const Create = () => {
             formData.append("sku", values.sku);
             formData.append("productName", values.productName);
             formData.append("active", values.active);
+            formData.append("recommended", values.recommended);
             formData.append("shortDescription", values.shortDescription);
             formData.append("longDescription", values.longDescription);
             formData.append("price", values.price);
@@ -128,7 +130,6 @@ export const Create = () => {
                 values.categories.map((category) => category.value)
             );
 
-            // Append images to FormData
             for (let i = 0; i < values.images.length; i++) {
                 formData.append("images", values.images[i]);
             }
@@ -328,8 +329,11 @@ export const Create = () => {
                                             helperText={formik.touched.shortDescription && formik.errors.shortDescription}
                                         />
                                     </Grid>
-                                    <Grid item xs={6}>
+                                    <Grid item xs={3}>
                                         <FormControlLabel control={<Switch defaultChecked name="active" onChange={formik.handleChange} />} label="Active" sx={{ mt: 2, pt: 1 }} />
+                                    </Grid>
+                                    <Grid item xs={3}>
+                                        <FormControlLabel control={<Switch defaultChecked name="recommended" onChange={formik.handleChange} />} label="Recommended" sx={{ mt: 2, pt: 1 }} />
                                     </Grid>
                                     <Grid item xs={12}>
                                         <TextField

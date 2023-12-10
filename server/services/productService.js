@@ -16,18 +16,7 @@ class ProductService {
         const response = {};
         try {
             // Extract data from the request
-            const {
-                sku,
-                productName,
-                categories,
-                shortDescription,
-                longDescription,
-                price,
-                discountPrice,
-                quantity,
-                options,
-                active,
-            } = req.body;
+            const { sku, productName, categories, shortDescription, longDescription, price, discountPrice, quantity, options, active, recommended } = req.body;
 
             const categoriesArray = categories.split(",");
             // console.log(categoriesArray);
@@ -93,6 +82,7 @@ class ProductService {
                 quantity,
                 options: options ? JSON.parse(`${options}`) : [],
                 active,
+                recommended,
             };
 
             // Create the product
@@ -123,18 +113,7 @@ class ProductService {
         try {
             const productId = req.params.id;
 
-            const {
-                sku,
-                productName,
-                categories,
-                shortDescription,
-                longDescription,
-                price,
-                discountPrice,
-                quantity,
-                options,
-                active,
-            } = req.body;
+            const { sku, productName, categories, shortDescription, longDescription, price, discountPrice, quantity, options, active, recommended } = req.body;
 
             const categoriesArray = categories.split(",");
 
@@ -149,6 +128,7 @@ class ProductService {
                 quantity,
                 options: options ? JSON.parse(`${options}`) : [],
                 active,
+                recommended
             };
 
             // Check if any of the categories don't exist
@@ -363,7 +343,7 @@ class ProductService {
 
         //get all the orders from the controller of the orders
         const orders = await listForBestSeller(req, res);
-        // console.log("ordersServices", orders.orders);
+        console.log("ordersServices", orders.orders);
 
         //apply the function on the orders List
         const productsIdsTri = getBestSellingProducts(orders.orders);
