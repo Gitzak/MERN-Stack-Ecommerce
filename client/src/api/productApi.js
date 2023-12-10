@@ -16,4 +16,11 @@ export function GetOneProduct(id) {
     return api.get(`/${id}` )
 }
 
+export function GetNewestProducts() {
+    return api.get(`/newest` )
+}
+export function GetBestSeller() {
+    return api.get(`/best` )
+}
+
 export default api

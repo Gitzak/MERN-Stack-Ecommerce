@@ -33,6 +33,17 @@ exports.listOrders = async (req, res) => {
     }
 };
 
+// list all orders for the bestSeller
+exports.listForBestSeller = async (req, res) => {
+    try {
+        const orders = await OrdersServ.getOrders(req);
+        // res.status(orders.status).json(orders);
+        return orders;
+    } catch (error) {
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
+    }
+};
+
 // list all orders
 exports.listNewOrders = async (req, res) => {
     try {

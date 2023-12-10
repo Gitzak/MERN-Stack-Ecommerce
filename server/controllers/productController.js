@@ -25,9 +25,35 @@ exports.listProducts = async (req, res) => {
         const products = await ProductServ.getProducts(req);
         res.status(products.status).json(products);
     } catch (error) {
+        console.log(error);
         res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };
+
+//get newest Products:
+exports.getNewestProducts = async(req, res) => {
+    console.log('in controlNew')
+    try {
+        const products = await ProductServ.getNewestProducts(req);
+        res.status(products.status).json(products);
+    } catch (err) {
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
+    }
+};
+
+//get best selling products
+exports.getBestProducts = async(req, res) => {
+    try {
+        console.log('bestbackendControl');
+
+        const products = await ProductServ.getBestProducts(req, res);
+        res.status(products.status).json(products);
+    } catch (err) {
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
+    }
+};
+
+
 
 // Get a product by ID
 exports.getProductById = async (req, res) => {
