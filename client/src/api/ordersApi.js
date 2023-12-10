@@ -21,6 +21,16 @@ export function getAllOrders() {
     return orderApi.get("/");
 }
 
+export function getTopFiveProducts() {
+    setAuthHeader();
+    return orderApi.get("/top_five_products");
+}
+
+export function getSalesChartData() {
+    setAuthHeader();
+    return orderApi.get("/get_sales_chart_data");
+}
+
 export function getOrder(id) {
     setAuthHeader();
     return orderApi.get(`/${id}`);

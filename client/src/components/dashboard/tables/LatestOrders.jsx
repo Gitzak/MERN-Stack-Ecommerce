@@ -1,25 +1,11 @@
-import * as React from "react";
-import { useState, useEffect } from "react";
-import Link from "@mui/material/Link";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
+import React, { useState, useEffect } from "react";
+import { Table, TableBody, TableCell, TableHead, TableRow, Button } from "@mui/material";
+import { Link } from "react-router-dom";
 import Title from "../title/Title";
 import { getAllOrders } from "../../../api/ordersApi";
-
-// Generate Order Data
-function createData(id, date, name, amount) {
-    return { id, date, name, amount };
-}
-
-// function preventDefault(event) {
-//     event.preventDefault();
-// }
+import { FormattedNumber } from "../FormattedNumber/FormattedNumber";
 
 export default function LatestOrders() {
-    const [rows, setRows] = useState([]);
     const [orders, setOrders] = useState([]);
 
     const fetchOrders = async () => {
@@ -53,18 +39,16 @@ export default function LatestOrders() {
                             <TableCell>{`#${row.orderNumber.toString().padStart(6, "0")}`}</TableCell>
                             <TableCell>{new Date(row.orderDate).toLocaleDateString()}</TableCell>
                             <TableCell>{row.customerFirstName}</TableCell>
-                            <TableCell align="right">{`$${row.cartTotalPrice}`}</TableCell>
+                            <TableCell align="right">
+                                <FormattedNumber value={row.cartTotalPrice} />
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
             </Table>
-            <Link
-                color="primary"
-                href="#"
-                // onClick={preventDefault}
-                sx={{ mt: 3 }}>
+            <Button variant="text" color="primary" component={Link} to="/dashboard/orders" sx={{ mb: 2, pt: 1 }}>
                 See more orders
-            </Link>
+            </Button>
         </React.Fragment>
     );
 }
