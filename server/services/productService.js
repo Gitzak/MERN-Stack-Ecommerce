@@ -226,6 +226,31 @@ class ProductService {
         }
     }
 
+    async listShopProducts(req) {
+        const query = req.query.query;
+        const page = parseInt(req.query.page) || 1;
+        const sort = req.query.sort || "DESC";
+        const pageSize = 9;
+        const skip = (page - 1) * pageSize;
+        const limit = pageSize;
+
+        if (req.query.query) {
+            try {
+                const searchProducts = await this.productRepo.searchProduct(query, skip, limit, sort);
+                return searchProducts;
+            } catch (error) {
+                return error;
+            }
+        } else {
+            const response = {};
+            response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+            const products = await this.productRepo.listShopsProducts(skip, limit, sort);
+            console.log(products);
+            response.products = products;
+            return response;
+        }
+    }
+
     async getNewestProducts(req) {
         const query = req.query.query;
         const response = {};
