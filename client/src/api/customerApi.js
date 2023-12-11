@@ -42,4 +42,9 @@ export function LoginCustomer(body) {
     return customerApi.post('/login', body)
 }
 
+// export function submitContact(body) {
+//     return customerApi.post('/contact', body)
+// }
+
+
 export default customerApi;

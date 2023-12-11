@@ -87,12 +87,13 @@ const ProductGrid = ({ eventKey, Number }) => {
 
   const { currentProducts } = useSelector(selectCurrentProducts);
 
-  console.log("currentProducts", currentProducts);
+  console.log("currentProducts", currentProducts.currentProducts);
+  const displayProducts = currentProducts.currentProducts;
 
   return (
     <Fragment>
-      {Array.isArray(currentProducts) &&
-        currentProducts.slice(0, Number).map((product, index) => (
+      {Array.isArray(displayProducts) &&
+        displayProducts.slice(0, Number).map((product, index) => (
           <ProductGridSingle product={product} key={index} />
         ))}
     </Fragment>

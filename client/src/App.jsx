@@ -34,6 +34,8 @@ import { CreateCategory } from "./pages/dashboard/category/Create";
 import { UpdateCategory } from "./pages/dashboard/category/Update";
 import { Profile } from "./pages/dashboard/auth/Profile";
 import { NotFound } from "./pages/dashboard/errors/NotFound";
+import About from "./pages/shop/aboutUs/aboutUs";
+import Contact from "./pages/shop/contact/Contact";
 
 function App() {
   return (
@@ -41,6 +43,8 @@ function App() {
       <Routes>
         <Route path="/shop" element={<ShopLayout />}>
           <Route path="home" element={<Home />} />
+          <Route path="aboutUs" element={<About />} />
+          <Route path="contact" element={<Contact />} />
           <Route path="products" element={<ShopProducts />} />
           <Route path="product/:id" element={<ProductDetails />} />
           <Route path="cart" element={<Cart />} />

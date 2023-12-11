@@ -12,6 +12,12 @@ const NavMenu = () => {
           <li>
             <Link to="/shop/products">Shop</Link>
           </li>
+          <li>
+            <Link to="/shop/aboutUs">About </Link>
+          </li>
+          <li>
+            <Link to="/shop/contact">Contact us </Link>
+          </li>
         </ul>
       </nav>
     </div>
