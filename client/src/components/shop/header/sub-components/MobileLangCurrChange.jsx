@@ -1,12 +1,8 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { multilanguage, changeLanguage } from "redux-multilanguage";
 import { connect } from "react-redux";
-<<<<<<< HEAD
-import { setCurrency } from "../../../redux/actions/currencyActions";
-=======
 import { setCurrency } from "../../../../redux/actions/currencyActions";
->>>>>>> yassirShopChange
+import { changeLanguage, multilanguage } from "redux-multilanguage";
 
 const MobileLangCurrChange = ({
   currency,

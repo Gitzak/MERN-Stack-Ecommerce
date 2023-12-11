@@ -1,17 +1,8 @@
 import React, { useEffect } from "react";
-<<<<<<< HEAD
-import MobileMenuSearch from "./sub-components/MobileSearch";
 import MobileWidgets from "./sub-components/MobileWidgets";
 import MobileNavMenu from './sub-components/MobileNavMenu';
-=======
 import MobileSearch from "./sub-components/MobileSearch";
-// import MobileMenuSearch from "./sub-components/MobileSearch";
-import MobileNavMenu from "./sub-components/MobileNavMenu";
-import MobileWidgets from "./sub-components/MobileWidgets";
 import MobileLangCurrChange from "./sub-components/MobileLangCurrChange";
-// import MobileLangCurChange from "./sub-components/MobileLangCurrChange";
-// import MobileWidgets from "./sub-components/MobileWidgets";
->>>>>>> yassirShopChange
 
 const MobileMenu = () => {
   useEffect(() => {
@@ -65,23 +56,16 @@ const MobileMenu = () => {
       <div className="offcanvas-wrapper">
         <div className="offcanvas-inner-content">
           {/* mobile search */}
-<<<<<<< HEAD
-          <MobileMenuSearch />
-
-          {/* mobile nav menu */}
-          <MobileNavMenu />
-=======
           <MobileSearch />
 
           {/* mobile nav menu */}
           <MobileNavMenu />
 
           {/* mobile language and currency */}
-          <MobileLangCurrChange />
+          {/* <MobileLangCurrChange /> */}
 
           {/* mobile widgets */}
           <MobileWidgets />
->>>>>>> yassirShopChange
         </div>
       </div>
     </div>
