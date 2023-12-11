@@ -34,6 +34,17 @@ exports.listProducts = async (req, res) => {
     }
 };
 
+// List all shop products
+exports.listShopProducts = async (req, res) => {
+    try {
+        const products = await ProductServ.listShopProducts(req);
+        res.status(products.status).json(products);
+    } catch (error) {
+        console.log(error);
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
+    }
+};
+
 //get newest Products:
 exports.getNewestProducts = async(req, res) => {
     try {

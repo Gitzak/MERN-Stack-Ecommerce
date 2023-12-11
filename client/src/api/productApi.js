@@ -8,7 +8,7 @@ const api = axios.create({
 })
 
 export function GetAllProducts() {
-    return api.get('/' )
+    return api.get('/shop' )
 }
 
 export function GetOneProduct(id) {

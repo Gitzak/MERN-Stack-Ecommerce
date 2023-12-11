@@ -69,18 +69,43 @@ class ProductRepository {
     }
 
     async searchProduct(query, skip, limit, sort) {
+        let sortOption = { price: 1 }; // Default sort by price in ascending order
+
+        if (sort === "DESC") {
+            sortOption = { price: -1 }; // If sort parameter is DESC, sort by price in descending order
+        }
+
         const queryOptions = {
             $or: [{ productName: { $regex: query, $options: "i" } }, { shortDescription: { $regex: query, $options: "i" } }, { longDescription: { $regex: query, $options: "i" } }],
         };
 
+        const limitValue = parseInt(limit); // Parse the limit parameter to ensure it's a number
         const searchedProducts = await this.productModel
             .find(queryOptions)
-            .sort({ productName: sort === "ASC" ? 1 : -1 })
+            .sort(sortOption) // Apply the selected sort order
             .populate("categories")
             .skip(skip)
-            .limit(limit);
+            .limit(limitValue); // Use the parsed limit value
 
         return searchedProducts;
+    }
+
+    async listShopsProducts(skip, limit, sort) {
+        let sortOption = { price: 1 }; // Default sort by price in ascending order
+
+        if (sort === "DESC") {
+            sortOption = { price: -1 }; // If sort parameter is DESC, sort by price in descending order
+        }
+
+        const limitValue = parseInt(limit); // Parse the limit parameter to ensure it's a number
+        const products = await this.productModel
+            .find()
+            .sort(sortOption) // Apply the selected sort order
+            .populate("categories")
+            .skip(skip)
+            .limit(limitValue); // Use the parsed limit value
+
+        return products;
     }
 
     async deleteProduct(productId) {

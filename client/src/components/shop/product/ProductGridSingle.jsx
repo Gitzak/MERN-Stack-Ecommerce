@@ -8,7 +8,7 @@ const ProductGridSingle = ({ product }) => {
 
   return (
     <Fragment>
-      <div className=" col-xl-3 col-md-6 col-lg-4 col-sm-6 ">
+      <div className=" col-xl-4 col-md-6 col-lg-4 col-sm-6 ">
         <div className={`product-wrap mb-25`}>
           <div className="product-img">
             <Link to={`/shop/product/${product._id}`}>
