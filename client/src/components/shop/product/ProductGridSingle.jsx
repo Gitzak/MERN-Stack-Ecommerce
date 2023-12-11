@@ -4,6 +4,7 @@ import ProductModal from "./ProductModal";
 
 const ProductGridSingle = ({ product }) => {
   const [modalShow, setModalShow] = useState(false);
+  console.log(product)
 
   return (
     <Fragment>
