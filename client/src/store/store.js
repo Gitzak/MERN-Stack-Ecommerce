@@ -10,13 +10,13 @@ const loggedMiddleware = (store) => (next) => (action) => {
   if (!action.type) {
     return next(action);
   }
-  console.log("type: ", action.type);
-  console.log("payload: ", action.payload);
-  console.log("currentState: ", store.getState());
+  // console.log("type: ", action.type);
+  // console.log("payload: ", action.payload);
+  // console.log("currentState: ", store.getState());
 
   next(action);
 
-  console.log("next state: ", store.getState());
+  // console.log("next state: ", store.getState());
   // Save customer data to local storage on login action
   if (action.type === CUSTOMER_ACTION_TYPES.SET_CURRENT_CUSTOMER) {
     const { customer } = store.getState();

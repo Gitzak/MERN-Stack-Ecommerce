@@ -13,9 +13,13 @@ const CategoriesServ = new CategoriesService(CategoriesRepo,ProductRepo);
 // Create a new Categories
 exports.createCategories = async (req, res) => {
     try {
+        // console.log(req.body);
+        // console.log(req.file);
+        // return
         const newCategories = await CategoriesServ.createCategories(req);
         res.status(newCategories.status).json(newCategories);
     } catch (error) {
+        console.log("Errr " + error);
         res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };

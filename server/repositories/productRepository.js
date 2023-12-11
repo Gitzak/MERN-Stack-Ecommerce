@@ -11,15 +11,14 @@ class ProductRepository {
     }
 
     async getProductById(productId) {
-        const product = await this.productModel
-            .findById(productId)
-            .populate("categories") // Populate the subcategory data
-            .exec();
+        const product = await this.productModel.findById(productId).populate("categories").exec();
         return product;
     }
 
     async findProductByName(productName) {
-        const product = await this.productModel.findOne({ productName: productName });
+        const product = await this.productModel.findOne({
+            productName: productName,
+        });
         return product;
     }
 
@@ -28,8 +27,10 @@ class ProductRepository {
         return product;
     }
 
-    async hasProducts(id){
-        const hasProducts = await this.productModel.countDocuments({ categories: id });
+    async hasProducts(id) {
+        const hasProducts = await this.productModel.countDocuments({
+            categories: id,
+        });
         return hasProducts > 0;
     }
 
@@ -37,19 +38,33 @@ class ProductRepository {
         const filter = { _id: productId };
         const updateData = { $set: productData };
 
-        const result = await this.productModel.updateOne(filter, updateData, { upsert: false, new: true });
-        
+        const result = await this.productModel.updateOne(filter, updateData, {
+            upsert: false,
+            new: true,
+        });
+
         return result;
     }
 
-    async listProducts(skip, limit, sort) {
-        const products = await this.productModel
-            .find()
-            .sort({ createdAt: sort === "ASC" ? 1 : -1 })
-            .populate("categories") // Populate the subcategory data
-            .skip(skip)
-            // .limit(limit)
-            .exec();
+    async listProducts() {
+        const products = await this.productModel.find().sort({ createdAt: 1 }).populate("categories").exec();
+        return products;
+    }
+
+    async getNewestProducts(limit) {
+        const products = await this.productModel.find().sort({ createdAt: -1 }).limit(limit).exec();
+        return products;
+    }
+
+    async getRecommendedProducts(limit) {
+        const products = await this.productModel.find({ recommended: true }).sort({ createdAt: -1 }).limit(limit).exec();
+        return products;
+    }
+
+    async getBestProductsByIDs(ids) {
+        const products = await this.productModel.find({
+            _id: { $in: ids },
+        });
         return products;
     }
 
@@ -61,7 +76,7 @@ class ProductRepository {
         const searchedProducts = await this.productModel
             .find(queryOptions)
             .sort({ productName: sort === "ASC" ? 1 : -1 })
-            .populate("categories") // Populate the subcategory data
+            .populate("categories")
             .skip(skip)
             .limit(limit);
 

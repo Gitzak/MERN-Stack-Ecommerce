@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "image": "https://img.freepik.com/free-vector/stylish-line-pattern-background_361591-1172.jpg?size=626&ext=jpg&uid=R119553004&ga=GA1.1.67197793.1701324557&semt=ais",
+    "image": "/src/assets/img/steptodown.com504076.jpg",
     "title": "Featured Products",
     "subtitle": "Choose Your Products Here",
     "link": "/shop-grid-standard",
@@ -9,7 +9,7 @@
   },
   {
     "id": 2,
-    "image": "https://img.freepik.com/free-vector/stylish-line-pattern-background_361591-1172.jpg?size=626&ext=jpg&uid=R119553004&ga=GA1.1.67197793.1701324557&semt=ais",
+    "image": "/src/assets/img/steptodown.com671791.jpg",
     "title": "New Products",
     "subtitle": "Choose Your Products Here",
     "link": "/shop-grid-standard",

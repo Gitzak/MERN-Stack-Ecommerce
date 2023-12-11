@@ -19,7 +19,6 @@ export const Notifications = () => {
 
         ws.onmessage = (e) => {
             const newdata = JSON.parse(e.data);
-            console.log(e);
             setNotif((prev) => {
                 const updatedNotifs = [newdata, ...prev];
                 localStorage.setItem("notifications", JSON.stringify(updatedNotifs));

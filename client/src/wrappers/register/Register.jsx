@@ -40,9 +40,9 @@ const Register = () => {
     onSubmit: async (values) => {
       try {
         const newCustomer = await RegisterCustomer(values);
-        console.log(newCustomer);
+        // console.log(newCustomer);
       } catch (error) {
-        console.log(error.message);
+        // console.log(error.message);
         setError(error.message);
       }
     },

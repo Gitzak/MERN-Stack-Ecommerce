@@ -11,8 +11,8 @@ import { deleteProduct, getAllProducts } from "../../../api/productsApi";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Swal from "sweetalert2";
-import { NumericFormat } from "react-number-format";
 import { Link, Navigate } from "react-router-dom";
+import { FormattedNumber } from "../../../components/dashboard/FormattedNumber/FormattedNumber";
 
 export const Products = () => {
     useEffect(() => {
@@ -60,14 +60,14 @@ export const Products = () => {
             headerName: "Price",
             width: 150,
             editable: false,
-            renderCell: (params) => <NumericFormat value={params.value} displayType={"text"} thousandSeparator={true} suffix={" Dhs"} />,
+            renderCell: (params) => <FormattedNumber value={params.value} />,
         },
         {
             field: "discountPrice",
             headerName: "Discount Price",
             width: 150,
             editable: false,
-            renderCell: (params) => <NumericFormat value={params.value} displayType={"text"} thousandSeparator={true} suffix={" Dhs"} />,
+            renderCell: (params) => <FormattedNumber value={params.value} />,
         },
         {
             field: "quantity",

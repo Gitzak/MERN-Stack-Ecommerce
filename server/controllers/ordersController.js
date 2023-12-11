@@ -18,7 +18,7 @@ exports.createOrder = async (req, res) => {
         sendOrder(newOrders)
         res.status(newOrders.status).json(newOrders);
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
     }
 };
@@ -27,6 +27,37 @@ exports.createOrder = async (req, res) => {
 exports.listOrders = async (req, res) => {
     try {
         const orders = await OrdersServ.getOrders(req);
+        res.status(orders.status).json(orders);
+    } catch (error) {
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
+    }
+};
+
+// list top five products
+exports.listTopFiveProducts = async (req, res) => {
+    try {
+        const orders = await OrdersServ.getTopFiveProducts(req);
+        res.status(orders.status).json(orders);
+    } catch (error) {
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
+    }
+};
+
+// list all orders for the bestSeller
+exports.listForBestSeller = async (req, res) => {
+    try {
+        const orders = await OrdersServ.getOrders(req);
+        res.status(orders.status).json(orders);
+        // return orders;
+    } catch (error) {
+        res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });
+    }
+};
+
+// list top five products
+exports.getSalesChartData = async (req, res) => {
+    try {
+        const orders = await OrdersServ.getSalesChartData(req);
         res.status(orders.status).json(orders);
     } catch (error) {
         res.status(CONSTANTS.SERVER_ERROR_HTTP_CODE).json({ message: CONSTANTS.SERVER_ERROR, status: CONSTANTS.SERVER_ERROR_HTTP_CODE });

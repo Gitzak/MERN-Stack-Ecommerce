@@ -2,17 +2,19 @@ const CONSTANTS = require("../constants");
 const config = require("../config/keys");
 const cloudinary = require("../utils/cloudinary");
 const { checkCategoryById } = require("../controllers/categoriesController");
+const { listOrders, listForBestSeller } = require("../controllers/ordersController");
 
 class ProductService {
-    constructor(productRepo) {
+    constructor(productRepo, OrderRepo) {
         this.productRepo = productRepo;
+        this.OrderRepo = OrderRepo;
     }
 
     async createProduct(req) {
         const response = {};
         try {
             // Extract data from the request
-            const { sku, productName, categories, shortDescription, longDescription, price, discountPrice, quantity, options, active } = req.body;
+            const { sku, productName, categories, shortDescription, longDescription, price, discountPrice, quantity, options, active, recommended } = req.body;
 
             const categoriesArray = categories.split(",");
             // console.log(categoriesArray);
@@ -75,6 +77,7 @@ class ProductService {
                 quantity,
                 options: options ? JSON.parse(`${options}`) : [],
                 active,
+                recommended,
             };
 
             // Create the product
@@ -105,14 +108,14 @@ class ProductService {
         try {
             const productId = req.params.id;
 
-            const { sku, productName, categories, shortDescription, longDescription, price, discountPrice, quantity, options, active } = req.body;
+            const { sku, productName, categories, shortDescription, longDescription, price, discountPrice, quantity, options, active, recommended } = req.body;
 
             const categoriesArray = categories.split(",");
 
             const updatedProduct = {
                 sku,
                 productName,
-                categories : categoriesArray,
+                categories: categoriesArray,
                 shortDescription,
                 longDescription,
                 price,
@@ -120,6 +123,7 @@ class ProductService {
                 quantity,
                 options: options ? JSON.parse(`${options}`) : [],
                 active,
+                recommended,
             };
 
             // Check if any of the categories don't exist
@@ -150,7 +154,7 @@ class ProductService {
                 return response;
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             if (error.code === 11000) {
                 const field = Object.keys(error.keyPattern)[0];
                 response.message = CONSTANTS.PRODUCT_DUPLICATE_KEY(field);
@@ -185,28 +189,73 @@ class ProductService {
     }
 
     async getProducts(req) {
-        const query = req.query.query;
-        const response = {};
-        const page = parseInt(req.query.page) || 1;
-        const sort = req.query.sort || "DESC";
-        const pageSize = 10;
-        const skip = (page - 1) * pageSize;
-        const limit = pageSize;
+        // const query = req.query.query;
+        // const page = parseInt(req.query.page) || 1;
+        // const sort = req.query.sort || "DESC";
+        // const pageSize = 10;
+        // const skip = (page - 1) * pageSize;
+        // const limit = pageSize;
 
-        if (req.query.query) {
-            try {
-                const searchProducts = await this.productRepo.searchProduct(query, skip, limit, sort);
-                return searchProducts;
-            } catch (error) {
-                return error;
-            }
-        } else {
+        // if (req.query.query) {
+        //     try {
+        //         const searchProducts = await this.productRepo.searchProduct(
+        //             query,
+        //             skip,
+        //             limit,
+        //             sort
+        //         );
+        //         return searchProducts;
+        //     } catch (error) {
+        //         return error;
+        //     }
+        // } else {
+        //     const response = {};
+        //     response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+        //     const products = await this.productRepo.listProducts();
+        //     response.products = products;
+        //     return response;
+        // }
+        try {
             const response = {};
             response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
-            const products = await this.productRepo.listProducts(skip, limit, sort);
+            const products = await this.productRepo.listProducts();
             response.products = products;
             return response;
+        } catch (error) {
+            console.log(error);
         }
+    }
+
+    async getNewestProducts(req) {
+        const query = req.query.query;
+        const response = {};
+        const products = await this.productRepo.getNewestProducts(8);
+        response.products = products;
+        response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+        return response;
+    }
+
+    async getRecommendedProducts(req) {
+        const query = req.query.query;
+        const response = {};
+        const products = await this.productRepo.getRecommendedProducts(8);
+        response.products = products;
+        response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+        return response;
+    }
+
+    async getBestProducts(req) {
+        const query = req.query.query;
+        const response = {};
+        const products_saled = await this.OrderRepo.getBestProducts(8);
+
+        const products_ids = products_saled.map((product) => product.productId);
+
+        const products = await this.productRepo.getBestProductsByIDs(products_ids);
+
+        response.products = products;
+        response.status = CONSTANTS.SERVER_OK_HTTP_CODE;
+        return response;
     }
 
     async deleteProduct(req) {

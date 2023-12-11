@@ -945,6 +945,7 @@
 
 .single-banner-2 {
   position: relative;
+  // height: 500px;
 
   overflow: hidden;
   a {
@@ -965,7 +966,7 @@
       left: 20px;
     }
     h3 {
-      font-family: "Cormorant Garamond";
+      font-family: 'Inter', sans-serif;
       font-size: 48px;
 
       margin: 0;
@@ -979,7 +980,7 @@
       }
     }
     h4 {
-      font-family: "Cormorant Garamond";
+      font-family: 'Inter', sans-serif;
       font-size: 24px;
       font-weight: 500;
 
@@ -996,25 +997,26 @@
         margin: 10px 0 20px;
       }
       span {
-        color: #935644;
+        color: #ffefea;
       }
     }
     a {
-      font-size: 14px;
+      font-size: 18px;
 
       display: inline-block;
 
-      width: 28px;
-      height: 28px;
+      width: 138px;
+      height: 40px;
 
       text-align: center;
 
-      color: #97584a;
-      border: 2px solid #97584a;
-      border-radius: 100%;
+      color: #fff !important;
+      border: 2px solid rgb(255, 255, 255);
+      padding: 6px;
       &:hover {
-        color: #000;
-        border: 2px solid #000;
+        color: #fff !important;
+        border: 2px solid rgb(41, 41, 41);
+        background-color: #1c1c1c;
       }
     }
     &.jewellery-banner {

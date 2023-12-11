@@ -17,8 +17,8 @@ const DashboardProvider = ({ children }) => {
     // };
     const handleDateRangeChange = (dates) => {
         setDateRange(dates);
-        console.log("dateRange: ", dateRange);
-        console.log("dates default : ", dates);
+        // console.log("dateRange: ", dateRange);
+        // console.log("dates default : ", dates);
     };
 
     // useEffect(() => {}, []);

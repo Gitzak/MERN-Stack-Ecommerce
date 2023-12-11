@@ -19,7 +19,7 @@ const ProductDetails = () => {
         const productDetailData = response.data.data;
         dispatch(setProductDetail(productDetailData));
       } catch (error) {
-        console.log(error.message);
+        // console.log(error.message);
       }
     };
     fetchProductDetail();

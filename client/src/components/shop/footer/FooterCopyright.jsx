@@ -1,13 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import LogoImage from "/assets/logo/logo.png";
+import LogoImage from "/assets/logo/Handmade.webp";
 
 const FooterCopyright = () => {
   return (
     <div className="copyright mb-30">
       <div className="footer-logo">
         <Link to="/shop">
-          <img alt="" src={LogoImage} />
+          <img alt="" src={LogoImage} width={140} />
         </Link>
       </div>
       <p>

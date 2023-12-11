@@ -6,14 +6,14 @@ const projectRoot = '../server'; // Change this to your desired project root fol
 function createDirectory(dirPath) {
     if (!fs.existsSync(dirPath)) {
         fs.mkdirSync(dirPath);
-        console.log(`Created directory: ${dirPath}`);
+        // console.log(`Created directory: ${dirPath}`);
     }
 }
 
 function createFile(filePath, content = '') {
     if (!fs.existsSync(filePath)) {
         fs.writeFileSync(filePath, content);
-        console.log(`Created file: ${filePath}`);
+        // console.log(`Created file: ${filePath}`);
     }
 }
 
@@ -66,7 +66,7 @@ function createFolderStructure() {
     createFile(path.join(projectRoot, '.gitignore'), '/node_modules\n*.log\n.DS_Store\n.env');
     createFile(path.join(projectRoot, 'README.md'), '# My Project\n\nProject description here.');
 
-    console.log('Folder structure and files created successfully.');
+    // console.log('Folder structure and files created successfully.');
 }
 
 createFolderStructure();
