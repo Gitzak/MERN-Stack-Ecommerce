@@ -6,14 +6,16 @@ import {
   selectCartTotal,
 } from "../../../../store/cart/cart.selector";
 import { deleteFromCart } from "../../../../store/cart/cart.action";
+import { selectCurrentCustomer } from "../../../../store/customer/customer.selector";
 
 const MenuCart = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);
   const cartTotal = useSelector(selectCartTotal);
+  const currentCustomer = useSelector(selectCurrentCustomer);
 
   return (
-    <div className="shopping-cart-content" style={{backgroundColor:'white'}}>
+    <div className="shopping-cart-content" style={{ backgroundColor: "white" }}>
       {cartItems && cartItems.length > 0 ? (
         <Fragment>
           <ul>
@@ -26,6 +28,7 @@ const MenuCart = () => {
                         alt=""
                         src={single.productImages[0]}
                         className="img-fluid"
+                        style={{height:"100px", width: "80px"}}
                       />
                     </Link>
                   </div>
@@ -40,7 +43,11 @@ const MenuCart = () => {
                     <span>${single.price}</span>
                   </div>
                   <div className="shopping-cart-delete">
-                    <button onClick={() => dispatch(deleteFromCart(cartItems, single))}>
+                    <button
+                      onClick={() =>
+                        dispatch(deleteFromCart(cartItems, single))
+                      }
+                    >
                       <i className="fa fa-times-circle" />
                     </button>
                   </div>
@@ -58,9 +65,11 @@ const MenuCart = () => {
             <Link className="default-btn" to="/shop/cart">
               view cart
             </Link>
-            <Link className="default-btn" to="/shop/checkout">
-              checkout
-            </Link>
+            {currentCustomer && (
+              <Link className="default-btn" to="/shop/checkout">
+                checkout
+              </Link>
+            )}
           </div>
         </Fragment>
       ) : (

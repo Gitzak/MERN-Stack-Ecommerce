@@ -12,7 +12,7 @@ const LoginRegister = () => {
 
   return (
     <Fragment>
-      <BreadcrumbsItem to="/shop/login-register">Home</BreadcrumbsItem>
+      <BreadcrumbsItem to="/shop">Home</BreadcrumbsItem>
       <BreadcrumbsItem to={pathname}>Login Register</BreadcrumbsItem>
       {/* breadcrumb */}
       <Breadcrumb />

@@ -3,8 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import MenuCart from "./sub-components/MenuCart";
 import { selectCartItems } from "../../../store/cart/cart.selector";
+import {
+  logoutCustomer,
+  setCurrentCustomer,
+} from "../../../store/customer/customer.action";
 import { selectCurrentCustomer } from "../../../store/customer/customer.selector";
-import { logoutCustomer, setCurrentCustomer } from "../../../store/customer/customer.action";
 
 const IconGroup = () => {
   const dispatch = useDispatch();
@@ -38,7 +41,10 @@ const IconGroup = () => {
                   <Link to="/shop/my-account">my account</Link>
                 </li>
                 <li>
-                  <span onClick={signOutCustomer} style={{cursor: "pointer"}}> LogOut </span>
+                  <span onClick={signOutCustomer} style={{ cursor: "pointer" }}>
+                    {" "}
+                    LogOut{" "}
+                  </span>
                 </li>
               </>
             ) : (

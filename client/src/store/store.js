@@ -1,5 +1,8 @@
 import { compose, createStore, applyMiddleware } from "redux";
 import { rootReducer } from "./root-reducer";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+
 import { CUSTOMER_ACTION_TYPES } from "./customer/customer.types";
 import { USER_ACTION_TYPES } from "./user/user.types";
 
@@ -39,8 +42,6 @@ const loadCustomerFromLocalStorage = () => {
   }
 };
 
-
-
 // Load customer data from local storage on store creation
 const loadUserFromLocalStorage = () => {
   try {
@@ -54,14 +55,27 @@ const loadUserFromLocalStorage = () => {
   }
 };
 
+const persistConfig = {
+  key: "root",
+  storage,
+  blacklist: ["user", "customer"],
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const middlewares = [loggedMiddleware];
 
 const composedEnhancers = compose(applyMiddleware(...middlewares));
 
 export const store = createStore(
-  rootReducer,
-  loadCustomerFromLocalStorage() ? { customer: { currentCustomer: loadCustomerFromLocalStorage() } } : undefined,  
-  loadUserFromLocalStorage() ? { user: { currentUser: loadUserFromLocalStorage() } } : undefined,  
+  persistedReducer,
+  loadCustomerFromLocalStorage()
+    ? { customer: { currentCustomer: loadCustomerFromLocalStorage() } }
+    : undefined,
+  loadUserFromLocalStorage()
+    ? { user: { currentUser: loadUserFromLocalStorage() } }
+    : undefined,
   composedEnhancers
 );
+
+export const persistor = persistStore(store);

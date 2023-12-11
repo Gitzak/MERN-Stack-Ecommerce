@@ -1,4 +1,5 @@
 import React from "react";
+import Sticky from "react-sticky-el";
 import ProductImageGallerySideThumb from "../../components/shop/product/ProductImageGallerySideThumb";
 import ProductDescriptionInfo from "../../components/shop/product/ProductDescriptionInfo";
 import { useSelector } from "react-redux";
@@ -6,8 +7,6 @@ import { selectProductDetail } from "../../store/products/product.selector";
 
 const ProductImageDescription = () => {
   const productDetail = useSelector(selectProductDetail);
-  console.log("pro from deatail page", productDetail);
-
   if (!productDetail) {
     return (
       <div className="flone-preloader-wrapper">
@@ -29,7 +28,12 @@ const ProductImageDescription = () => {
           </div>
           {/* product description info */}
           <div className="col-lg-6 col-md-6">
-            <ProductDescriptionInfo product={productDetail} />
+            <Sticky
+              boundaryElement=".shop-area"
+              style={{ position: "relative" }}
+            >
+              <ProductDescriptionInfo product={productDetail} />
+            </Sticky>
           </div>
         </div>
       </div>

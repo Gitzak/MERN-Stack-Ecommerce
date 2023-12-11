@@ -2,57 +2,16 @@ import React, { Fragment, useState, useEffect } from "react";
 // import Paginator from "react-hooks-paginator";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import Breadcrumb from "../../../wrappers/breadcrumb/Breadcrumb";
-
-// import { getSortedProducts } from "../../helpers/product";
-
-// import ShopSidebar from "../../../wrappers/product/ShopSidebar";
 import ShopTopbar from "../../../wrappers/product/ShopTopbar";
 import ShopSidebar from "../../../wrappers/product/ShopSidebar";
 import ShopProductsGrid from "../../../wrappers/product/ShopProductsGrid";
 
 const ShopProducts = () => {
-  // const [layout, setLayout] = useState("grid three-column");
-  // const [sortType, setSortType] = useState("");
-  // const [sortValue, setSortValue] = useState("");
-  // const [filterSortType, setFilterSortType] = useState("");
-  // const [filterSortValue, setFilterSortValue] = useState("");
-  // const [offset, setOffset] = useState(0);
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const [currentData, setCurrentData] = useState([]);
-  // const [sortedProducts, setSortedProducts] = useState([]);
-
-  // const pageLimit = 15;
   const { pathname } = location;
-
-  // const getLayout = (layout) => {
-  //   setLayout(layout);
-  // };
-
-  // const getSortParams = (sortType, sortValue) => {
-  //   setSortType(sortType);
-  //   setSortValue(sortValue);
-  // };
-
-  // const getFilterSortParams = (sortType, sortValue) => {
-  //   setFilterSortType(sortType);
-  //   setFilterSortValue(sortValue);
-  // };
-
-  // useEffect(() => {
-  //   let sortedProducts = getSortedProducts(products, sortType, sortValue);
-  //   const filterSortedProducts = getSortedProducts(
-  //     sortedProducts,
-  //     filterSortType,
-  //     filterSortValue
-  //   );
-  //   sortedProducts = filterSortedProducts;
-  //   setSortedProducts(sortedProducts);
-  //   setCurrentData(sortedProducts.slice(offset, offset + pageLimit));
-  // }, [offset, products, sortType, sortValue, filterSortType, filterSortValue]);
 
   return (
     <Fragment>
-      <BreadcrumbsItem to="/shop/home">Home</BreadcrumbsItem>
+      <BreadcrumbsItem to="/shop">Home</BreadcrumbsItem>
       <BreadcrumbsItem to={pathname}>Shop</BreadcrumbsItem>
 
       {/* breadcrumb */}

@@ -13,16 +13,18 @@ import {
   deleteFromCart,
   increaseQuantity,
 } from "../../../store/cart/cart.action";
+import { selectCurrentCustomer } from "../../../store/customer/customer.selector";
 
 const Cart = () => {
   const { pathname } = location;
   const dispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);
   const cartTotal = useSelector(selectCartTotal);
+  const currentCustomer = useSelector(selectCurrentCustomer);
 
   return (
     <Fragment>
-      <BreadcrumbsItem to={"/shop/home"}>Home</BreadcrumbsItem>
+      <BreadcrumbsItem to={"/shop"}>Home</BreadcrumbsItem>
       <BreadcrumbsItem to={pathname}>Cart</BreadcrumbsItem>
       {/* breadcrumb */}
       <Breadcrumb />
@@ -55,6 +57,7 @@ const Cart = () => {
                                     className="img-fluid"
                                     src={cartItem.productImages[0]}
                                     alt=""
+                                    style={{width:"100px",  height:"120px"}}
                                   />
                                 </Link>
                               </td>
@@ -169,7 +172,11 @@ const Cart = () => {
                     <h4 className="grand-totall-title">
                       Grand Total <span>{"$" + cartTotal.toFixed(2)}</span>
                     </h4>
-                    <Link to={"/shop/checkout"}>Proceed to Checkout</Link>
+                    {currentCustomer ? (
+                      <Link to={"/shop/checkout"}>Proceed to Checkout</Link>
+                    ) : (
+                      <Link to={"/shop/login-register"}>Login First to Make Order</Link>
+                    )}
                   </div>
                 </div>
               </div>

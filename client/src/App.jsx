@@ -34,6 +34,7 @@ import { CreateCategory } from "./pages/dashboard/category/Create";
 import { UpdateCategory } from "./pages/dashboard/category/Update";
 import { Profile } from "./pages/dashboard/auth/Profile";
 import { NotFound } from "./pages/dashboard/errors/NotFound";
+import NotFound404 from "./pages/shop/notfound404/NotFound404";
 
 function App() {
   return (
@@ -44,9 +45,10 @@ function App() {
           <Route path="products" element={<ShopProducts />} />
           <Route path="product/:id" element={<ProductDetails />} />
           <Route path="cart" element={<Cart />} />
-          <Route path="checkout" element={<Checkout />} />
           <Route path="login-register" element={<LoginRegister />} />
+          <Route path="checkout" element={<Checkout />} />
           <Route path="my-account" element={<MyAccount />} />
+          <Route path="*" element={<NotFound404 />} />
         </Route>
 
         {/* Customer Validation Route  */}
@@ -58,7 +60,14 @@ function App() {
 
         <Route element={<AdminRoutes />}>
           <Route path="/dashboard" element={<MainLayout />}>
-            <Route index element={<DashboardProvider><Dashboard /></DashboardProvider>} />
+            <Route
+              index
+              element={
+                <DashboardProvider>
+                  <Dashboard />
+                </DashboardProvider>
+              }
+            />
             <Route path="users" element={<Users />} />
             <Route path="users/create" element={<UserCreate />} />
             <Route path="orders" element={<Orders />} />

@@ -1,24 +1,34 @@
 import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
-// import ProductImage from "/assets/Img/ProductTest.jpg";
-// import ProductModal from "./ProductModal";
+import ProductModal from "./ProductModal";
 
 const ProductGridSingle = ({ product }) => {
   const [modalShow, setModalShow] = useState(false);
-  // const { addToast } = useToasts();
 
   return (
     <Fragment>
       <div className=" col-xl-3 col-md-6 col-lg-4 col-sm-6 ">
         <div className={`product-wrap mb-25`}>
           <div className="product-img">
-            <img className="default-img" src={product.productImages[0] || Image} alt=""  style={{height: "300px"}}/>
-            {/* <img className="default-img" src={ProductImage} alt="" /> */}
+            <Link to={`/shop/product/${product._id}`}>
+              <img
+                className="default-img"
+                src={product.productImages[0] || Image}
+                alt=""
+                style={{ height: "300px" }}
+              />
+            </Link>
             {product.productImages.length > 1 ? (
-              <img className="hover-img" src={product.productImages[1]} alt="" style={{height: "300px"}} />
-              ) : (
-                ""
-                // <img className="hover-img" src={ProductImage} alt="" />
+              <Link to={`/shop/product/${product._id}`}>
+                <img
+                  className="hover-img"
+                  src={product.productImages[1]}
+                  alt=""
+                  style={{ height: "300px" }}
+                />
+              </Link>
+            ) : (
+              ""
             )}
 
             <div className="product-action">
@@ -28,12 +38,9 @@ const ProductGridSingle = ({ product }) => {
                 </Link>
               </div>
               <div className="pro-same-action pro-quickview">
-                <button title="Quick View">
+                <button onClick={() => setModalShow(true)} title="Quick View">
                   <i className="pe-7s-look" />
                 </button>
-                {/* <button onClick={() => setModalShow(true)} title="Quick View">
-                  <i className="pe-7s-look" />
-                </button> */}
               </div>
             </div>
           </div>
@@ -47,12 +54,11 @@ const ProductGridSingle = ({ product }) => {
       </div>
 
       {/* product modal */}
-      {/* <ProductModal
+      <ProductModal
         show={modalShow}
         onHide={() => setModalShow(false)}
-        cartitem={cartItem}
         product={product}
-      /> */}
+      />
     </Fragment>
   );
 };

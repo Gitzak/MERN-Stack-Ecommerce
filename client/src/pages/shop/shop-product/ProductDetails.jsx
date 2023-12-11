@@ -27,7 +27,7 @@ const ProductDetails = () => {
 
   return (
     <Fragment>
-      <BreadcrumbsItem to={"/shop/home"}>Home</BreadcrumbsItem>
+      <BreadcrumbsItem to={"/shop"}>Home</BreadcrumbsItem>
       <BreadcrumbsItem to={pathname}>Shop Product</BreadcrumbsItem>
 
       {/* breadcrumb */}

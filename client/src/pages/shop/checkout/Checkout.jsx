@@ -1,31 +1,81 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import Breadcrumb from "../../../wrappers/breadcrumb/Breadcrumb";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   selectCartItems,
   selectCartTotal,
 } from "../../../store/cart/cart.selector";
 import { createNewOrder } from "../../../api/orderApi";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
+import { deleteAllFromCart } from "../../../store/cart/cart.action";
 
 const Checkout = () => {
   const { pathname } = location;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const cartItems = useSelector(selectCartItems);
   const cartTotal = useSelector(selectCartTotal);
+
+  const [billingInfo, setBillingInfo] = useState({
+    firstName: "",
+    lastName: "",
+    streetAddress: "",
+    city: "",
+    state: "",
+    postcode: "",
+    phone: "",
+    email: "",
+    orderNotes: "",
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setBillingInfo((prevBillingInfo) => ({
+      ...prevBillingInfo,
+      [name]: value,
+    }));
+    console.log(billingInfo)
+  };
 
   const HandleNewOrder = async () => {
     const sendedOrder = cartItems.map((cartItem) => ({
       productId: cartItem._id,
       quantity: cartItem.quantityCount,
       itemOptions: [],
+      billingInfo: { ...billingInfo },
     }));
     try {
-      console.log("this is sended order",sendedOrder);
+      console.log("this is sended order", sendedOrder);
       const newOrder = await createNewOrder(sendedOrder);
-      console.log("this is new order",newOrder.data);
+      console.log("this is new order", newOrder.data);
+      if (newOrder.data.status === 201) {
+        // Success message
+        Swal.fire({
+          icon: "success",
+          title: "Order created successfully",
+          text: newOrder.data.message,
+        });
+        navigate("/shop");
+        dispatch(deleteAllFromCart(cartItems));
+      } else {
+        // Error message
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: newOrder.data.message,
+        });
+      }
     } catch (error) {
       console.log(error.message);
+      // Error message for any unexpected errors
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error.message,
+      });
     }
   };
 
@@ -46,76 +96,84 @@ const Checkout = () => {
                     <div className="col-lg-6 col-md-6">
                       <div className="billing-info mb-20">
                         <label>First Name</label>
-                        <input type="text" />
+                        <input
+                          type="text"
+                          name="firstName"
+                          onChange={handleInputChange}
+                        />
                       </div>
                     </div>
                     <div className="col-lg-6 col-md-6">
                       <div className="billing-info mb-20">
                         <label>Last Name</label>
-                        <input type="text" />
+                        <input
+                          type="text"
+                          name="lastName"
+                          onChange={handleInputChange}
+                        />
                       </div>
                     </div>
-                    <div className="col-lg-12">
-                      <div className="billing-info mb-20">
-                        <label>Company Name</label>
-                        <input type="text" />
-                      </div>
-                    </div>
-                    <div className="col-lg-12">
-                      <div className="billing-select mb-20">
-                        <label>Country</label>
-                        <select>
-                          <option>Select a country</option>
-                          <option>Azerbaijan</option>
-                          <option>Bahamas</option>
-                          <option>Bahrain</option>
-                          <option>Bangladesh</option>
-                          <option>Barbados</option>
-                        </select>
-                      </div>
-                    </div>
+                    <div className="col-lg-12"></div>
                     <div className="col-lg-12">
                       <div className="billing-info mb-20">
                         <label>Street Address</label>
                         <input
+                          type="text"
+                          name="streetAddress"
                           className="billing-address"
+                          onChange={handleInputChange}
                           placeholder="House number and street name"
-                          type="text"
-                        />
-                        <input
-                          placeholder="Apartment, suite, unit etc."
-                          type="text"
                         />
                       </div>
                     </div>
                     <div className="col-lg-12">
                       <div className="billing-info mb-20">
                         <label>Town / City</label>
-                        <input type="text" />
+                        <input
+                          type="text"
+                          onChange={handleInputChange}
+                          name="city"
+                        />
                       </div>
                     </div>
                     <div className="col-lg-6 col-md-6">
                       <div className="billing-info mb-20">
                         <label>State / County</label>
-                        <input type="text" />
+                        <input
+                          type="text"
+                          name="state"
+                          onChange={handleInputChange}
+                        />
                       </div>
                     </div>
                     <div className="col-lg-6 col-md-6">
                       <div className="billing-info mb-20">
                         <label>Postcode / ZIP</label>
-                        <input type="text" />
+                        <input
+                          onChange={handleInputChange}
+                          name="postcode"
+                          type="text"
+                        />
                       </div>
                     </div>
                     <div className="col-lg-6 col-md-6">
                       <div className="billing-info mb-20">
                         <label>Phone</label>
-                        <input type="text" />
+                        <input
+                          onChange={handleInputChange}
+                          name="phone"
+                          type="text"
+                        />
                       </div>
                     </div>
                     <div className="col-lg-6 col-md-6">
                       <div className="billing-info mb-20">
                         <label>Email Address</label>
-                        <input type="text" />
+                        <input
+                          onChange={handleInputChange}
+                          name="email"
+                          type="text"
+                        />
                       </div>
                     </div>
                   </div>
@@ -126,7 +184,8 @@ const Checkout = () => {
                       <label>Order notes</label>
                       <textarea
                         placeholder="Notes about your order, e.g. special notes for delivery. "
-                        name="message"
+                        name="orderNotes"
+                        onChange={handleInputChange}
                         defaultValue={""}
                       />
                     </div>
