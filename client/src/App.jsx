@@ -34,14 +34,25 @@ import { CreateCategory } from "./pages/dashboard/category/Create";
 import { UpdateCategory } from "./pages/dashboard/category/Update";
 import { Profile } from "./pages/dashboard/auth/Profile";
 import { NotFound } from "./pages/dashboard/errors/NotFound";
+<<<<<<< HEAD
 import NotFound404 from "./pages/shop/notfound404/NotFound404";
+=======
+import About from "./pages/shop/aboutUs/aboutUs";
+import Contact from "./pages/shop/contact/Contact";
+>>>>>>> yassirShopChange
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/shop" element={<ShopLayout />}>
+<<<<<<< HEAD
           <Route index element={<Home />} />
+=======
+          <Route path="home" element={<Home />} />
+          <Route path="aboutUs" element={<About />} />
+          <Route path="contact" element={<Contact />} />
+>>>>>>> yassirShopChange
           <Route path="products" element={<ShopProducts />} />
           <Route path="product/:id" element={<ProductDetails />} />
           <Route path="cart" element={<Cart />} />

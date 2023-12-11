@@ -86,6 +86,7 @@ const ProductGrid = ({ eventKey, Number }) => {
   }, []);
 
   const { currentProducts } = useSelector(selectCurrentProducts);
+<<<<<<< HEAD
   const currentProductsNow = currentProducts.currentProducts
   // console.log("currentProducts", currentProductsNow);
 
@@ -93,6 +94,16 @@ const ProductGrid = ({ eventKey, Number }) => {
     <Fragment>
       {Array.isArray(currentProductsNow) &&
         currentProductsNow.slice(0, Number).map((product, index) => (
+=======
+
+  console.log("currentProducts", currentProducts.currentProducts);
+  const displayProducts = currentProducts.currentProducts;
+
+  return (
+    <Fragment>
+      {Array.isArray(displayProducts) &&
+        displayProducts.slice(0, Number).map((product, index) => (
+>>>>>>> yassirShopChange
           <ProductGridSingle product={product} key={index} />
         ))}
     </Fragment>

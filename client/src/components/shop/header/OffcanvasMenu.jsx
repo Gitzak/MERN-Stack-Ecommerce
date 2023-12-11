@@ -16,10 +16,21 @@ const OffcanvasMenu = ({ activeState, getActiveState }) => {
         </button>
       </div>
       <div className="side-logo">
+<<<<<<< HEAD
         <Link to={process.env.PUBLIC_URL + "/"}>
           <img
             alt=""
             src={process.env.PUBLIC_URL + "/assets/img/logo/logo.png"}
+=======
+        <Link to={
+          // process.env.PUBLIC_URL + 
+          "/"}>
+          <img
+            alt=""
+            src={
+              // process.env.PUBLIC_URL + 
+              "/assets/img/logo/logo.png"}
+>>>>>>> yassirShopChange
           />
         </Link>
       </div>
