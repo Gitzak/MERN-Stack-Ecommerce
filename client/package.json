@@ -47,7 +47,7 @@
     "redux-localstorage-simple": "^2.5.1",
     "redux-persist": "^6.0.0",
     "reselect": "^4.1.8",
-    "sweetalert2": "^11.10.1",
+    "sweetalert2": "^11.6.13",
     "swiper": "^11.0.5",
     "uuid": "^9.0.1",
     "websocket": "^1.0.34",

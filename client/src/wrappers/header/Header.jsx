@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Logo from "../../components/shop/header/Logo";
 import NavMenu from "../../components/shop/header/NavMenu";
 import IconGroup from "../../components/shop/header/IconGroup";
-// import MobileMenu from "../../components/header/MobileMenu";
+import MobileMenu from "../../components/shop/header/MobileMenu";
 
 const Header = () => {
   const [scroll, setScroll] = useState(0);
@@ -46,7 +46,7 @@ const Header = () => {
           </div>
         </div>
         {/* mobile menu */}
-        {/* <MobileMenu /> */}
+        <MobileMenu />
       </div>
     </header>
   );
