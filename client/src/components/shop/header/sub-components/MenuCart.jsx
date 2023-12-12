@@ -7,6 +7,7 @@ import {
 } from "../../../../store/cart/cart.selector";
 import { deleteFromCart } from "../../../../store/cart/cart.action";
 import { selectCurrentCustomer } from "../../../../store/customer/customer.selector";
+import { FormattedNumber } from "../../../dashboard/FormattedNumber/FormattedNumber";
 
 const MenuCart = () => {
   const dispatch = useDispatch();
@@ -40,7 +41,7 @@ const MenuCart = () => {
                       </Link>
                     </h4>
                     <h6>Qty: {single.quantityCount}</h6>
-                    <span>${single.price}</span>
+                    <span><FormattedNumber value={single.discountPrice} /></span>
                   </div>
                   <div className="shopping-cart-delete">
                     <button
@@ -58,7 +59,7 @@ const MenuCart = () => {
           <div className="shopping-cart-total">
             <h4>
               Total :{" "}
-              <span className="shop-total">{"$" + cartTotal.toFixed(2)}</span>
+              <span className="shop-total"> <FormattedNumber value={cartTotal.toFixed(2)}/></span>
             </h4>
           </div>
           <div className="shopping-cart-btn btn-hover text-center">

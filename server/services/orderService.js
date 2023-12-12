@@ -49,7 +49,7 @@ class OrdersService {
                 }
 
                 // Calculate the total price for this item and add it to subTotalOrderPrice
-                const itemPrice = product.price * item.quantity;
+                const itemPrice = product.discountPrice * item.quantity;
                 subTotalOrderPrice += itemPrice;
 
                 // Decrease the product's quantity in the database
@@ -64,7 +64,7 @@ class OrdersService {
                     itemID: product.id,
                     itemName: product.productName,
                     quantity: item.quantity,
-                    unitPrice: product.price,
+                    unitPrice: product.discountPrice,
                     itemOptions: formattedItemOptions,
                     totalPrice: itemPrice,
                 });

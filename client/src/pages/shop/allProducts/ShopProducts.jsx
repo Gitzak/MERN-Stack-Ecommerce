@@ -16,7 +16,7 @@ const ShopProducts = () => {
   const [gotedProducts, setGotedProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [offset, setOffset] = useState(0);
-  const pageLimit = 8;
+  const pageLimit = 12;
 
   const dispatch = useDispatch();
 
