@@ -41,7 +41,7 @@ const TrackingForm = styled.div`
 
         button {
             width: 100%; /* Take up full width */
-            background-color: #4caf50;
+            background-color: black;
             color: #fff;
             padding: 15px 20px;
             border: none;
@@ -51,7 +51,7 @@ const TrackingForm = styled.div`
             transition: background-color 0.3s;
 
             &:hover {
-                background-color: #45a049; /* Darken button color on hover */
+                background-color: #e3a346; /* Darken button color on hover */
             }
         }
     }
@@ -104,16 +104,15 @@ const TrackingOrders = () => {
                 <div className="container">
                     <div className="row" style={{ justifyContent: "center" }}>
                         <div className="col-md-12">
-                            <SectionTitleWithText
+                            <div
                                 spaceTopClass="pt-100"
                                 spaceBottomClass="pb-95"
                             >
                                 <h2>Tracking Orders</h2>
                                 <p>Track the status of your orders using the tracking number.</p>
-                            </SectionTitleWithText>
+                            </div>
 
                             <TrackingForm>
-                                <h3>Tracking Orders</h3>
                                 <form>
                                     <input
                                         type="text"
