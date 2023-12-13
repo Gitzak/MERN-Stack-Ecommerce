@@ -4,7 +4,7 @@
     "image": "/src/assets/img/steptodown.com504076.jpg",
     "title": "Featured Products",
     "subtitle": "Choose Your Products Here",
-    "link": "/shop-grid-standard",
+    "link": "/shop/products",
     "textAlign": "right"
   },
   {
@@ -12,7 +12,7 @@
     "image": "/src/assets/img/steptodown.com671791.jpg",
     "title": "New Products",
     "subtitle": "Choose Your Products Here",
-    "link": "/shop-grid-standard",
+    "link": "/shop/products",
     "textAlign": "left"
   }
 ]

@@ -1,23 +1,23 @@
 [
   {
     "id": "1",
-    "image": "/assets/testimonial/testi-1.png",
-    "content": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    "customerName": "Grace Alvarado",
-    "title": "customer"
+    "image": "https://source.unsplash.com/160x160/?portrait,woman",
+    "content": "I absolutely love the unique handcrafted items I find at Artisanal Haven! The attention to detail and craftsmanship is unmatched. Each piece tells a story, and it adds a special touch to my home. The passion and dedication of the artisans shine through their work.",
+    "customerName": "Sophia Rodriguez",
+    "title": "Art Lover"
   },
   {
     "id": "2",
-    "image": "/assets/testimonial/testi-1.png",
-    "content": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    "customerName": "John Doe",
-    "title": "customer"
+    "image": "https://source.unsplash.com/160x160/?portrait,man",
+    "content": "Being a regular customer at Artisanal Haven, I am continually impressed by the diverse range of artistic creations. The personalized service and the ability to connect with the artisans make each purchase meaningful. It's more than just a shop; it's a community of passionate creators.",
+    "customerName": "Alex Thompson",
+    "title": "Frequent Shopper"
   },
   {
     "id": "3",
-    "image": "/assets/testimonial/testi-1.png",
-    "content": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    "customerName": "John Doe",
-    "title": "customer"
+    "image": "https://source.unsplash.com/160x160/?portrait,artist",
+    "content": "Artisanal Haven is a treasure trove of creativity! As an artist myself, I find inspiration in every corner. The curated selection and the stories behind each piece add a layer of authenticity that is rare to find. It's not just a shop; it's an artistic journey.",
+    "customerName": "Elena Martinez",
+    "title": "Artist"
   }
 ]

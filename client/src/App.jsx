@@ -37,6 +37,8 @@ import { NotFound } from "./pages/dashboard/errors/NotFound";
 import NotFound404 from "./pages/shop/notfound404/NotFound404";
 import About from "./pages/shop/aboutUs/aboutUs";
 import Contact from "./pages/shop/contact/Contact";
+import TrackingOrders from "./pages/shop/tracking/tracking";
+
 
 function App() {
   return (
@@ -47,6 +49,7 @@ function App() {
           <Route path="home" element={<Home />} />
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
+          <Route path="tracking" element={<TrackingOrders />} />
           <Route path="products" element={<ShopProducts />} />
           <Route path="product/:id" element={<ProductDetails />} />
           <Route path="cart" element={<Cart />} />

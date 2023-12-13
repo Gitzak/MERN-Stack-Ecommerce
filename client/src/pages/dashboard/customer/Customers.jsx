@@ -109,7 +109,7 @@ const Customers = () => {
                                         },
                                     }}
                                     disableColumnFilter
-                                    disableColumnSelector
+                                    // disableColumnSelector
                                     disableDensitySelector
                                     slots={{ toolbar: GridToolbar }}
                                     slotProps={{

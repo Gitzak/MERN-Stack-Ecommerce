@@ -6,34 +6,58 @@ import brandLogoData from "../../data/brand-logos/brand-logo-one.json";
 import BrandLogoOneSingle from "../../components/shop/brand-logo/BrandLogoOneSingle";
 
 const BrandLogoSliderOne = ({ spaceBottomClass, spaceTopClass }) => {
+  // const settings = {
+  //   loop: true,
+  //   autoplay: {
+  //     delay: 3000,
+  //     disableOnInteraction: false
+  //   },
+  //   grabCursor: true,
+  //   breakpoints: {
+  //     1024: {
+  //       slidesPerView: 5
+  //     },
+  //     768: {
+  //       slidesPerView: 4
+  //     },
+  //     640: {
+  //       slidesPerView: 3
+  //     },
+  //     320: {
+  //       slidesPerView: 2
+  //     }
+  //   }
+  // };
   const settings = {
     loop: true,
     autoplay: {
-      delay: 3000,
-      disableOnInteraction: false
+      delay: 1500,
+      disableOnInteraction: false,
     },
     grabCursor: true,
     breakpoints: {
       1024: {
-        slidesPerView: 5
+        slidesPerView: 5,
       },
       768: {
-        slidesPerView: 4
+        slidesPerView: 4,
       },
       640: {
-        slidesPerView: 3
+        slidesPerView: 3,
       },
       320: {
-        slidesPerView: 2
-      }
-    }
+        slidesPerView: 2,
+      },
+    },
   };
+  
 
   return (
     <div
       className={`brand-logo-area ${
         spaceBottomClass ? spaceBottomClass : ""
       }  ${spaceTopClass ? spaceTopClass : ""}`}
+      style={{ maxWidth: "100%", margin: "0 auto", overflow: "hidden" }}
     >
       <div className="container">
         <div className="brand-logo-active">

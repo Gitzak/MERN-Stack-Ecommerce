@@ -348,7 +348,7 @@ export const Orders = () => {
                                     },
                                 }}
                                 disableColumnFilter
-                                disableColumnSelector
+                                // disableColumnSelector
                                 disableDensitySelector
                                 slots={{ toolbar: GridToolbar }}
                                 slotProps={{

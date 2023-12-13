@@ -40,16 +40,16 @@ const Footer = () => {
               <div className="footer-list">
                 <ul>
                   <li>
-                    <Link to="/about">About us</Link>
+                    <Link to="/shop/about">About us</Link>
                   </li>
                   <li>
-                    <Link to="/">Store location</Link>
+                    <Link to="/shop/contact">Store location</Link>
                   </li>
                   <li>
-                    <Link to="/contact">Contact</Link>
+                    <Link to="/shop/contact">Contact</Link>
                   </li>
                   <li>
-                    <Link to="/">Orders tracking</Link>
+                    <Link to="/shop/tracking">Orders tracking</Link>
                   </li>
                 </ul>
               </div>
@@ -63,16 +63,16 @@ const Footer = () => {
               <div className="footer-list">
                 <ul>
                   <li>
-                    <Link to="/">Returns</Link>
+                    <Link to="/shop/about">Returns</Link>
                   </li>
                   <li>
-                    <Link to="/">Support Policy</Link>
+                    <Link to="/shop/about">Support Policy</Link>
                   </li>
                   <li>
-                    <Link to="/">Size guide</Link>
+                    <Link to="/shop/about">Size guide</Link>
                   </li>
                   <li>
-                    <Link to="/">FAQs</Link>
+                    <Link to="/shop/about">FAQs</Link>
                   </li>
                 </ul>
               </div>

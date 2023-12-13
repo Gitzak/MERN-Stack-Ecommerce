@@ -1,0 +1,27 @@
+/* Add these styles to your CSS or SCSS file */
+.category-card {
+    transition: transform 0.3s ease-in-out;
+}
+
+.category-card:hover {
+    transform: scale(1.05);
+}
+
+.category-card img {
+    object-fit: cover;
+    height: 250px;
+    width: auto; /* Adjust the height as needed */
+}
+
+.category-card .card-body {
+    text-align: center;
+}
+
+.category-card .card-title {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.category-card .card-text {
+    color: #666;
+}

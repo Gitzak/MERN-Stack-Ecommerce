@@ -85,6 +85,14 @@ export const Products = () => {
             renderCell: (params) => <span style={{ color: params.value ? "green" : "red" }}>{params.value ? "Active" : "Inactive"}</span>,
         },
         {
+            field: "recommended",
+            headerName: "recommended",
+            type: "boolean",
+            width: 150,
+            editable: false,
+            renderCell: (params) => <span style={{ color: params.value ? "#E89D4A" : "black" }}>{params.value ? "Promoted" : "Basic"}</span>,
+        },
+        {
             field: "actions",
             headerName: "Actions",
             sortable: false,
@@ -182,7 +190,7 @@ export const Products = () => {
                                     },
                                 }}
                                 disableColumnFilter
-                                disableColumnSelector
+                                // disableColumnSelector
                                 disableDensitySelector
                                 slots={{ toolbar: GridToolbar }}
                                 slotProps={{
