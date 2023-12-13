@@ -1,35 +1,35 @@
 [
   {
     "id": "1",
-    "image": "https://img.freepik.com/free-vector/linear-flat-abstract-lines-pattern_23-2148953476.jpg?w=1800&t=st=1701519409~exp=1701520009~hmac=4bed3d2fc8040dc8be6225ca1d102a2aead47ea0dbfc82d177e947b11009d0d1",
+    "image": "/assets/Img/HeroImage.jpg",
     "subtitle": "2 Products",
     "title": "New",
     "link": "/shop-grid-standard"
   },
   {
     "id": "2",
-    "image": "https://img.freepik.com/free-vector/linear-flat-abstract-lines-pattern_23-2148953476.jpg?w=1800&t=st=1701519409~exp=1701520009~hmac=4bed3d2fc8040dc8be6225ca1d102a2aead47ea0dbfc82d177e947b11009d0d1",
+    "image": "/assets/Img/sth.jpeg",
     "subtitle": "3 Products",
     "title": "Crafts",
     "link": "/shop-grid-standard"
   },
   {
     "id": "3",
-    "image": "https://img.freepik.com/free-vector/linear-flat-abstract-lines-pattern_23-2148953476.jpg?w=1800&t=st=1701519409~exp=1701520009~hmac=4bed3d2fc8040dc8be6225ca1d102a2aead47ea0dbfc82d177e947b11009d0d1",
+    "image": "/assets/Img/snasal.jpeg",
     "subtitle": "6 Products",
     "title": "Earthenware",
     "link": "/shop-grid-standard"
   },
   {
     "id": "4",
-    "image": "https://img.freepik.com/free-vector/linear-flat-abstract-lines-pattern_23-2148953476.jpg?w=1800&t=st=1701519409~exp=1701520009~hmac=4bed3d2fc8040dc8be6225ca1d102a2aead47ea0dbfc82d177e947b11009d0d1",
+    "image": "/assets/Img/4raraf.jpg",
     "subtitle": "5 Products",
     "title": "Featured",
     "link": "/shop-grid-standard"
   },
   {
     "id": "5",
-    "image": "https://img.freepik.com/free-vector/linear-flat-abstract-lines-pattern_23-2148953476.jpg?w=1800&t=st=1701519409~exp=1701520009~hmac=4bed3d2fc8040dc8be6225ca1d102a2aead47ea0dbfc82d177e947b11009d0d1",
+    "image": "/assets/Img/zrabi.jpeg",
     "subtitle": "10 Products",
     "title": "Featured",
     "link": "/shop-grid-standard"

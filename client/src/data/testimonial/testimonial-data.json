@@ -2,21 +2,21 @@
   {
     "id": "1",
     "image": "/assets/testimonial/testi-1.png",
-    "content": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+    "content": "Absolutely enchanted by the exquisite craftsmanship at your store! The handmade products showcase a perfect blend of creativity and skill, making each piece a unique treasure. A true haven for those who appreciate the artistry behind traditional and handmade items",
     "customerName": "Grace Alvarado",
     "title": "customer"
   },
   {
     "id": "2",
     "image": "/assets/testimonial/testi-1.png",
-    "content": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+    "content": "Thrilled with my purchases from your store! The attention to detail in your handmade products is truly remarkable. It's heartening to support a business that preserves and promotes traditional craftsmanship with such dedication.",
     "customerName": "John Doe",
     "title": "customer"
   },
   {
     "id": "3",
     "image": "/assets/testimonial/testi-1.png",
-    "content": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+    "content": "A delightful experience exploring your store! The diverse array of traditional products offers a refreshing departure from mass-produced items. The passion for handmade creations is evident, and each product tells a story of heritage and authenticity. Can't wait to visit again!",
     "customerName": "John Doe",
     "title": "customer"
   }
