@@ -32,6 +32,7 @@
     "react-countup": "^6.5.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
+    "react-hooks-paginator": "^0.5.1",
     "react-horizontal-scrolling-menu": "^4.1.1",
     "react-id-swiper": "^4.0.0",
     "react-loader-spinner": "^5.4.5",

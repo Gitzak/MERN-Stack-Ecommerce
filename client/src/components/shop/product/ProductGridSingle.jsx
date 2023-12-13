@@ -1,14 +1,15 @@
 import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import ProductModal from "./ProductModal";
+import { FormattedNumber } from "../../dashboard/FormattedNumber/FormattedNumber";
 
 const ProductGridSingle = ({ product }) => {
   const [modalShow, setModalShow] = useState(false);
-  console.log(product)
+  console.log(product);
 
   return (
     <Fragment>
-      <div className=" col-xl-4 col-md-6 col-lg-4 col-sm-6 ">
+      <div className=" col-xl-3 col-md-6 col-lg-3 col-sm-6 ">
         <div className={`product-wrap mb-25`}>
           <div className="product-img">
             <Link to={`/shop/product/${product._id}`}>
@@ -16,7 +17,7 @@ const ProductGridSingle = ({ product }) => {
                 className="default-img"
                 src={product.productImages[0] || Image}
                 alt=""
-                style={{ height: "300px" }}
+                style={{ height: "auto" }}
               />
             </Link>
             {product.productImages.length > 1 ? (
@@ -25,7 +26,7 @@ const ProductGridSingle = ({ product }) => {
                   className="hover-img"
                   src={product.productImages[1]}
                   alt=""
-                  style={{ height: "300px" }}
+                  style={{ height: "auto" }}
                 />
               </Link>
             ) : (
@@ -48,7 +49,9 @@ const ProductGridSingle = ({ product }) => {
           <div className="product-content text-center">
             <h3>{product.productName}</h3>
             <div className="product-price">
-              <span>{"$" + product.price} </span>
+              <span>
+                <FormattedNumber value={product.discountPrice} />{" "}
+              </span>
             </div>
           </div>
         </div>

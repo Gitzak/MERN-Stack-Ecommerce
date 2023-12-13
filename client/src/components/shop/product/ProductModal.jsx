@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectCartItems } from "../../../store/cart/cart.selector";
 import { getProductCartQuantity } from "../../../helpers/product";
 import { addToCart } from "../../../store/cart/cart.action";
+import { FormattedNumber } from "../../dashboard/FormattedNumber/FormattedNumber";
 
 function ProductModal({ product, show, onHide }) {
   const dispatch = useDispatch();
@@ -59,7 +60,7 @@ function ProductModal({ product, show, onHide }) {
                           src={single}
                           alt=""
                           className="img-fluid"
-                          style={{ width: "1000px", height: "600px" }}
+                          style={{ width: "1000px", height: "auto" }}
                         />
                       </div>
                     );
@@ -70,8 +71,12 @@ function ProductModal({ product, show, onHide }) {
               <div className="product-details-content quickview-content">
                 <h2>{product.productName}</h2>
                 <div className="product-details-price">
-                  <span>{"$" + product.price}</span>{" "}
-                  <span className="old">{"$" + product.price}</span>
+                  <span>
+                    <FormattedNumber value={product.discountPrice} />
+                  </span>{" "}
+                  <span className="old">
+                    <FormattedNumber value={product.price} />
+                  </span>
                 </div>
                 <div className="pro-details-list">
                   <p>{product.shortDescription}</p>

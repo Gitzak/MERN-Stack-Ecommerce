@@ -15,7 +15,7 @@ const ShopTopAction = () => {
         </div>
         <p>
           {/* Showing {sortedProductCount} of {productCount} result */}
-          Showing 90 of 900 result
+          Showing 8 of 20 result
         </p>
       </div>
 

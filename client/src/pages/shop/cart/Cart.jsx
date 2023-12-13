@@ -14,6 +14,7 @@ import {
   increaseQuantity,
 } from "../../../store/cart/cart.action";
 import { selectCurrentCustomer } from "../../../store/customer/customer.selector";
+import { FormattedNumber } from "../../../components/dashboard/FormattedNumber/FormattedNumber";
 
 const Cart = () => {
   const { pathname } = location;
@@ -57,7 +58,7 @@ const Cart = () => {
                                     className="img-fluid"
                                     src={cartItem.productImages[0]}
                                     alt=""
-                                    style={{width:"100px",  height:"120px"}}
+                                    style={{ width: "100px", height: "120px" }}
                                   />
                                 </Link>
                               </td>
@@ -70,11 +71,8 @@ const Cart = () => {
 
                               <td className="product-price-cart">
                                 <Fragment>
-                                  <span className="amount old">
-                                    {"$" + cartItem.price}
-                                  </span>
                                   <span className="amount">
-                                    {"$" + cartItem.price}
+                                    <FormattedNumber value={cartItem.discountPrice} />
                                   </span>
                                 </Fragment>
                               </td>
@@ -116,7 +114,11 @@ const Cart = () => {
                                 </div>
                               </td>
                               <td className="product-subtotal">
-                                {"$" + cartItem.quantityCount * cartItem.price}
+                                <FormattedNumber
+                                  value={
+                                    cartItem.quantityCount * cartItem.discountPrice
+                                  }
+                                />
                               </td>
 
                               <td className="product-remove">
@@ -166,16 +168,26 @@ const Cart = () => {
                       </h4>
                     </div>
                     <h5>
-                      Total products <span>{"$" + cartTotal.toFixed(2)}</span>
+                      Total products{" "}
+                      <span>
+                        {" "}
+                        <FormattedNumber value={cartTotal.toFixed(2)} />
+                      </span>
                     </h5>
 
                     <h4 className="grand-totall-title">
-                      Grand Total <span>{"$" + cartTotal.toFixed(2)}</span>
+                      Grand Total{" "}
+                      <span>
+                        {" "}
+                        <FormattedNumber value={cartTotal.toFixed(2)} />
+                      </span>
                     </h4>
                     {currentCustomer ? (
                       <Link to={"/shop/checkout"}>Proceed to Checkout</Link>
                     ) : (
-                      <Link to={"/shop/login-register"}>Login First to Make Order</Link>
+                      <Link to={"/shop/login-register"}>
+                        Login First to Make Order
+                      </Link>
                     )}
                   </div>
                 </div>

@@ -4,6 +4,7 @@ import { getProductCartQuantity } from "../../../helpers/product";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCartItems } from "../../../store/cart/cart.selector";
 import { addToCart } from "../../../store/cart/cart.action";
+import { FormattedNumber } from "../../dashboard/FormattedNumber/FormattedNumber";
 
 const ProductDescriptionInfo = ({ product }) => {
   const dispatch = useDispatch();
@@ -25,8 +26,8 @@ const ProductDescriptionInfo = ({ product }) => {
     <div className="product-details-content ml-70">
       <h2>{product.productName}</h2>
       <div className="product-details-price">
-        <span>{"$" + product.price}</span>{" "}
-        <span className="old">{"$" + product.price}</span>
+        <span ><FormattedNumber value={product.discountPrice} /></span>{" "}
+        <span className="old"><FormattedNumber value={product.price} /></span>
       </div>
       <div className="pro-details-list">
         <p>{product.shortDescription}</p>

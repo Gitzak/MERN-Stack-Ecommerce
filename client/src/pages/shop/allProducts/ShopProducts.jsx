@@ -1,13 +1,46 @@
 import React, { Fragment, useState, useEffect } from "react";
-// import Paginator from "react-hooks-paginator";
+import Paginator from "react-hooks-paginator";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import Breadcrumb from "../../../wrappers/breadcrumb/Breadcrumb";
 import ShopTopbar from "../../../wrappers/product/ShopTopbar";
 import ShopSidebar from "../../../wrappers/product/ShopSidebar";
 import ShopProductsGrid from "../../../wrappers/product/ShopProductsGrid";
+import { useDispatch, useSelector } from "react-redux";
+import { GetAllProducts } from "../../../api/productApi";
+import { setCurrentProducts } from "../../../store/products/product.action";
+import { selectCurrentProducts } from "../../../store/products/product.selector";
 
 const ShopProducts = () => {
   const { pathname } = location;
+  const [currentData, setCurrentData] = useState([]);
+  const [gotedProducts, setGotedProducts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [offset, setOffset] = useState(0);
+  const pageLimit = 12;
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        GetAllProducts().then((res) => {
+          dispatch(setCurrentProducts(res.data.products));
+        });
+      } catch (error) {
+        // Handle error
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const { currentProducts } = useSelector(selectCurrentProducts);
+  const currentProductsNow = currentProducts.currentProducts;
+
+  useEffect(() => {
+    setGotedProducts(currentProductsNow);
+    setCurrentData(gotedProducts.slice(offset, offset + pageLimit));
+  }, [offset, gotedProducts]);
 
   return (
     <Fragment>
@@ -30,21 +63,21 @@ const ShopProducts = () => {
               <ShopTopbar />
 
               {/* shop page content default */}
-              <ShopProductsGrid />
+              <ShopProductsGrid products={currentData} />
 
               {/* shop product pagination */}
               <div className="pro-pagination-style text-center mt-30">
-                {/* <Paginator
-                  // totalRecords={sortedProducts.length}
-                  // pageLimit={pageLimit}
-                  // pageNeighbours={2}
-                  // setOffset={setOffset}
-                  // currentPage={currentPage}
-                  // setCurrentPage={setCurrentPage}
-                  // pageContainerClass="mb-0 mt-0"
-                  // pagePrevText="«"
-                  // pageNextText="»"
-                /> */}
+                <Paginator
+                  totalRecords={gotedProducts.length}
+                  pageLimit={pageLimit}
+                  pageNeighbours={2}
+                  setOffset={setOffset}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                  pageContainerClass="mb-0 mt-0"
+                  pagePrevText="«"
+                  pageNextText="»"
+                />
               </div>
             </div>
           </div>

@@ -12,7 +12,7 @@ const ProductImageGalleryLeftThumb = ({ product }) => {
                   src={single}
                   alt=""
                   className="img-fluid"
-                  style={{ width: "600px", height: "700px" }}
+                  style={{ width: "600px", height: "auto" }}
                 />
               </div>
             );
