@@ -4,6 +4,7 @@ import Swiper from "react-id-swiper";
 // import BrandLogoOneSingle from "../../components/brand-logo/BrandLogoOneSingle";
 import brandLogoData from "../../data/brand-logos/brand-logo-one.json";
 import BrandLogoOneSingle from "../../components/shop/brand-logo/BrandLogoOneSingle";
+import { Autoplay } from "swiper/modules";
 
 const BrandLogoSliderOne = ({ spaceBottomClass, spaceTopClass }) => {
   // const settings = {
@@ -28,10 +29,19 @@ const BrandLogoSliderOne = ({ spaceBottomClass, spaceTopClass }) => {
   //     }
   //   }
   // };
+//   const swiperSettings = {
+//     modules: [Autoplay],
+//     slidesPerView: 4,
+//     autoplay: { delay: 5000, disableOnInteraction: false },
+//     loop: true,
+//     spaceBetween: 30,
+// };
   const settings = {
+    modules: [Autoplay],
     loop: true,
+    spaceBetween: 50,
     autoplay: {
-      delay: 1500,
+      delay: 2000,
       disableOnInteraction: false,
     },
     grabCursor: true,

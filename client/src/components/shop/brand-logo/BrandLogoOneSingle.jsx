@@ -12,7 +12,7 @@ const BrandLogoOneSingle = ({ data, sliderClassName, spaceBottomClass }) => {
       className={`single-brand-logo ${sliderClassName ? sliderClassName : ""} ${
         spaceBottomClass ? spaceBottomClass : ""
       }`}
-      style={{ width: "150px", height: "100px" }} // Set your preferred size
+      style={{ width: "250px", height: "100px" }} // Set your preferred size
     >
       <img src={data.image} alt="" style={imgStyle}/>
     </div>
